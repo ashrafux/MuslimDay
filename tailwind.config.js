@@ -38,7 +38,7 @@ export default {
       },
       maxWidth: { app: '480px' },
       boxShadow: {
-        card: '0 1px 2px rgb(20 20 30 / .04), 0 10px 30px -12px rgb(20 20 30 / .10)',
+        card: '0 0 0 1px rgb(var(--line)), 0 6px 18px -14px rgb(20 20 30 / .12)',
         float: '0 12px 40px -10px rgb(20 20 30 / .25)',
       },
       borderRadius: { '4xl': '28px' },

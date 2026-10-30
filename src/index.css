@@ -8,12 +8,12 @@
   and a sunrise gradient (butter → coral → sky) for hero moments.
 */
 :root {
-  --bg: 244 241 236;
+  --bg: 255 255 255;
   --surface: 255 255 255;
   --ink: 23 24 28;
   --muted: 128 128 138;
-  --line: 236 233 228;
-  --chip: 239 237 233;
+  --line: 230 230 236;
+  --chip: 243 243 246;
   --brand: 33 96 217;
   --brand-dark: 24 72 170;
   --accent: 123 92 229;
