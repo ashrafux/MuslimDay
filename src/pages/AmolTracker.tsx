@@ -165,14 +165,14 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
     <div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="mx-5 mt-10 rounded-[10px] bg-lav p-5 text-ink">
+      <div className="mx-5 mt-10 rounded-[10px] bg-chip/60 p-5 text-ink">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="label !text-ink/60">আজকের অগ্রগতি</div>
             <div className="mt-1 text-[17px] font-bold">{n(count)}/{n(total)} আমল সম্পন্ন</div>
             <div className="mt-0.5 text-[13px] text-ink/70">{count === total && total > 0 ? 'মাশাআল্লাহ! সব আমল সম্পন্ন।' : 'প্রতিটি আমল সম্পন্ন হলে টিক দিন।'}</div>
           </div>
-          <ProgressRing value={total ? count / total : 0} size={56} stroke={6} color="rgb(var(--accent))" track="rgb(255 255 255 / .7)" />
+          <ProgressRing value={total ? count / total : 0} size={56} stroke={6} color="rgb(var(--success))" track="rgb(var(--surface))" />
         </div>
         <div className="mt-3 text-[44px] font-extrabold leading-none">{n(pct)}%</div>
         <div className="mt-4 flex flex-wrap gap-2 text-[12px] font-semibold">
