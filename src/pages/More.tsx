@@ -30,7 +30,7 @@ export default function More() {
           </button>
           <IconButton label={t('settings')} onClick={() => nav('/settings')}><SlidersHorizontal size={18} /></IconButton>
         </div>
-        <h1 className="mt-4 text-[32px] font-extrabold leading-tight tracking-tight text-ink">{profile.name}</h1>
+        <h1 className="mt-4 text-[32px] font-extrabold leading-tight text-ink">{profile.name}</h1>
         <p className="mt-0.5 text-[15px] text-muted">
           {profile.email || <button onClick={() => nav('/profile')} className="font-semibold text-brand">প্রোফাইল সম্পূর্ণ করুন</button>}
         </p>
@@ -49,7 +49,7 @@ export default function More() {
           ].map((st, i) => (
             <button key={st.label} onClick={() => nav(st.go)} className={`tap text-left ${i === 0 ? 'pr-3' : 'px-4'}`}>
               <span className="block text-[13px] text-muted">{st.label}</span>
-              <span className="mt-1 block text-[24px] font-extrabold tracking-tight text-ink">{st.value}</span>
+              <span className="mt-1 block text-[24px] font-extrabold text-ink">{st.value}</span>
             </button>
           ))}
         </div>

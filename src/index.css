@@ -64,10 +64,14 @@
 html, body, #root { height: 100%; }
 body {
   @apply bg-bg text-ink font-bn antialiased;
+  /* SolaimanLipi has no space glyph in its range; give Bangla words room to breathe */
+  word-spacing: .12em;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
 }
 h1, h2, h3 { text-wrap: balance; }
+/* SolaimanLipi ships one weight; synthesized bold widens glyphs, so bold Bangla needs extra word space */
+.font-semibold, .font-bold, .font-extrabold, h1, h2, h3, h4 { word-spacing: .26em; }
 
 @layer components {
   /* surfaces */

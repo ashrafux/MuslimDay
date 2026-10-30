@@ -75,7 +75,7 @@ export default function Tools() {
         </span>
         <span className="mt-4 flex w-full items-end justify-between">
           <span className="flex items-baseline gap-2">
-            <span className="text-[42px] font-extrabold leading-none tracking-tight">{n(pct)}%</span>
+            <span className="text-[42px] font-extrabold leading-none">{n(pct)}%</span>
             <span className="text-[14px] font-semibold text-ink/60">{n(done)}/{n(total)} সম্পন্ন</span>
           </span>
           <ProgressRing value={pct / 100} size={52} stroke={6} track="rgb(255 255 255 / .7)" color="rgb(var(--accent))" />

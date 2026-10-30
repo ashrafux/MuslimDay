@@ -185,7 +185,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
           </div>
           <ProgressRing value={total ? count / total : 0} size={56} stroke={6} color="rgb(var(--accent))" track="rgb(255 255 255 / .7)" />
         </div>
-        <div className="mt-3 text-[44px] font-extrabold leading-none tracking-tight">{n(pct)}%</div>
+        <div className="mt-3 text-[44px] font-extrabold leading-none">{n(pct)}%</div>
         <div className="mt-4 flex flex-wrap gap-2 text-[12px] font-semibold">
           <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Flame size={13} className="text-alert" /> {n(prayerStreak)} দিন নামাজ</span>
           <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><CalendarCheck size={13} /> নামাজ {n(prayersDone)}/{n(5)}</span>
@@ -593,7 +593,7 @@ function Stats() {
         ].map((s) => (
           <div key={s.l} className="card p-3">
             <div className="flex">{s.icon}</div>
-            <div className="mt-2 text-[22px] font-extrabold leading-none tracking-tight text-ink">{s.v}</div>
+            <div className="mt-2 text-[22px] font-extrabold leading-none text-ink">{s.v}</div>
             <div className="mt-1 text-[11px] text-muted">{s.l}</div>
           </div>
         ))}

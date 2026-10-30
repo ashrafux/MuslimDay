@@ -32,7 +32,7 @@ export default {
         'm-pink': v('m-pink'),
       },
       fontFamily: {
-        bn: ['"Plus Jakarta Sans"', '"Hind Siliguri"', 'system-ui', 'sans-serif'],
+        bn: ['"Plus Jakarta Sans"', '"Solaiman Lipi"', 'SolaimanLipi', '"Noto Sans Bengali"', 'system-ui', 'sans-serif'],
         ar: ['Amiri', '"Scheherazade New"', 'serif'],
         sch: ['"Scheherazade New"', 'Amiri', 'serif'],
       },

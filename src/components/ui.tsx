@@ -76,7 +76,7 @@ export function PageHeader({ title, back, right, sub }: { title: ReactNode; back
           </IconButton>
         )}
         <div className="min-w-0 flex-1">
-          <h1 className={`truncate font-bold leading-tight tracking-tight text-ink ${back ? 'text-[22px]' : 'text-[30px]'}`}>{title}</h1>
+          <h1 className={`truncate font-bold leading-tight text-ink ${back ? 'text-[22px]' : 'text-[30px]'}`}>{title}</h1>
           {sub && <div className="truncate text-[13px] text-muted">{sub}</div>}
         </div>
         {right && <div className="flex shrink-0 items-center gap-2">{right}</div>}

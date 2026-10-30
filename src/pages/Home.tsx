@@ -130,7 +130,7 @@ export default function Home() {
         <button onClick={() => nav('/calendar')} className="tap min-w-0 text-left">
           <div className="label">{(lang === 'bn' ? WEEKDAYS_BN : WEEKDAYS_EN)[today.getDay()]} • {formatHijri(hijri, lang)}</div>
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-[28px] font-extrabold leading-none tracking-tight text-ink">{formatGregorian(today, lang)}</span>
+            <span className="text-[28px] font-extrabold leading-none text-ink">{formatGregorian(today, lang)}</span>
             {lang === 'bn' && <span className="truncate text-[14px] font-medium text-muted">{formatBangla(today)}</span>}
           </div>
         </button>
@@ -165,7 +165,7 @@ export default function Home() {
           <div className="absolute inset-x-0 top-[36px] text-center">
             <div className="text-[22px] font-bold leading-tight">{periodLabel(period.id, isFriday, t)}</div>
             <div className="mt-1 text-[12px] font-medium uppercase tracking-[.08em] text-white/60">{t('remaining')}</div>
-            <div className="mt-1 text-[32px] font-extrabold tabular-nums tracking-tight">{formatDuration(period.end.getTime() - now.getTime())}</div>
+            <div className="mt-1 text-[32px] font-extrabold tabular-nums">{formatDuration(period.end.getTime() - now.getTime())}</div>
           </div>
         </div>
 
@@ -331,7 +331,7 @@ function Carousel() {
             </span>
             <span className="mt-2 line-clamp-2 block text-[19px] font-bold leading-snug">{c.title}</span>
             <span className="mt-1 line-clamp-2 block text-[13px] leading-snug text-ink/70">{c.body}</span>
-            {c.big && <span className="mt-auto pt-2 text-[34px] font-extrabold leading-none tracking-tight">{c.big}</span>}
+            {c.big && <span className="mt-auto pt-2 text-[34px] font-extrabold leading-none">{c.big}</span>}
           </button>
         ))}
       </div>
