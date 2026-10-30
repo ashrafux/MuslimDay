@@ -44,7 +44,7 @@ export function TabLayout() {
         <Outlet />
       </div>
       <MiniPlayer bottom={bottomH} />
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 mx-auto max-w-app bg-gradient-to-t from-bg via-bg/80 to-transparent px-5 pb-[max(.75rem,env(safe-area-inset-bottom))] pt-6">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 mx-auto max-w-app px-5 pb-[max(.75rem,var(--sab))] pt-6">
         <div className="pointer-events-auto"><BottomNav /></div>
       </div>
     </>

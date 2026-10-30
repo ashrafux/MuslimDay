@@ -97,7 +97,7 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center">
       <div className="animate-fade absolute inset-0 bg-night/50 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="animate-sheet relative max-h-[88vh] w-full max-w-app overflow-y-auto rounded-t-[10px] bg-surface pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div className="animate-sheet relative max-h-[88vh] w-full max-w-app overflow-y-auto rounded-t-[10px] bg-surface pb-[max(1rem,var(--sab))]">
         <div className="sticky top-0 z-10 bg-surface px-5 pb-2 pt-3">
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
           <div className="flex items-center justify-between gap-3">

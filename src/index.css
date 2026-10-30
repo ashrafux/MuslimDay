@@ -34,8 +34,9 @@
   --m-gray: 169 168 192;
   --m-pink: 226 139 149;
 
-  /* top safe area (status bar); the preview frame sets this explicitly */
+  /* safe areas (status bar, home indicator); the preview frame sets these explicitly */
   --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
 
   --grad-sunrise: linear-gradient(135deg, #f2c14e 0%, #ee8a78 45%, #9f8fd8 75%, #5ba8e8 100%);
   color-scheme: light;
