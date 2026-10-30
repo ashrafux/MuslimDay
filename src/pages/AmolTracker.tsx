@@ -5,7 +5,7 @@ import { IconButton, PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast }
 import { MoodFace } from '../components/icons';
 import { useStore, type CustomAmol, type PrayerMode } from '../store/useStore';
 import { addDays, dateKey, keyToDate, n } from '../lib/bn';
-import { formatGregorian, formatHijri, toHijri, WEEKDAYS_BN, WEEKDAYS_BN_FULL } from '../lib/dates';
+import { toHijri, WEEKDAYS_BN } from '../lib/dates';
 import { PRAYER_IDS, type PrayerId } from '../lib/prayer';
 import {
   BUILTIN, customToDef, GROUP_AVOID, GROUP_DHIKR, GROUP_MINE, GROUP_OTHER, GROUP_SUNNAH, LIBRARY, groupItems, itemsFor, streakOf, useAmolItems, useAmolProgress, type AmolDef,
@@ -56,7 +56,7 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
   const today = dateKey();
   const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
   return (
-    <div className="page-card mt-2 flex items-center gap-1 px-1.5 py-2.5">
+    <div className="mt-2 flex items-center gap-1 px-3 py-1">
       <button aria-label="previous week" className="tap rounded-full p-1.5 text-muted" onClick={() => onSelect(dateKey(addDays(sel, -7)))}><ChevronLeft size={20} /></button>
       <div className="grid flex-1 grid-cols-7 gap-1">
         {days.map((d) => {
@@ -141,8 +141,6 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
   const hijriAdjust = useStore((s) => s.settings.hijriAdjust);
   const items = useAmolItems(key);
   const { done: count, total } = useAmolProgress(key);
-  const date = keyToDate(key);
-  const isToday = key === dateKey();
   const groups = groupItems(items);
   const pct = total ? Math.round((count / total) * 100) : 0;
 
@@ -170,10 +168,6 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
 
   return (
     <div>
-      <div className="px-5 pt-2">
-        <div className="label">{formatHijri(toHijri(date, hijriAdjust), 'bn', true)} হিজরি</div>
-        <div className="mt-0.5 text-[20px] font-bold text-ink">{isToday ? 'আজ, ' : `${WEEKDAYS_BN_FULL[date.getDay()]}, `}{formatGregorian(date, 'bn', true)}</div>
-      </div>
       <WeekStrip selected={key} onSelect={setKey} />
 
       <div className="mx-5 mt-3 rounded-[28px] bg-lav p-5 text-ink">
