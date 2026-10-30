@@ -23,7 +23,7 @@ export function BottomNav() {
     <nav className="flex items-center justify-between gap-1 rounded-[26px] bg-surface p-2 shadow-float">
       {TABS.map((tab) => (
         <NavLink key={tab.to} to={tab.to} end={tab.to === '/'} aria-label={t(tab.key)}
-          className={({ isActive }) => `flex h-12 items-center justify-center gap-2 rounded-[20px] transition-all ${isActive ? 'flex-[1.9] bg-night px-3 text-white' : 'flex-1 text-muted hover:text-ink'}`}>
+          className={({ isActive }) => `flex h-12 items-center justify-center gap-2 rounded-[20px] transition-all ${isActive ? 'flex-none bg-night px-4 text-white' : 'flex-1 text-muted hover:text-ink'}`}>
           {({ isActive }) => (
             <>
               {tab.icon(isActive)}

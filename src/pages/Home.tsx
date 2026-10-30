@@ -179,15 +179,13 @@ export default function Home() {
         <span>আজকের নামাজ</span>
         <span className="text-[13px] font-semibold text-muted">{lang === 'bn' ? place.bn : place.name}</span>
       </div>
-      <ul className="relative mx-4 space-y-2.5 pl-7">
-        <span className="absolute bottom-6 left-[9px] top-6 w-0.5 rounded-full bg-brand/25" aria-hidden="true" />
+      <ul className="mx-4 space-y-2.5">
         {waqts.map((w) => {
           const past = now > w.end;
           const active = w.id === currentWaqt || (!currentWaqt && w.id === nextId);
           const label = w.id === 'dhuhr' && isFriday ? t('jumuah') : t(w.id);
           return (
-            <li key={w.id} className="relative">
-              <span className={`absolute -left-[25px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full border-[3px] ${active ? 'border-brand bg-brand' : past ? 'border-brand/40 bg-surface' : 'border-line bg-surface'}`} aria-hidden="true" />
+            <li key={w.id}>
               <button onClick={() => setDetail(w)}
                 className={`flex w-full items-center gap-3 rounded-[20px] py-2.5 pl-2.5 pr-4 text-left ${active ? 'bg-night text-white' : 'bg-surface text-ink shadow-card'}`}>
                 <span className={`tile h-11 w-11 shrink-0 rounded-2xl ${active ? 'bg-white/10 text-white' : `${PRAYER_TINT[w.id]} text-ink`}`}>{PRAYER_ICON[w.id]}</span>
