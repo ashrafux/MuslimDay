@@ -140,8 +140,7 @@ export default function Home() {
           </span>
         </div>
         {hero.night && [12, 30, 70, 85, 50, 92].map((x, i) => <span key={i} className="absolute h-1 w-1 rounded-full bg-white/40" style={{ left: `${x}%`, top: `${18 + i * 19}px` }} />)}
-        <div className="relative flex items-center justify-between gap-2">
-          <span className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-white"><span className="h-1.5 w-1.5 rounded-full bg-m-green" />{now >= period.start ? 'এখন চলছে' : 'পরবর্তী'}</span>
+        <div className="relative flex items-center justify-end gap-2">
           <button onClick={() => setLocOpen(true)} className="tap flex h-9 items-center gap-1.5 rounded-full bg-white/10 px-3 ring-1 ring-white/10">
             <MapPin size={15} />
             <span className="max-w-[110px] truncate text-[13px] font-semibold">{lang === 'bn' && place.country === 'INTL' ? place.bn : place.name}</span>
