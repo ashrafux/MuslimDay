@@ -118,10 +118,6 @@ export default function Home() {
   const nextId = waqts.find((w) => now < w.start)?.id;
   const currentWaqt = waqts.find((w) => now >= w.start && now <= w.end)?.id;
 
-  const share = () => {
-    const lines = waqts.map((w) => `${w.id === 'dhuhr' && isFriday ? t('jumuah') : t(w.id)}: ${fmt(w.start)} - ${fmt(w.end)}`);
-    shareText('নামাজের সময়সূচি', `${lang === 'bn' ? place.bn : place.name} — ${formatGregorian(today, lang, true)}\n${lines.join('\n')}\n${t('sunrise')}: ${fmt(times.sunrise)} | ${t('sunset')}: ${fmt(times.sunset)}`);
-  };
 
   return (
     <div className="pb-2">
@@ -135,7 +131,6 @@ export default function Home() {
           </div>
         </button>
         <div className="flex shrink-0 items-center gap-2">
-          <IconButton label="share" onClick={share}><Share2 size={18} /></IconButton>
           <span className="relative">
             <IconButton label="notifications" tone="brand" onClick={() => nav('/notifications')}><Bell size={18} /></IconButton>
             {unread > 0 && (
