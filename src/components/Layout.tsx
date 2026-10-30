@@ -20,7 +20,7 @@ const TABS = [
 export function BottomNav() {
   const t = useT();
   return (
-    <nav className="flex items-center justify-between gap-1 rounded-full bg-surface p-2 shadow-float">
+    <nav className="flex items-center justify-between gap-1 rounded-full bg-surface p-2 shadow-[0_16px_44px_-8px_rgb(20_20_30_/_.36),0_4px_12px_-4px_rgb(20_20_30_/_.14)]">
       {TABS.map((tab) => (
         <NavLink key={tab.to} to={tab.to} end={tab.to === '/'} aria-label={t(tab.key)}
           className={({ isActive }) => `flex h-12 items-center justify-center gap-2 rounded-full transition-all ${isActive ? 'flex-none bg-night px-4 text-white' : 'flex-1 text-muted hover:text-ink'}`}>
