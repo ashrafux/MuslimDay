@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Bell, Check, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck } from 'lucide-react';
+import { Bell, Check, ChevronDown, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck } from 'lucide-react';
 import { IconButton, PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast } from '../components/ui';
 import { MoodFace } from '../components/icons';
 import { useStore, type CustomAmol, type PrayerMode } from '../store/useStore';
@@ -63,7 +63,7 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
             <button key={k} disabled={future} onClick={() => onSelect(k)}
               className={`flex flex-col items-center gap-1 rounded-2xl py-1.5 transition disabled:opacity-35 ${active ? 'bg-night text-white' : ''}`}>
               <span className={`text-[11px] font-semibold ${active ? 'text-white/70' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
-              <span className={`flex h-[34px] w-[34px] items-center justify-center rounded-full text-[13px] font-bold ${active ? 'bg-white/15 text-white' : `bg-chip ${k === today ? 'text-brand' : 'text-ink'}`}`}>
+              <span className={`flex h-[34px] w-[34px] items-center justify-center rounded-full text-[13px] font-bold ${active ? 'text-white' : `bg-chip ${k === today ? 'text-brand' : 'text-ink'}`}`}>
                 {n(d.getDate())}
               </span>
             </button>
@@ -135,6 +135,8 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
   const items = useAmolItems(key);
   const { done: count, total } = useAmolProgress(key);
   const groups = groupItems(items);
+  const collapsed = useStore((s) => s.collapsedGroups);
+  const toggleGroup = (title: string) => set('collapsedGroups', collapsed.includes(title) ? collapsed.filter((x) => x !== title) : [...collapsed, title]);
   const pct = total ? Math.round((count / total) * 100) : 0;
 
   const setMode = (p: PrayerId, m: PrayerMode) => {
@@ -182,11 +184,17 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
 
       {groups.map((g) => (
         <section key={g.title} className="page-card mt-2.5">
-          <h3 className="flex items-center justify-between px-5 pb-1 pt-4 text-[15px] font-bold text-ink">
-            <span>{g.title}{g.title === GROUP_AVOID && <span className="ml-1 text-[12px]">(বিরত থাকলে টিক দিন)</span>}</span>
-            <span className="rounded-full bg-chip px-2 py-0.5 text-[12px] text-muted">{n(g.items.filter((i) => done.includes(i.id)).length)}/{n(g.items.length)}</span>
+          <h3>
+            <button onClick={() => toggleGroup(g.title)} aria-expanded={!collapsed.includes(g.title)}
+              className={`flex w-full items-center justify-between gap-3 px-5 pt-4 text-left text-[15px] font-bold text-ink ${collapsed.includes(g.title) ? 'pb-4' : 'pb-1'}`}>
+              <span className="min-w-0">{g.title}{g.title === GROUP_AVOID && <span className="ml-1 text-[12px]">(বিরত থাকলে টিক দিন)</span>}</span>
+              <span className="flex shrink-0 items-center gap-2">
+                <span className="rounded-full bg-chip px-2 py-0.5 text-[12px] text-muted">{n(g.items.filter((i) => done.includes(i.id)).length)}/{n(g.items.length)}</span>
+                <ChevronDown size={18} className={`text-muted transition-transform ${collapsed.includes(g.title) ? '-rotate-90' : ''}`} />
+              </span>
+            </button>
           </h3>
-          <ul className="divide-y divide-line">
+          {!collapsed.includes(g.title) && <ul className="divide-y divide-line">
             {g.items.map((it) => {
               const checked = done.includes(it.id);
               const streak = streakOf(amol, it, hijriAdjust);
@@ -222,7 +230,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
                 </li>
               );
             })}
-          </ul>
+          </ul>}
         </section>
       ))}
 

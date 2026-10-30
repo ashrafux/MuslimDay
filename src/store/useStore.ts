@@ -86,6 +86,8 @@ interface State {
   prayerMode: Record<string, Partial<Record<PrayerId, PrayerMode>>>;
   /** built-in deed ids the user turned off */
   hiddenAmol: string[];
+  /** amal tracker sections the user collapsed */
+  collapsedGroups: string[];
   /** dateKey -> daily self-accountability (muhasaba) */
   journal: Record<string, JournalEntry>;
   qaza: Record<PrayerId | 'witr', number>;
@@ -146,6 +148,7 @@ export const useStore = create<State>()(
       amolCounts: {},
       prayerMode: {},
       hiddenAmol: [],
+      collapsedGroups: [],
       journal: {},
       qaza: { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0, witr: 0 },
       fasting: {},
