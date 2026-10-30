@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { Capacitor, SystemBars, SystemBarsStyle, SystemBarType } from '@capacitor/core';
 import { PremiumGateSheet, SubLayout, TabLayout } from './components/Layout';
 import { ToastHost } from './components/ui';
 import { Scheduler } from './components/Scheduler';
@@ -37,6 +38,20 @@ function ScrollTop() {
   return null;
 }
 
+/** In the Android/iOS app, keep status-bar icons readable over the page underneath */
+function NativeBars() {
+  const { pathname } = useLocation();
+  const theme = useStore((s) => s.settings.theme);
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const top = dark || pathname === '/' ? SystemBarsStyle.Dark : SystemBarsStyle.Light;
+    SystemBars.setStyle({ style: top, bar: SystemBarType.StatusBar }).catch(() => undefined);
+    SystemBars.setStyle({ style: dark ? SystemBarsStyle.Dark : SystemBarsStyle.Light, bar: SystemBarType.NavigationBar }).catch(() => undefined);
+  }, [pathname, theme]);
+  return null;
+}
+
 function useThemeAndLang() {
   const theme = useStore((s) => s.settings.theme);
   const lang = useStore((s) => s.settings.lang);
@@ -70,6 +85,7 @@ export default function App() {
   return (
     <HashRouter>
       <ScrollTop />
+      <NativeBars />
       <Scheduler />
       <div className="mx-auto min-h-full max-w-app bg-bg shadow-[0_0_40px_rgba(0,0,0,.06)]">
         <Routes>
