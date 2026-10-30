@@ -87,7 +87,7 @@ export function MiniPlayer({ bottom }: { bottom: number }) {
   const reciter = useStore.getState().quran.reciter;
   return (
     <div className="fixed inset-x-0 z-40 mx-auto max-w-app px-5" style={{ bottom }}>
-      <div className="rounded-[22px] bg-night px-4 py-3 text-white shadow-float">
+      <div className="rounded-[10px] bg-night px-4 py-3 text-white shadow-float">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <div className="truncate text-[15px] font-semibold">সূরা {s.bn}{p.track.kind === 'ayah' && ` • আয়াত ${n(p.track.ayah)}`}</div>

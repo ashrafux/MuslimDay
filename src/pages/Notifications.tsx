@@ -27,7 +27,7 @@ export default function Notifications() {
         : <div className="page-card">{list.map((x) => (
           <button key={x.id} onClick={() => { set('notifications', list.map((y) => (y.id === x.id ? { ...y, read: true } : y))); if (x.link) nav(x.link); }}
             className={`flex w-full gap-3.5 border-b border-line px-4 py-4 text-left last:border-0 ${x.read ? '' : 'bg-sky/50'}`}>
-            <span className="tile mt-0.5 h-11 w-11 shrink-0 rounded-2xl bg-butter text-ink"><Bell size={20} /></span>
+            <span className="tile mt-0.5 h-11 w-11 shrink-0 rounded-[10px] bg-butter text-ink"><Bell size={20} /></span>
             <span className="min-w-0 flex-1">
               <span className="flex items-center gap-2 text-[15.5px] font-bold text-ink">{x.title}{!x.read && <span className="h-2 w-2 rounded-full bg-alert" />}</span>
               <span className="block text-sm text-muted">{x.body}</span>

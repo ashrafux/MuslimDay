@@ -220,11 +220,11 @@ export function ReportPage() {
         <textarea className="input min-h-[150px]" placeholder="সমস্যাটি বিস্তারিত লিখুন — কোন পেজে, কী করার সময় ঘটেছে…" value={text} onChange={(e) => setText(e.target.value)} />
         {preview ? (
           <div className="relative inline-block">
-            <img src={preview} alt="screenshot" className="max-h-60 rounded-xl border border-line" />
+            <img src={preview} alt="screenshot" className="max-h-60 rounded-[10px] border border-line" />
             <button aria-label="remove image" onClick={() => { setImage(null); setPreview(null); }} className="absolute -right-2 -top-2 rounded-full bg-ink p-1 text-surface"><X size={16} /></button>
           </div>
         ) : (
-          <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-brand/40 p-6 text-brand">
+          <label className="flex cursor-pointer items-center justify-center gap-2 rounded-[10px] border-2 border-dashed border-brand/40 p-6 text-brand">
             <ImagePlus /> স্ক্রিনশট যুক্ত করুন
             <input type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) { setImage(f); setPreview(URL.createObjectURL(f)); } }} />
           </label>
@@ -234,7 +234,7 @@ export function ReportPage() {
           <div>
             <h3 className="mb-2 mt-4 text-sm text-muted">আপনার আগের রিপোর্ট</h3>
             {reports.map((r) => (
-              <div key={r.id} className="mb-2 rounded-xl bg-surface p-3 text-sm text-ink">{r.text}<div className="mt-1 text-xs text-muted">{new Date(r.time).toLocaleString('bn-BD')}{r.hasImage && ' • স্ক্রিনশট সহ'}</div></div>
+              <div key={r.id} className="mb-2 rounded-[10px] bg-surface p-3 text-sm text-ink">{r.text}<div className="mt-1 text-xs text-muted">{new Date(r.time).toLocaleString('bn-BD')}{r.hasImage && ' • স্ক্রিনশট সহ'}</div></div>
             ))}
           </div>
         )}
@@ -249,7 +249,7 @@ export function AboutPage() {
       <PageHeader back title="আমাদের সম্পর্কে" />
       <div className="space-y-4 p-5 text-ink">
         <div className="flex flex-col items-center py-4">
-          <img src="./icon.svg" alt="" className="h-20 w-20 rounded-2xl" />
+          <img src="./icon.svg" alt="" className="h-20 w-20 rounded-[10px]" />
           <h2 className="mt-3 text-2xl">আমল ট্র্যাকার</h2>
           <p className="text-muted">সংস্করণ {n('1.0.0')}</p>
         </div>

@@ -20,7 +20,7 @@ export function SurahRow({ s, onClick, right }: { s: (typeof SURAHS)[number]; on
   const t = useT();
   return (
     <button onClick={onClick} className="flex w-full items-center gap-3.5 border-b border-line px-4 py-3.5 text-left transition last:border-0 active:bg-bg">
-      <span className={`tile h-12 w-12 shrink-0 rounded-2xl text-[15px] font-bold text-ink ${pastel(s.n)}`}>{n(s.n)}</span>
+      <span className={`tile h-12 w-12 shrink-0 rounded-[10px] text-[15px] font-bold text-ink ${pastel(s.n)}`}>{n(s.n)}</span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[16.5px] font-bold text-ink">{t('surah')} {s.bn}</span>
         <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted">
@@ -63,7 +63,7 @@ export default function Quran() {
           <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-5">
             {lastRead.slice(0, 4).map((l, i) => (
               <button key={l.surah} onClick={() => nav(`/quran/${l.surah}?ayah=${l.ayah}`)}
-                className={`tap flex min-w-[150px] shrink-0 flex-col items-start rounded-[22px] p-4 text-left text-ink ${i === 0 ? 'bg-night text-white' : 'bg-surface shadow-card'}`}>
+                className={`tap flex min-w-[150px] shrink-0 flex-col items-start rounded-[10px] p-4 text-left text-ink ${i === 0 ? 'bg-night text-white' : 'bg-surface shadow-card'}`}>
                 <span className={`label ${i === 0 ? '!text-white/60' : ''}`}>আয়াত {n(l.ayah)}</span>
                 <span className="mt-1 text-[16px] font-bold">সূরা {SURAHS[l.surah - 1].bn}</span>
               </button>
@@ -87,7 +87,7 @@ export default function Quran() {
           ? SURAHS.map((s) => <SurahRow key={s.n} s={s} onClick={() => nav(`/quran/${s.n}`)} />)
           : juzStarts.map((j) => (
             <button key={j.juz} onClick={() => nav(`/quran/${j.surah}?ayah=${j.ayah}`)} className="flex w-full items-center gap-3.5 border-b border-line px-4 py-3.5 text-left last:border-0 active:bg-bg">
-              <span className={`tile h-12 w-12 shrink-0 rounded-2xl text-[15px] font-bold text-ink ${pastel(j.juz)}`}>{n(j.juz)}</span>
+              <span className={`tile h-12 w-12 shrink-0 rounded-[10px] text-[15px] font-bold text-ink ${pastel(j.juz)}`}>{n(j.juz)}</span>
               <span className="min-w-0 flex-1">
                 <span className="block text-[16.5px] font-bold text-ink">পারা {n(j.juz)}</span>
                 <span className="mt-0.5 block text-[13px] text-muted">শুরু: সূরা {SURAHS[j.surah - 1].bn}, আয়াত {n(j.ayah)}</span>

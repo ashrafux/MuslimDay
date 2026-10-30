@@ -35,7 +35,7 @@ export default function Subscribe() {
       <div>
         <PageHeader back title="পৃষ্ঠপোষকতা" />
         <div className="flex flex-col items-center p-8 text-center">
-          <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-night text-gold"><Crown size={52} fill="currentColor" /></span>
+          <span className="flex h-24 w-24 items-center justify-center rounded-[10px] bg-night text-gold"><Crown size={52} fill="currentColor" /></span>
           <h2 className="mt-5 text-2xl text-ink">জাযাকাল্লাহু খাইরান!</h2>
           <p className="mt-2 text-muted">আপনি {premium.plan === 'yearly' ? 'বার্ষিক' : 'মাসিক'} পৃষ্ঠপোষক{premium.since && ` (${new Date(premium.since).toLocaleDateString('bn-BD')} থেকে)`}। সব প্রিমিয়াম ফিচার আনলক করা আছে।</p>
           <button className="btn-soft mt-8" onClick={() => setCancelOpen(true)}>সাবস্ক্রিপশন বাতিল করুন</button>
@@ -54,15 +54,15 @@ export default function Subscribe() {
   return (
     <div>
       <PageHeader back title="পৃষ্ঠপোষক হোন" />
-      <div className="grad-sunrise mx-5 mt-1 rounded-[32px] px-6 pb-7 pt-6 text-white shadow-float">
-        <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-night text-gold"><Crown size={36} fill="currentColor" /></span>
+      <div className="grad-sunrise mx-5 mt-1 rounded-[10px] px-6 pb-7 pt-6 text-white shadow-float">
+        <span className="flex h-16 w-16 items-center justify-center rounded-[10px] bg-night text-gold"><Crown size={36} fill="currentColor" /></span>
         <h2 className="mt-4 text-[24px] font-extrabold leading-tight text-white">আরো আপন হোক আপনার ইবাদতের সঙ্গী</h2>
         <p className="mt-2 text-white/90">আপনার সহযোগিতায় অ্যাপটি নির্ভুল ও আরও সমৃদ্ধ হবে ইনশাআল্লাহ।</p>
-        {premium.plan === 'trial' && premium.since && <p className="mt-3 rounded-xl bg-white/15 p-3 text-sm">আপনার ফ্রি ট্রায়াল চলছে — {n(Math.max(0, 7 - Math.floor((Date.now() - premium.since) / 86400000)))} দিন বাকি।</p>}
+        {premium.plan === 'trial' && premium.since && <p className="mt-3 rounded-[10px] bg-white/15 p-3 text-sm">আপনার ফ্রি ট্রায়াল চলছে — {n(Math.max(0, 7 - Math.floor((Date.now() - premium.since) / 86400000)))} দিন বাকি।</p>}
       </div>
       <div className="space-y-3 p-5">
         {PLANS.map((p) => (
-          <button key={p.id} onClick={() => setPlan(p.id)} className={`relative flex w-full items-center gap-4 rounded-2xl border-2 bg-surface p-5 text-left ${plan === p.id ? 'border-brand' : 'border-line'}`}>
+          <button key={p.id} onClick={() => setPlan(p.id)} className={`relative flex w-full items-center gap-4 rounded-[10px] border-2 bg-surface p-5 text-left ${plan === p.id ? 'border-brand' : 'border-line'}`}>
             <span className={`flex h-6 w-6 items-center justify-center rounded-full border-2 ${plan === p.id ? 'border-brand bg-brand text-white' : 'border-line'}`}>{plan === p.id && <Check size={14} />}</span>
             <span className="flex-1">
               <span className="block text-xl text-ink">{p.title}</span>
@@ -86,7 +86,7 @@ export default function Subscribe() {
         <p className="text-muted">{selected.title} প্যাকেজ — ৳{n(selected.price)}</p>
         <div className="my-4 grid grid-cols-3 gap-2">
           {['বিকাশ', 'নগদ', 'কার্ড'].map((m) => (
-            <button key={m} onClick={() => setMethod(m)} className={`rounded-xl border-2 py-3 ${method === m ? 'border-brand bg-chip text-brand' : 'border-line text-ink'}`}>{m}</button>
+            <button key={m} onClick={() => setMethod(m)} className={`rounded-[10px] border-2 py-3 ${method === m ? 'border-brand bg-chip text-brand' : 'border-line text-ink'}`}>{m}</button>
           ))}
         </div>
         <input className="input" inputMode="numeric" placeholder={method === 'কার্ড' ? 'কার্ড নম্বর' : '০১XXXXXXXXX'} value={phone} onChange={(e) => setPhone(e.target.value)} />

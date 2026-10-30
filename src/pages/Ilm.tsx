@@ -15,12 +15,12 @@ export function AsmaulHusnaPage() {
   return (
     <div>
       <PageHeader back title="আসমাউল হুসনা" sub="আল্লাহর ৯৯টি সুন্দর নাম" />
-      <div className="mx-5 mt-1 rounded-[28px] bg-sand px-5 py-5 text-center">
+      <div className="mx-5 mt-1 rounded-[10px] bg-sand px-5 py-5 text-center">
         <p className="font-ar text-2xl text-ink" dir="rtl">وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا</p>
         <p className="mt-1 text-sm text-muted">আর আল্লাহর জন্যই রয়েছে সুন্দর নামসমূহ, সুতরাং সেগুলোর মাধ্যমে তাঁকে ডাকো। — সূরা আল-আরাফ ৭:১৮০</p>
       </div>
       <div className="px-5 pb-2">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
+        <label className="flex items-center gap-2 rounded-[10px] bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="নাম বা অর্থ খুঁজুন" className="w-full bg-transparent py-3 outline-none" /></label>
       </div>
       <div className="grid grid-cols-2 gap-3 px-5 py-4">
@@ -63,13 +63,13 @@ export function HadithPage() {
   return (
     <div>
       <PageHeader back title="হাদিস" sub={`${n(hadithCollection.length)}টি নির্বাচিত হাদিস`} />
-      <section className="mx-5 my-4 rounded-[28px] bg-night shadow-float p-5 text-white">
+      <section className="mx-5 my-4 rounded-[10px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">আজকের হাদিস</div>
         <p className="mt-2 text-lg leading-relaxed">{today.bangla}</p>
         <p className="mt-2 text-sm opacity-80">— {today.narrator} • {today.reference}</p>
       </section>
       <div className="px-5">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
+        <label className="flex items-center gap-2 rounded-[10px] bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="হাদিস খুঁজুন" className="w-full bg-transparent py-3 outline-none" /></label>
       </div>
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 py-3">

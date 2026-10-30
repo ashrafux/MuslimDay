@@ -30,7 +30,7 @@ export default function Qaza() {
   return (
     <div>
       <PageHeader back title="কাযা নামাজ" />
-      <section className="mx-5 my-4 rounded-[28px] bg-night shadow-float p-5 text-white">
+      <section className="mx-5 my-4 rounded-[10px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">মোট বাকি কাযা নামাজ</div>
         <div className="text-5xl">{n(total)}</div>
         <p className="mt-2 text-sm opacity-85">প্রতিদিন অন্তত এক ওয়াক্তের কাযা আদায় করলে {n(Math.ceil(total / 6))} দিনে শেষ হবে ইনশাআল্লাহ।</p>

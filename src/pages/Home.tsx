@@ -120,7 +120,7 @@ export default function Home() {
   return (
     <div className="pb-2">
       {/* ---------- dark top band: date + countdown ---------- */}
-      <section className="relative overflow-hidden rounded-b-[32px] px-5 pb-6 pt-5 text-white" style={{ background: hero.bg }}>
+      <section className="relative overflow-hidden rounded-b-[10px] px-5 pb-6 pt-5 text-white" style={{ background: hero.bg }}>
         <Waves />
         <div className="relative mb-5 flex items-start justify-between gap-3">
           <button onClick={() => nav('/calendar')} className="tap min-w-0 text-left">
@@ -158,11 +158,11 @@ export default function Home() {
         </div>
 
         <div className="relative mt-1 grid grid-cols-2 gap-2.5">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[.07] px-3 py-2.5 ring-1 ring-white/10">
+          <div className="flex items-center gap-2.5 rounded-[10px] bg-white/[.07] px-3 py-2.5 ring-1 ring-white/10">
             <Sunrise size={20} className="text-m-yellow" />
             <span><span className="block text-[11px] opacity-85">{t('sunrise')}</span><span className="block text-[15px] font-bold tabular-nums">{fmt(times.sunrise)}</span></span>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[.07] px-3 py-2.5 ring-1 ring-white/10">
+          <div className="flex items-center gap-2.5 rounded-[10px] bg-white/[.07] px-3 py-2.5 ring-1 ring-white/10">
             <Sunset size={20} className="text-[#ee8a78]" />
             <span><span className="block text-[11px] opacity-85">{t('sunset')}</span><span className="block text-[15px] font-bold tabular-nums">{fmt(times.sunset)}</span></span>
           </div>
@@ -181,8 +181,8 @@ export default function Home() {
           return (
             <li key={w.id}>
               <button onClick={() => setDetail(w)}
-                className={`flex w-full items-center gap-3 rounded-[20px] py-2.5 pl-2.5 pr-4 text-left ${active ? 'bg-night text-white' : 'bg-surface text-ink shadow-card'}`}>
-                <span className={`tile h-11 w-11 shrink-0 rounded-2xl ${active ? 'bg-white/10 text-white' : `${PRAYER_TINT[w.id]} text-ink`}`}>{PRAYER_ICON[w.id]}</span>
+                className={`flex w-full items-center gap-3 rounded-[10px] py-2.5 pl-2.5 pr-4 text-left ${active ? 'bg-night text-white' : 'bg-surface text-ink shadow-card'}`}>
+                <span className={`tile h-11 w-11 shrink-0 rounded-[10px] ${active ? 'bg-white/10 text-white' : `${PRAYER_TINT[w.id]} text-ink`}`}>{PRAYER_ICON[w.id]}</span>
                 <span className={`min-w-0 flex-1 text-[16px] font-bold ${past && !active ? 'text-muted' : ''}`}>{label}</span>
                 {w.makruh && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-m-yellow" title="মাকরূহ সময় আছে" />}
                 <span className={`shrink-0 text-[15px] font-semibold tabular-nums ${active ? 'text-white' : past ? 'text-muted' : 'text-ink'}`}>{fmt(w.start)} - {fmt(w.end)}</span>
@@ -194,12 +194,12 @@ export default function Home() {
 
       <div className="mx-5 mt-3 grid grid-cols-2 gap-2.5">
         <button onClick={() => nav('/alarm')} className="tap card flex items-center gap-3 p-3">
-          <span className="tile h-10 w-10 rounded-xl bg-butter text-ink"><Bell size={18} /></span>
+          <span className="tile h-10 w-10 rounded-[10px] bg-butter text-ink"><Bell size={18} /></span>
           <span className="flex-1 text-left text-[15px] font-semibold text-ink">{t('alarm')}</span>
           <ChevronRight size={16} className="text-muted" />
         </button>
         <button onClick={() => nav('/calendar')} className="tap card flex items-center gap-3 p-3">
-          <span className="tile h-10 w-10 rounded-xl bg-sky text-ink"><CalendarDays size={18} /></span>
+          <span className="tile h-10 w-10 rounded-[10px] bg-sky text-ink"><CalendarDays size={18} /></span>
           <span className="flex-1 text-left text-[15px] font-semibold text-ink">{t('calendar')}</span>
           <ChevronRight size={16} className="text-muted" />
         </button>
@@ -238,13 +238,13 @@ export default function Home() {
         {detail && (
           <div className="space-y-3 text-ink">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-[20px] bg-lav p-4"><div className="label">শুরু</div><div className="mt-1 text-[26px] font-extrabold tabular-nums">{fmt(detail.start)}</div></div>
-              <div className="rounded-[20px] bg-sand p-4"><div className="label">শেষ</div><div className="mt-1 text-[26px] font-extrabold tabular-nums">{fmt(detail.end)}</div></div>
+              <div className="rounded-[10px] bg-lav p-4"><div className="label">শুরু</div><div className="mt-1 text-[26px] font-extrabold tabular-nums">{fmt(detail.start)}</div></div>
+              <div className="rounded-[10px] bg-sand p-4"><div className="label">শেষ</div><div className="mt-1 text-[26px] font-extrabold tabular-nums">{fmt(detail.end)}</div></div>
             </div>
             <p><span className="text-muted">রাকাত: </span>{SUNNAH[detail.id]}</p>
             {detail.id === 'dhuhr' && isFriday && <p className="text-muted">জুম'আর দিন: ২ রাকাত ফরজ জামাতে, আগে ৪ ও পরে ৪ রাকাত সুন্নাত। সূরা আল কাহফ পড়ুন ও বেশি বেশি দরুদ পাঠ করুন।</p>}
             {detail.makruh && (
-              <p className="flex gap-2 rounded-2xl bg-butter p-3 text-ink">
+              <p className="flex gap-2 rounded-[10px] bg-butter p-3 text-ink">
                 <span className="mt-1.5 h-3 w-3 shrink-0 rounded-full bg-m-yellow" />
                 {detail.makruh.note} ({fmt(detail.makruh.from)} - {fmt(detail.makruh.to)})
               </p>
@@ -287,10 +287,10 @@ function Carousel() {
       <div ref={ref} onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / (e.currentTarget.clientWidth * 0.86)))}
         className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-5">
         {cards.map((c, i) => (
-          <button key={i} onClick={() => nav(c.go)} className={`flex min-h-[168px] w-[86%] shrink-0 snap-center flex-col rounded-[28px] p-5 text-left text-ink ${c.tint}`}>
+          <button key={i} onClick={() => nav(c.go)} className={`flex min-h-[168px] w-[86%] shrink-0 snap-center flex-col rounded-[10px] p-5 text-left text-ink ${c.tint}`}>
             <span className="flex w-full items-center justify-between">
               <span className="label !text-ink/60">{c.eyebrow}</span>
-              <span className="tile h-9 w-9 rounded-xl bg-white/70">{c.icon}</span>
+              <span className="tile h-9 w-9 rounded-[10px] bg-white/70">{c.icon}</span>
             </span>
             <span className="mt-2 line-clamp-2 block text-[19px] font-bold leading-snug">{c.title}</span>
             <span className="mt-1 line-clamp-2 block text-[13px] leading-snug text-ink/70">{c.body}</span>

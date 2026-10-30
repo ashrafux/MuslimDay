@@ -37,7 +37,7 @@ export default function Alarm() {
     <div>
       <PageHeader back title="অ্যালার্ম" />
       {perm !== 'granted' && (
-        <div className="m-5 rounded-2xl bg-butter p-4 text-ink">
+        <div className="m-5 rounded-[10px] bg-butter p-4 text-ink">
           <p>নামাজের সময় নোটিফিকেশন পেতে অনুমতি দিন।</p>
           <button className="btn-primary mt-3" onClick={ask}><BellRing size={18} /> অনুমতি দিন</button>
         </div>

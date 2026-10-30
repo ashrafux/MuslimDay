@@ -61,7 +61,7 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
           const active = k === selected;
           return (
             <button key={k} disabled={future} onClick={() => onSelect(k)}
-              className={`flex flex-col items-center gap-1 rounded-2xl py-1.5 transition disabled:opacity-35 ${active ? 'bg-night text-white' : ''}`}>
+              className={`flex flex-col items-center gap-1 rounded-[10px] py-1.5 transition disabled:opacity-35 ${active ? 'bg-night text-white' : ''}`}>
               <span className={`text-[11px] font-semibold ${active ? 'text-white/70' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
               <span className={`flex h-[34px] w-[34px] items-center justify-center rounded-full text-[13px] font-bold ${active ? 'text-white' : `bg-chip ${k === today ? 'text-brand' : 'text-ink'}`}`}>
                 {n(d.getDate())}
@@ -165,7 +165,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
     <div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="mx-5 mt-3 rounded-[28px] bg-lav p-5 text-ink">
+      <div className="mx-5 mt-3 rounded-[10px] bg-lav p-5 text-ink">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="label !text-ink/60">আজকের অগ্রগতি</div>
@@ -247,7 +247,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
             const on = journal.mood === i + 1;
             return (
               <button key={m} onClick={() => setJournal({ mood: on ? undefined : i + 1 })} aria-pressed={on}
-                className={`tap flex flex-col items-center gap-1.5 rounded-2xl py-2 transition ${on ? 'bg-chip' : ''} ${journal.mood && !on ? 'opacity-45' : ''}`}>
+                className={`tap flex flex-col items-center gap-1.5 rounded-[10px] py-2 transition ${on ? 'bg-chip' : ''} ${journal.mood && !on ? 'opacity-45' : ''}`}>
                 <MoodFace level={(i + 1) as 1 | 2 | 3 | 4} size={46} />
                 <span className="text-[12.5px] font-semibold text-ink">{m}</span>
               </button>
@@ -370,7 +370,7 @@ export function AmolEditor({ open, item, onClose }: { open: boolean; item?: Cust
             <span className="mb-1.5 block text-[13px] text-muted">ধরন</span>
             <div className="grid grid-cols-2 gap-2">
               {([['check', 'টিক চিহ্ন', 'করেছি / করিনি'], ['count', 'গণনা', 'নির্দিষ্ট সংখ্যা পূরণ']] as const).map(([v, l, sub]) => (
-                <button key={v} onClick={() => setF({ ...f, type: v })} className={`rounded-xl border-2 p-3 text-left ${f.type === v ? 'border-brand bg-chip' : 'border-line'}`}>
+                <button key={v} onClick={() => setF({ ...f, type: v })} className={`rounded-[10px] border-2 p-3 text-left ${f.type === v ? 'border-brand bg-chip' : 'border-line'}`}>
                   <span className="block text-[15px] text-ink">{l}</span><span className="text-[12px] text-muted">{sub}</span>
                 </button>
               ))}
@@ -405,7 +405,7 @@ export function AmolEditor({ open, item, onClose }: { open: boolean; item?: Cust
                   const on = f.days.includes(d);
                   return (
                     <button key={d} onClick={() => setF({ ...f, days: on ? f.days.filter((x) => x !== d) : [...f.days, d] })}
-                      className={`rounded-lg py-2 text-[13px] ${on ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{WEEKDAYS_BN[d]}</button>
+                      className={`rounded-[10px] py-2 text-[13px] ${on ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{WEEKDAYS_BN[d]}</button>
                   );
                 })}
               </div>

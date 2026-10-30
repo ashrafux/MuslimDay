@@ -78,25 +78,25 @@ export default function Dua() {
           আমার দু'আ কালেকশন
           <span className="mt-1 block text-[13px] font-normal leading-relaxed text-muted">৩টি কাস্টম লিস্ট ব্যবহার করুন একদম ফ্রিতে! পৃষ্ঠপোষক হিসেবে যুক্ত হয়ে ২০টি পর্যন্ত লিস্ট তৈরির সুবিধা আনলক করুন।</span>
         </span>
-        <button onClick={() => setCreating(true)} className="tap mt-1 shrink-0 rounded-xl bg-brand px-3 py-2 text-[13px] font-semibold text-white">নতুন তালিকা</button>
+        <button onClick={() => setCreating(true)} className="tap mt-1 shrink-0 rounded-[10px] bg-brand px-3 py-2 text-[13px] font-semibold text-white">নতুন তালিকা</button>
       </div>
       <div className="space-y-2.5 px-5 pb-6">
         {favs.length > 0 && (
           <button onClick={() => nav('/dua/list/favorites')} className="tap card flex w-full items-center gap-4 p-3.5 text-left">
-            <span className="tile h-12 w-12 rounded-2xl bg-rose text-m-pink"><Heart size={20} fill="currentColor" /></span>
+            <span className="tile h-12 w-12 rounded-[10px] bg-rose text-m-pink"><Heart size={20} fill="currentColor" /></span>
             <span className="flex-1"><span className="block text-[16px] font-bold text-ink">প্রিয় দোয়া</span><span className="text-[13px] text-muted">{n(favs.length)}টি দোয়া</span></span>
             <ChevronRight className="text-muted" size={20} />
           </button>
         )}
         {lists.map((l, i) => (
           <button key={l.id} onClick={() => nav(`/dua/list/${l.id}`)} className="tap card flex w-full items-center gap-4 p-3.5 text-left">
-            <span className={`tile h-12 w-12 rounded-2xl text-ink ${pastel(i + 1)}`}><ListPlus size={20} /></span>
+            <span className={`tile h-12 w-12 rounded-[10px] text-ink ${pastel(i + 1)}`}><ListPlus size={20} /></span>
             <span className="flex-1"><span className="block text-[16px] font-bold text-ink">{l.name}</span><span className="text-[13px] text-muted">{n(l.duaIds.length)}টি দোয়া</span></span>
             <ChevronRight className="text-muted" size={20} />
           </button>
         ))}
         {lists.length === 0 && favs.length === 0 && (
-          <button onClick={() => setCreating(true)} className="w-full rounded-[22px] border-2 border-dashed border-line p-5 font-semibold text-muted">+ প্রথম তালিকা তৈরি করুন</button>
+          <button onClick={() => setCreating(true)} className="w-full rounded-[10px] border-2 border-dashed border-line p-5 font-semibold text-muted">+ প্রথম তালিকা তৈরি করুন</button>
         )}
       </div>
       <NewListSheet open={creating} onClose={() => setCreating(false)} onCreated={(id) => nav(`/dua/list/${id}`)} />

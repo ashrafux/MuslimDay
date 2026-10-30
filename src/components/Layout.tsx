@@ -20,10 +20,10 @@ const TABS = [
 export function BottomNav() {
   const t = useT();
   return (
-    <nav className="flex items-center justify-between gap-1 rounded-[26px] bg-surface p-2 shadow-float">
+    <nav className="flex items-center justify-between gap-1 rounded-[10px] bg-surface p-2 shadow-float">
       {TABS.map((tab) => (
         <NavLink key={tab.to} to={tab.to} end={tab.to === '/'} aria-label={t(tab.key)}
-          className={({ isActive }) => `flex h-12 items-center justify-center gap-2 rounded-[20px] transition-all ${isActive ? 'flex-none bg-night px-4 text-white' : 'flex-1 text-muted hover:text-ink'}`}>
+          className={({ isActive }) => `flex h-12 items-center justify-center gap-2 rounded-[10px] transition-all ${isActive ? 'flex-none bg-night px-4 text-white' : 'flex-1 text-muted hover:text-ink'}`}>
           {({ isActive }) => (
             <>
               {tab.icon(isActive)}
@@ -82,7 +82,7 @@ export function PremiumGateSheet() {
   const set = useStore((s) => s.set);
   const loc = useLocation();
   return (
-    <Sheet open={!!target} onClose={close} title={<span className="flex items-center gap-2"><span className="flex h-8 w-8 items-center justify-center rounded-xl bg-night text-gold"><Crown fill="currentColor" size={16} /></span> প্রিমিয়াম ফিচার</span>}>
+    <Sheet open={!!target} onClose={close} title={<span className="flex items-center gap-2"><span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-night text-gold"><Crown fill="currentColor" size={16} /></span> প্রিমিয়াম ফিচার</span>}>
       <p className="text-muted">এই ফিচারটি পৃষ্ঠপোষকদের জন্য। সাবস্ক্রাইব করে সব প্রিমিয়াম ফিচার উপভোগ করুন, অথবা ৭ দিনের ফ্রি ট্রায়াল চালু করুন।</p>
       <ul className="my-4 space-y-2 text-ink">
         {['কিবলা কম্পাস', 'ডিজিটাল তাসবীহ ও লক্ষ্য নির্ধারণ', 'হজ্জ ও উমরাহ গাইড', 'নামাজে সাইলেন্ট মোড রিমাইন্ডার'].map((f) => (

@@ -21,7 +21,7 @@ export default function More() {
       <section className="px-5 pt-6">
         <div className="flex items-start justify-between">
           <button onClick={() => nav('/profile')} className="tap relative" aria-label="edit profile">
-            <span className="block overflow-hidden rounded-[28px] bg-mint">
+            <span className="block overflow-hidden rounded-[10px] bg-mint">
               <Avatar id={profile.avatar} size={104} />
             </span>
             <span className={`absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border-[3px] border-bg ${premium.active ? 'bg-brand text-white' : 'bg-night text-white'}`}>
@@ -56,15 +56,15 @@ export default function More() {
       </section>
 
       <section className="px-5 pt-6">
-        <button onClick={() => nav('/subscribe')} className="tap grad-sunrise relative flex w-full items-center gap-3 overflow-hidden rounded-[28px] p-5 text-left text-white shadow-float">
+        <button onClick={() => nav('/subscribe')} className="tap grad-sunrise relative flex w-full items-center gap-3 overflow-hidden rounded-[10px] p-5 text-left text-white shadow-float">
           <span className="flex-1">
             <span className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-night text-gold"><Crown size={18} fill="currentColor" /></span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-night text-gold"><Crown size={18} fill="currentColor" /></span>
               <span className="text-[20px] font-bold">{premium.active ? 'আপনি পৃষ্ঠপোষক' : t('beSupporter')}</span>
             </span>
             <span className="mt-2 block text-[14px] text-white/90">{t('adFree')}</span>
           </span>
-          <span className="flex h-11 shrink-0 items-center justify-center rounded-2xl bg-white px-4 text-[14px] font-bold text-night">{premium.active ? 'ম্যানেজ' : t('subscribe')}</span>
+          <span className="flex h-11 shrink-0 items-center justify-center rounded-[10px] bg-white px-4 text-[14px] font-bold text-night">{premium.active ? 'ম্যানেজ' : t('subscribe')}</span>
         </button>
       </section>
 

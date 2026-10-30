@@ -29,8 +29,8 @@ function TafsirBox({ surah, ayah }: { surah: number; ayah: number }) {
     return () => { alive = false; };
   }, [tafsirId, surah, ayah]);
   return (
-    <div className="mt-3 rounded-2xl bg-bg p-4">
-      <select value={tafsirId} onChange={(e) => setTafsirId(Number(e.target.value))} className="mb-3 w-full rounded-lg border border-line bg-surface p-2 text-ink">
+    <div className="mt-3 rounded-[10px] bg-bg p-4">
+      <select value={tafsirId} onChange={(e) => setTafsirId(Number(e.target.value))} className="mb-3 w-full rounded-[10px] border border-line bg-surface p-2 text-ink">
         {TAFSIRS.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
       </select>
       {state.loading ? <div className="flex items-center gap-2 text-muted"><Loader2 className="animate-spin" size={18} /> লোড হচ্ছে…</div>
@@ -105,7 +105,7 @@ export default function QuranReader() {
           <button aria-label="settings" onClick={() => nav('/quran/settings')} className="tap p-2 text-ink"><Settings size={22} /></button>
         </>} />
 
-      <div className="mx-5 mt-1 overflow-hidden rounded-[28px] bg-sand px-5 py-6 text-center">
+      <div className="mx-5 mt-1 overflow-hidden rounded-[10px] bg-sand px-5 py-6 text-center">
         <div className="font-ar text-5xl text-brand" dir="rtl">{info.arabic}</div>
         <div className="mt-2 text-muted">{info.en}</div>
         {surah !== 1 && surah !== 9 && <div className="font-ar mt-4 text-3xl text-ink" dir="rtl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>}
@@ -122,7 +122,7 @@ export default function QuranReader() {
             <article key={v.id} id={`ayah-${v.id}`} data-ayah={v.id}
               className={`scroll-mt-24 border-b border-line px-4 py-5 transition-colors last:border-0 ${active ? 'bg-lav/60' : ''}`}>
               <div className="flex items-center justify-between">
-                <span className="flex h-8 min-w-9 items-center justify-center rounded-xl bg-night px-2.5 text-[12px] font-bold text-white">{n(surah)}:{n(v.id)}</span>
+                <span className="flex h-8 min-w-9 items-center justify-center rounded-[10px] bg-night px-2.5 text-[12px] font-bold text-white">{n(surah)}:{n(v.id)}</span>
                 <div className="flex items-center gap-1 text-muted">
                   {sajdah.has(v.id) && <span className="mr-1 rounded-full bg-butter px-2 text-xs text-ink">সিজদা</span>}
                   <button aria-label="play ayah" className="tap rounded-full p-2 hover:text-brand"

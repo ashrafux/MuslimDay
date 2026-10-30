@@ -36,11 +36,11 @@ export function LocationSheet({ open, onClose }: { open: boolean; onClose: () =>
 
   return (
     <Sheet open={open} onClose={onClose} title={lang === 'bn' ? 'লোকেশন নির্বাচন' : 'Choose location'}>
-      <button onClick={useGps} className="tap mb-3 flex w-full items-center gap-3 rounded-2xl bg-chip px-4 py-3 text-brand">
+      <button onClick={useGps} className="tap mb-3 flex w-full items-center gap-3 rounded-[10px] bg-chip px-4 py-3 text-brand">
         {busy ? <Loader2 className="animate-spin" size={22} /> : <Crosshair size={22} />}
         <span className="text-lg">{lang === 'bn' ? 'বর্তমান লোকেশন ব্যবহার করুন (GPS)' : 'Use current location (GPS)'}</span>
       </button>
-      <label className="mb-2 flex items-center gap-2 rounded-xl border border-line px-3">
+      <label className="mb-2 flex items-center gap-2 rounded-[10px] border border-line px-3">
         <Search size={18} className="text-muted" />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={lang === 'bn' ? 'জেলা / শহর খুঁজুন' : 'Search city'} className="w-full bg-transparent py-3 outline-none" />
       </label>

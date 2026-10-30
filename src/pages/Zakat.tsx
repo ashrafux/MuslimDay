@@ -42,19 +42,19 @@ export default function Zakat() {
   const input = (f: Field) => (
     <label key={f.key} className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
       <span className="text-[16px] text-ink">{f.label}{f.hint && <span className="block text-xs text-muted">{f.hint}</span>}</span>
-      <input inputMode="decimal" value={v[f.key] ?? ''} onChange={(e) => setV({ ...v, [f.key]: e.target.value })} placeholder="০" className="w-32 rounded-lg border border-line bg-bg px-3 py-2 text-right text-ink outline-none focus:border-brand" />
+      <input inputMode="decimal" value={v[f.key] ?? ''} onChange={(e) => setV({ ...v, [f.key]: e.target.value })} placeholder="০" className="w-32 rounded-[10px] border border-line bg-bg px-3 py-2 text-right text-ink outline-none focus:border-brand" />
     </label>
   );
 
   return (
     <div>
       <PageHeader back title="যাকাত ক্যালকুলেটর" />
-      <section className="mx-5 my-4 rounded-[28px] bg-night shadow-float p-5 text-white">
+      <section className="mx-5 my-4 rounded-[10px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">প্রদেয় যাকাত (২.৫%)</div>
         <div className="mt-1 text-4xl">{money(zakat)}</div>
         <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-          <div className="rounded-xl bg-white/15 p-2">নিট সম্পদ<br /><span className="text-lg">{money(net)}</span></div>
-          <div className="rounded-xl bg-white/15 p-2">নিসাব ({basis === 'silver' ? 'রুপা' : 'স্বর্ণ'})<br /><span className="text-lg">{money(nisab)}</span></div>
+          <div className="rounded-[10px] bg-white/15 p-2">নিট সম্পদ<br /><span className="text-lg">{money(net)}</span></div>
+          <div className="rounded-[10px] bg-white/15 p-2">নিসাব ({basis === 'silver' ? 'রুপা' : 'স্বর্ণ'})<br /><span className="text-lg">{money(nisab)}</span></div>
         </div>
         <div className="mt-3 text-sm">{nisab <= 0 ? 'স্বর্ণ/রুপার দাম দিন' : due ? 'আপনার উপর যাকাত ফরজ হয়েছে (যদি এক চন্দ্র বছর পূর্ণ হয়)।' : 'আপনার সম্পদ নিসাব পরিমাণ নয় — যাকাত ফরজ নয়।'}</div>
       </section>

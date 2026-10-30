@@ -85,13 +85,13 @@ export function QuranSearch() {
     <div>
       <PageHeader back title="অনুসন্ধান" />
       <div className="sticky top-[64px] z-20 bg-bg px-5 py-4">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-sm">
+        <label className="flex items-center gap-2 rounded-[10px] bg-surface px-4 shadow-sm">
           <Search className="text-muted" size={20} />
           <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="সূরার নাম, শব্দ বা ২:২৫৫" className="w-full bg-transparent py-3.5 text-lg text-ink outline-none" />
         </label>
       </div>
       {ref && (
-        <button className="mx-5 mb-3 w-[calc(100%-2.5rem)] rounded-2xl bg-chip p-4 text-left text-brand" onClick={() => nav(`/quran/${ref[1]}?ayah=${ref[2]}`)}>
+        <button className="mx-5 mb-3 w-[calc(100%-2.5rem)] rounded-[10px] bg-chip p-4 text-left text-brand" onClick={() => nav(`/quran/${ref[1]}?ayah=${ref[2]}`)}>
           সূরা {SURAHS[Number(ref[1]) - 1]?.bn ?? ''} — আয়াত {n(ref[2])} এ যান →
         </button>
       )}
@@ -162,7 +162,7 @@ export function TafsirIndex() {
     <div>
       <PageHeader back title="তাফসীর" />
       <div className="px-5 py-4">
-        <p className="mb-3 rounded-2xl bg-chip p-4 text-sm text-ink">সূরা নির্বাচন করুন, তারপর যেকোনো আয়াতের নিচে "তাফসীর দেখুন" চাপুন। তাফসীরে আহসানুল বায়ান, আবু বকর যাকারিয়া, ইবনে কাসীর ও ফাতহুল মাজীদ (ইন্টারনেট প্রয়োজন)।</p>
+        <p className="mb-3 rounded-[10px] bg-chip p-4 text-sm text-ink">সূরা নির্বাচন করুন, তারপর যেকোনো আয়াতের নিচে "তাফসীর দেখুন" চাপুন। তাফসীরে আহসানুল বায়ান, আবু বকর যাকারিয়া, ইবনে কাসীর ও ফাতহুল মাজীদ (ইন্টারনেট প্রয়োজন)।</p>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="সূরা খুঁজুন" className="input" />
       </div>
       <div className="page-card">{list.map((s) => <SurahRow key={s.n} s={s} onClick={() => nav(`/quran/${s.n}?mode=tafsir`)} />)}</div>

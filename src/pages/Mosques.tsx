@@ -60,7 +60,7 @@ export default function Mosques() {
       <div className="page-card">
         {state.list.map((m) => (
           <div key={m.id} className="flex items-center gap-4 border-b border-line px-5 py-4">
-            <span className="tile h-12 w-12 shrink-0 rounded-2xl bg-lav text-ink"><MosquePinIcon size={24} /></span>
+            <span className="tile h-12 w-12 shrink-0 rounded-[10px] bg-lav text-ink"><MosquePinIcon size={24} /></span>
             <span className="min-w-0 flex-1"><span className="block truncate text-[17px] text-ink">{m.name}</span><span className="text-sm text-muted">{m.dist < 1 ? `${n(Math.round(m.dist * 1000))} মিটার` : `${n(m.dist.toFixed(1))} কিমি`} দূরে</span></span>
             <a aria-label="directions" href={`https://www.google.com/maps/dir/?api=1&destination=${m.lat},${m.lng}`} target="_blank" rel="noreferrer" className="rounded-full bg-brand p-2.5 text-white"><Navigation size={18} /></a>
           </div>

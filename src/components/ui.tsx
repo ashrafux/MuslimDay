@@ -18,7 +18,7 @@ export function ToastHost() {
   if (!msg) return null;
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-28 z-[80] flex justify-center px-6">
-      <div className="animate-fade rounded-2xl bg-night px-5 py-3 text-sm font-medium text-white shadow-float">{msg}</div>
+      <div className="animate-fade rounded-[10px] bg-night px-5 py-3 text-sm font-medium text-white shadow-float">{msg}</div>
     </div>
   );
 }
@@ -59,7 +59,7 @@ export const pastel = (i: number) => PASTELS[((i % PASTELS.length) + PASTELS.len
 export function IconButton({ label, onClick, children, tone = 'soft' }: { label: string; onClick?: () => void; children: ReactNode; tone?: 'soft' | 'brand' | 'dark' }) {
   const toneCls = tone === 'brand' ? 'bg-brand text-white' : tone === 'dark' ? 'bg-night text-white' : 'bg-surface text-ink shadow-card';
   return (
-    <button aria-label={label} onClick={onClick} className={`tap flex h-10 w-10 items-center justify-center rounded-2xl ${toneCls}`}>
+    <button aria-label={label} onClick={onClick} className={`tap flex h-10 w-10 items-center justify-center rounded-[10px] ${toneCls}`}>
       {children}
     </button>
   );
@@ -97,7 +97,7 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center">
       <div className="animate-fade absolute inset-0 bg-night/50 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="animate-sheet relative max-h-[88vh] w-full max-w-app overflow-y-auto rounded-t-[32px] bg-surface pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div className="animate-sheet relative max-h-[88vh] w-full max-w-app overflow-y-auto rounded-t-[10px] bg-surface pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="sticky top-0 z-10 bg-surface px-5 pb-2 pt-3">
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
           <div className="flex items-center justify-between gap-3">
@@ -114,7 +114,7 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
 /* ---------- misc ---------- */
 export function CrownBadge({ className = '' }: { className?: string }) {
   return (
-    <span className={`flex h-6 w-6 items-center justify-center rounded-lg bg-night text-gold shadow-sm ${className}`}>
+    <span className={`flex h-6 w-6 items-center justify-center rounded-[10px] bg-night text-gold shadow-sm ${className}`}>
       <Crown size={13} fill="currentColor" />
     </span>
   );
@@ -153,7 +153,7 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
 export function ListRow({ icon, title, sub, onClick, right, tint }: { icon?: ReactNode; title: ReactNode; sub?: ReactNode; onClick?: () => void; right?: ReactNode; tint?: string }) {
   return (
     <button onClick={onClick} className="flex w-full items-center gap-4 px-4 py-3.5 text-left transition hover:bg-bg/60 active:bg-bg">
-      {icon && <span className={`tile h-11 w-11 shrink-0 rounded-2xl text-ink ${tint ?? 'bg-chip'}`}>{icon}</span>}
+      {icon && <span className={`tile h-11 w-11 shrink-0 rounded-[10px] text-ink ${tint ?? 'bg-chip'}`}>{icon}</span>}
       <span className="min-w-0 flex-1">
         <span className="block text-[16px] font-semibold text-ink">{title}</span>
         {sub && <span className="block truncate text-[13px] text-muted">{sub}</span>}
@@ -167,10 +167,10 @@ export function ListRow({ icon, title, sub, onClick, right, tint }: { icon?: Rea
 export function Segmented<T extends string>({ value, options, onChange }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void }) {
   return (
     <div className="flex justify-center">
-      <div className="inline-flex rounded-2xl bg-chip p-1">
+      <div className="inline-flex rounded-[10px] bg-chip p-1">
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)}
-          className={`flex min-w-[112px] items-center justify-center gap-1 rounded-xl px-4 py-2 text-[14px] font-semibold transition ${value === o.value ? 'bg-surface text-ink shadow-card' : 'text-muted'}`}>
+          className={`flex min-w-[112px] items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-[14px] font-semibold transition ${value === o.value ? 'bg-surface text-ink shadow-card' : 'text-muted'}`}>
           {o.label}
         </button>
       ))}

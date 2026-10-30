@@ -66,19 +66,19 @@ export default function Ramadan() {
   return (
     <div>
       <PageHeader back title="রমজান ও রোজা" />
-      <section className="relative mx-5 mt-1 overflow-hidden rounded-[32px] px-5 pb-5 pt-5 text-white shadow-float" style={{ background: "radial-gradient(120% 90% at 100% 0%,#4b3f86 0%,rgba(75,63,134,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2e2c4a 100%)" }}>
+      <section className="relative mx-5 mt-1 overflow-hidden rounded-[10px] px-5 pb-5 pt-5 text-white shadow-float" style={{ background: "radial-gradient(120% 90% at 100% 0%,#4b3f86 0%,rgba(75,63,134,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2e2c4a 100%)" }}>
         <div className="absolute -bottom-3 -right-3 opacity-25"><MosqueArt size={110} /></div>
         <div className="text-sm opacity-80">{formatHijri(h, 'bn', true)} হিজরি</div>
         <div className="mt-1 text-2xl">{inRamadan ? `রমজানের ${n(h.day)}তম দিন` : daysToRamadan !== null && daysToRamadan > 0 ? `রমজান আসতে ${n(daysToRamadan)} দিন বাকি` : 'রমজান মুবারক'}</div>
         {nextEvent && (
-          <div className="mt-4 rounded-2xl bg-white/15 p-4">
+          <div className="mt-4 rounded-[10px] bg-white/15 p-4">
             <div className="text-sm opacity-85">{nextEvent.label}</div>
             <div className="text-4xl tabular-nums">{formatDuration(nextEvent.at.getTime() - now.getTime())}</div>
           </div>
         )}
         <div className="mt-4 grid grid-cols-2 gap-3">
-          <div className="rounded-2xl bg-white/15 p-3"><div className="flex items-center gap-1 text-sm opacity-85"><Moon size={16} /> সেহরির শেষ</div><div className="text-2xl">{fmt(sehriEnd)}</div></div>
-          <div className="rounded-2xl bg-white/15 p-3"><div className="flex items-center gap-1 text-sm opacity-85"><Sunrise size={16} /> ইফতার</div><div className="text-2xl">{fmt(iftar)}</div></div>
+          <div className="rounded-[10px] bg-white/15 p-3"><div className="flex items-center gap-1 text-sm opacity-85"><Moon size={16} /> সেহরির শেষ</div><div className="text-2xl">{fmt(sehriEnd)}</div></div>
+          <div className="rounded-[10px] bg-white/15 p-3"><div className="flex items-center gap-1 text-sm opacity-85"><Sunrise size={16} /> ইফতার</div><div className="text-2xl">{fmt(iftar)}</div></div>
         </div>
       </section>
 
@@ -90,8 +90,8 @@ export default function Ramadan() {
         </div>
         <div className="mt-3 flex justify-between text-sm text-muted"><span>মোট রোজা: {n(fastedCount)}</span><span>কাযা বাকি: {n(missedCount)}</span></div>
         <div className="mt-3 grid grid-cols-2 gap-3">
-          <button onClick={() => nav('/dua/c/sawm')} className="rounded-2xl bg-bg p-3 text-left text-brand">সেহরি ও ইফতারের দোয়া →</button>
-          <button onClick={() => nav('/qaza')} className="rounded-2xl bg-bg p-3 text-left text-brand">কাযা ট্র্যাকার →</button>
+          <button onClick={() => nav('/dua/c/sawm')} className="rounded-[10px] bg-bg p-3 text-left text-brand">সেহরি ও ইফতারের দোয়া →</button>
+          <button onClick={() => nav('/qaza')} className="rounded-[10px] bg-bg p-3 text-left text-brand">কাযা ট্র্যাকার →</button>
         </div>
       </section>
 

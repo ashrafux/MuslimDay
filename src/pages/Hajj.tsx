@@ -35,7 +35,7 @@ export default function Hajj() {
                 <h3 className="text-[17px] font-bold text-ink">{s.title}</h3>
                 <p className="mt-1 whitespace-pre-line text-[15px] leading-relaxed text-ink/85">{s.body}</p>
                 {s.dua && (
-                  <div className="mt-3 rounded-xl bg-chip p-3">
+                  <div className="mt-3 rounded-[10px] bg-chip p-3">
                     <p className="arabic text-right text-xl text-ink">{s.dua.arabic}</p>
                     <p className="mt-2 text-sm text-ink">{s.dua.bn}</p>
                     <p className="mt-1 text-sm text-muted">{s.dua.meaning}</p>

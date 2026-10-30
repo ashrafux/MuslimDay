@@ -24,7 +24,7 @@ export default function AudioQuran() {
         ))}
       </div>
       <div className="px-5 py-4">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
+        <label className="flex items-center gap-2 rounded-[10px] bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="সূরা খুঁজুন" className="w-full bg-transparent py-3 outline-none" /></label>
       </div>
       <div className="page-card">

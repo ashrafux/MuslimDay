@@ -21,7 +21,7 @@ function Grid({ items, offset = 0 }: { items: Item[]; offset?: number }) {
       {items.map((it, i) => (
         <button key={it.label} onClick={() => go(it.to, it.premium)} className="tap flex flex-col items-center gap-2">
           <span className="relative">
-            <span className={`tile h-[66px] w-[66px] rounded-[22px] text-ink ${pastel(i + offset)}`}>{it.icon}</span>
+            <span className={`tile h-[66px] w-[66px] rounded-[10px] text-ink ${pastel(i + offset)}`}>{it.icon}</span>
             {it.premium && !premium && <CrownBadge className="absolute -right-1.5 -top-1.5" />}
             {it.dot && <NewDot className="absolute -left-0.5 -top-0.5" />}
           </span>
@@ -65,13 +65,13 @@ export default function Tools() {
   return (
     <div>
       <PageHeader title={t('tools')} />
-      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] flex-col rounded-[28px] bg-lav p-5 text-left text-ink">
+      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] flex-col rounded-[10px] bg-lav p-5 text-left text-ink">
         <span className="flex w-full items-start justify-between gap-3">
           <span>
             <span className="label !text-ink/60">{t('amolTracker')}</span>
             <span className="mt-1 block text-[20px] font-bold leading-snug">{t('trackToday')}</span>
           </span>
-          <span className="tile h-10 w-10 shrink-0 rounded-xl bg-white/70"><ChevronRight size={20} /></span>
+          <span className="tile h-10 w-10 shrink-0 rounded-[10px] bg-white/70"><ChevronRight size={20} /></span>
         </span>
         <span className="mt-4 flex w-full items-end justify-between">
           <span className="flex items-baseline gap-2">

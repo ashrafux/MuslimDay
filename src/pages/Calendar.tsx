@@ -88,7 +88,7 @@ export default function CalendarPage() {
             <h3 className="text-[17px] font-bold text-ink">এই মাসের ইসলামিক দিবস</h3>
             {monthEvents.length === 0 ? <p className="mt-2 text-sm text-muted">এই মাসে বিশেষ কোনো দিবস নেই।</p> : monthEvents.map(({ date, e }) => (
               <button key={dateKey(date) + e.title} onClick={() => setSelected(date)} className="mt-3 flex w-full gap-4 text-left">
-                <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-chip text-brand">
+                <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-[10px] bg-chip text-brand">
                   <span className="text-lg leading-none">{n(date.getDate())}</span><span className="text-[10px]">{GREG_MONTHS_BN[date.getMonth()]}</span>
                 </span>
                 <span><span className="block text-ink">{e.title}</span><span className="line-clamp-2 text-sm text-muted">{e.description}</span></span>
@@ -109,14 +109,14 @@ export default function CalendarPage() {
             <div className="space-y-3">
               <p className="text-brand">{formatHijri(h, 'bn', true)} হিজরি • {formatBangla(selected)} বঙ্গাব্দ</p>
               {ev.map((e) => (
-                <div key={e.title} className="rounded-2xl bg-butter p-4">
+                <div key={e.title} className="rounded-[10px] bg-butter p-4">
                   <div className="text-lg text-ink">{e.title}</div><p className="text-sm text-ink/80">{e.description}</p>
                   {e.fastingRecommended && <p className="mt-1 text-sm text-brand">এই দিনে রোজা রাখা মুস্তাহাব।</p>}
                 </div>
               ))}
               {(selected.getDay() === 1 || selected.getDay() === 4) && <p className="text-sm text-muted">সোম ও বৃহস্পতিবার নফল রোজা রাখা সুন্নাত।</p>}
               {[13, 14, 15].includes(h.day) && <p className="text-sm text-muted">আইয়ামে বীয — প্রতি হিজরি মাসের ১৩, ১৪, ১৫ তারিখে রোজা রাখা সুন্নাত।</p>}
-              <div className="divide-y divide-line rounded-2xl border border-line">
+              <div className="divide-y divide-line rounded-[10px] border border-line">
                 {waqts.map((w) => (
                   <div key={w.id} className="flex justify-between px-4 py-2.5 text-ink">
                     <span>{tStatic(w.id === 'dhuhr' && selected.getDay() === 5 ? 'jumuah' : w.id, 'bn')} {done.includes(w.id) && <span className="text-brand">✓</span>}</span>
