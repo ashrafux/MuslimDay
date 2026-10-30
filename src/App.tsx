@@ -19,7 +19,7 @@ import Subscribe from './pages/Subscribe';
 import Notifications from './pages/Notifications';
 import Alarm from './pages/Alarm';
 import CalendarPage from './pages/Calendar';
-import AmolTracker from './pages/AmolTracker';
+import AmolTracker, { AmolManage } from './pages/AmolTracker';
 import { AsmaulHusnaPage, HadithPage, RuqyahPage } from './pages/Ilm';
 import Qibla from './pages/Qibla';
 import Tasbih from './pages/Tasbih';
@@ -100,6 +100,7 @@ export default function App() {
             <Route path="/alarm" element={<Alarm />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/amol" element={<AmolTracker />} />
+            <Route path="/amol/manage" element={<AmolManage />} />
             <Route path="/asmaul-husna" element={<AsmaulHusnaPage />} />
             <Route path="/hadith" element={<HadithPage />} />
             <Route path="/ruqyah" element={<RuqyahPage />} />

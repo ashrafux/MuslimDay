@@ -48,7 +48,23 @@ export interface AppNotification {
 export interface DuaList { id: string; name: string; duaIds: string[] }
 export interface Bookmark { surah: number; ayah: number; time: number }
 export interface LastRead { surah: number; ayah: number; time: number }
-export interface CustomAmol { id: string; title: string }
+export type AmolType = 'check' | 'count';
+/** A user-created deed. `days` = weekdays (0=Sun) it applies to, `hijriDays` = hijri dates; both empty = every day. */
+export interface CustomAmol {
+  id: string;
+  title: string;
+  group?: string;
+  type?: AmolType;
+  target?: number;
+  unit?: string;
+  days?: number[];
+  hijriDays?: number[];
+  reminder?: string; // "HH:MM" local time
+  note?: string;
+  link?: string;
+}
+export type PrayerMode = 'jamaat' | 'alone' | 'qaza';
+export interface JournalEntry { mood?: number; text?: string }
 export interface TasbihPreset { id: string; arabic: string; bn: string; target: number }
 export interface Report { id: string; text: string; time: number; hasImage: boolean }
 
@@ -64,6 +80,14 @@ interface State {
   /** dateKey -> list of completed amol ids (prayers use the PrayerId) */
   amol: Record<string, string[]>;
   customAmol: CustomAmol[];
+  /** dateKey -> amol id -> count, for counter-type deeds */
+  amolCounts: Record<string, Record<string, number>>;
+  /** dateKey -> how each fard prayer was performed */
+  prayerMode: Record<string, Partial<Record<PrayerId, PrayerMode>>>;
+  /** built-in deed ids the user turned off */
+  hiddenAmol: string[];
+  /** dateKey -> daily self-accountability (muhasaba) */
+  journal: Record<string, JournalEntry>;
   qaza: Record<PrayerId | 'witr', number>;
   fasting: Record<string, 'fasted' | 'missed'>;
 
@@ -86,6 +110,7 @@ interface State {
   updateSettings: (p: Partial<Settings>) => void;
   updateQuran: (p: Partial<QuranSettings>) => void;
   toggleAmol: (id: string, key?: string) => void;
+  setAmolCount: (id: string, key: string, value: number, target: number) => void;
   addStat: (kind: 'quranSeconds' | 'duaSeconds', s: number) => void;
   setLastRead: (surah: number, ayah: number) => void;
   toggleBookmark: (surah: number, ayah: number) => void;
@@ -118,6 +143,10 @@ export const useStore = create<State>()(
       onboarded: false,
       amol: {},
       customAmol: [],
+      amolCounts: {},
+      prayerMode: {},
+      hiddenAmol: [],
+      journal: {},
       qaza: { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0, witr: 0 },
       fasting: {},
       tasbih: { presetId: 'subhanallah', count: 0, total: 0, history: [] },
@@ -140,6 +169,12 @@ export const useStore = create<State>()(
         const cur = get().amol[key] ?? [];
         const next = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
         set({ amol: { ...get().amol, [key]: next } });
+      },
+      setAmolCount: (id, key, value, target) => {
+        const v = Math.max(0, Math.round(value));
+        const counts = { ...get().amolCounts, [key]: { ...(get().amolCounts[key] ?? {}), [id]: v } };
+        const cur = (get().amol[key] ?? []).filter((x) => x !== id);
+        set({ amolCounts: counts, amol: { ...get().amol, [key]: v >= target ? [...cur, id] : cur } });
       },
       addStat: (kind, s) => set({ stats: { ...get().stats, [kind]: get().stats[kind] + s } }),
       setLastRead: (surah, ayah) => {

@@ -9,7 +9,7 @@ import {
 import { useT } from '../lib/i18n';
 import { useStore } from '../store/useStore';
 import { n } from '../lib/bn';
-import { useAmolProgress } from './AmolTracker';
+import { useAmolProgress } from '../lib/amol';
 
 interface Item { label: string; icon: ReactNode; to: string; premium?: boolean; dot?: boolean }
 

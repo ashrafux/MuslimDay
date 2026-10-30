@@ -4,6 +4,8 @@ import { usePrayerData, useNow } from '../lib/hooks';
 import { dateKey } from '../lib/bn';
 import { fmtTime } from '../lib/prayer';
 import { tStatic } from '../lib/i18n';
+import { appliesOn, customToDef } from '../lib/amol';
+import { toHijri } from '../lib/dates';
 
 function beep() {
   try {
@@ -70,6 +72,21 @@ export function Scheduler() {
       if (silent.enabled && silent.prayers[w.id] && t >= start && t < start + 5 * 60000) {
         fire(`${key}-${w.id}-silent`, 'ফোন সাইলেন্ট করুন', `${name} এর জামাতের সময় — পরবর্তী ${silent.minutes} মিনিট ফোন সাইলেন্ট রাখুন।`, '/silent');
       }
+    }
+
+    // Reminders for the user's own deeds (device local time)
+    const local = new Date(t);
+    const localKey = dateKey(local);
+    const localDone = st.amol[localKey] ?? [];
+    let hijriDay: number | undefined;
+    for (const c of st.customAmol) {
+      if (!c.reminder || localDone.includes(c.id)) continue;
+      const def = customToDef(c);
+      if (def.hijriDays?.length) hijriDay ??= toHijri(local, settings.hijriAdjust).day;
+      if (!appliesOn(def, local, hijriDay ?? 0)) continue;
+      const [hh, mm] = c.reminder.split(':').map(Number);
+      const at = new Date(local.getFullYear(), local.getMonth(), local.getDate(), hh, mm).getTime();
+      if (t >= at && t < at + 10 * 60000) fire(`${localKey}-amol-${c.id}`, `আমলের সময়: ${c.title}`, c.note ? c.note : 'আজকের আমল সম্পন্ন করে টিক দিন।', '/amol');
     }
   }, [now, waqts, today, alarm, silent, settings]);
 

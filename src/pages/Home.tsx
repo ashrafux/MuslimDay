@@ -14,7 +14,7 @@ import { QiblaIcon, TasbihIcon, ZakatIcon, CrescentLanternIcon, HadithBookIcon }
 import { Sheet, shareText, toast } from '../components/ui';
 import { usePremiumNav } from '../components/Layout';
 import { dailyAyat } from '../data/dailyContent';
-import { useAmolProgress } from './AmolTracker';
+import { useAmolProgress } from '../lib/amol';
 
 const PRAYER_ICON: Record<PrayerId, JSX.Element> = {
   fajr: <Sunrise size={28} strokeWidth={1.7} />,

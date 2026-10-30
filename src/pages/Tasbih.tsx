@@ -4,6 +4,11 @@ import { PageHeader, ProgressRing, Sheet, toast } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { dateKey, n } from '../lib/bn';
 
+const AMOL_LINK: Record<string, { id: string; target: number }> = {
+  astaghfirullah: { id: 'istighfar', target: 100 },
+  durud: { id: 'durud', target: 10 },
+};
+
 let ctx: AudioContext | null = null;
 function click() {
   try {
@@ -39,6 +44,13 @@ export default function Tasbih() {
   const tap = () => {
     const c = tasbih.count + 1;
     set('tasbih', { ...tasbih, count: c, total: tasbih.total + 1 });
+    // Astaghfirullah / durud taps also count toward today's amol counters
+    const linked = AMOL_LINK[preset.id];
+    if (linked) {
+      const st = useStore.getState();
+      const k = dateKey();
+      st.setAmolCount(linked.id, k, (st.amolCounts[k]?.[linked.id] ?? 0) + 1, linked.target);
+    }
     if (sound) click();
     if (c % preset.target === 0) { navigator.vibrate?.([80, 60, 80]); toast(`${n(c / preset.target)} রাউন্ড সম্পন্ন — মাশাআল্লাহ`); }
     else if (vibrate) navigator.vibrate?.(12);
