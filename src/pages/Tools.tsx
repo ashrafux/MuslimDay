@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, BookOpen, CalendarDays, ListChecks, Award, Scale } from 'lucide-react';
+import { BookOpen, CalendarDays, ListChecks, Award, Scale } from 'lucide-react';
 import { PageHeader, CrownBadge, NewDot, ProgressRing, pastel } from '../components/ui';
 import { usePremiumNav } from '../components/Layout';
 import {
@@ -65,20 +65,15 @@ export default function Tools() {
   return (
     <div>
       <PageHeader title={t('tools')} />
-      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] flex-col rounded-[10px] bg-lav p-5 text-left text-ink">
-        <span className="flex w-full items-start justify-between gap-3">
-          <span>
-            <span className="label !text-ink/60">{t('amolTracker')}</span>
-            <span className="mt-1 block text-[20px] font-bold leading-snug">{t('trackToday')}</span>
-          </span>
-          <span className="tile h-10 w-10 shrink-0 rounded-[10px] bg-white/70"><ChevronRight size={20} /></span>
-        </span>
+      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] flex-col rounded-[10px] p-5 text-left text-white"
+        style={{ background: 'radial-gradient(90% 80% at 100% 0%, #22a05833 0%, #22a05800 70%), linear-gradient(160deg, #1d1e23 0%, #23242a 55%, #2a2b33 100%)' }}>
+        <span className="block text-[20px] font-bold leading-snug">{t('trackToday')}</span>
         <span className="mt-4 flex w-full items-end justify-between">
           <span className="flex items-baseline gap-2">
             <span className="text-[42px] font-extrabold leading-none">{n(pct)}%</span>
-            <span className="text-[14px] font-semibold text-ink/60">{n(done)}/{n(total)} সম্পন্ন</span>
+            <span className="text-[14px] font-semibold text-white/60">{n(done)}/{n(total)} সম্পন্ন</span>
           </span>
-          <ProgressRing value={pct / 100} size={52} stroke={6} track="rgb(255 255 255 / .7)" color="rgb(var(--accent))" />
+          <ProgressRing value={pct / 100} size={52} stroke={6} track="rgb(255 255 255 / .15)" color="rgb(var(--success))" />
         </span>
       </button>
 
