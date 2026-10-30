@@ -18,7 +18,7 @@ export default function More() {
 
   return (
     <div>
-      <section className="px-5 pt-6">
+      <section className="px-5 pt-[calc(1.5rem+var(--sat))]">
         <div className="flex items-start justify-between">
           <button onClick={() => nav('/profile')} className="tap relative" aria-label="edit profile">
             <span className="block overflow-hidden rounded-[10px] bg-mint">

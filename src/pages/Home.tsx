@@ -120,7 +120,7 @@ export default function Home() {
   return (
     <div className="pb-2">
       {/* ---------- dark top band: date + countdown ---------- */}
-      <section className="relative overflow-hidden rounded-b-[10px] px-5 pb-6 pt-5 text-white" style={{ background: hero.bg }}>
+      <section className="relative overflow-hidden rounded-b-[10px] px-5 pb-6 pt-[calc(1.25rem+var(--sat))] text-white" style={{ background: hero.bg }}>
         <Waves />
         <div className="relative mb-5 flex items-start justify-between gap-3">
           <button onClick={() => nav('/calendar')} className="tap min-w-0 text-left">

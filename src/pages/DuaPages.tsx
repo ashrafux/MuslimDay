@@ -134,7 +134,7 @@ export function DuaSearch() {
   return (
     <div>
       <PageHeader back title="দোয়া খুঁজুন" />
-      <div className="sticky top-[64px] z-20 bg-bg px-5 pb-3 pt-1">
+      <div className="sticky top-[calc(64px+var(--sat))] z-20 bg-bg px-5 pb-3 pt-1">
         <label className="flex items-center gap-2 rounded-[10px] bg-surface px-4 shadow-card">
           <Search className="text-muted" size={20} />
           <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="যেমন: ঘুম, খাওয়া, সফর" className="w-full bg-transparent py-3.5 text-[16px] text-ink outline-none" />

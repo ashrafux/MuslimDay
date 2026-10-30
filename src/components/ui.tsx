@@ -68,7 +68,7 @@ export function IconButton({ label, onClick, children, tone = 'soft' }: { label:
 export function PageHeader({ title, back, right, sub }: { title: ReactNode; back?: boolean | string; right?: ReactNode; sub?: ReactNode }) {
   const nav = useNavigate();
   return (
-    <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur-md">
+    <header className="sticky top-0 z-30 bg-bg/90 pt-[var(--sat)] backdrop-blur-md">
       <div className="flex min-h-[64px] items-center gap-3 px-5 pb-2 pt-3">
         {back && (
           <IconButton label="back" onClick={() => (typeof back === 'string' ? nav(back) : window.history.length > 1 ? nav(-1) : nav('/'))}>

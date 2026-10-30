@@ -84,7 +84,7 @@ export function QuranSearch() {
   return (
     <div>
       <PageHeader back title="অনুসন্ধান" />
-      <div className="sticky top-[64px] z-20 bg-bg px-5 py-4">
+      <div className="sticky top-[calc(64px+var(--sat))] z-20 bg-bg px-5 py-4">
         <label className="flex items-center gap-2 rounded-[10px] bg-surface px-4 shadow-sm">
           <Search className="text-muted" size={20} />
           <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="সূরার নাম, শব্দ বা ২:২৫৫" className="w-full bg-transparent py-3.5 text-lg text-ink outline-none" />
