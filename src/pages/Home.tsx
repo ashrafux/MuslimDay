@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Bell, CalendarDays, Check, ChevronDown, ChevronRight, MapPin, Share2, Sunrise, Sun, SunDim, CloudSun, MoonStar, Sunset, Award, BookOpenText, ListChecks, BadgeCheck,
+  Bell, CalendarDays, ChevronDown, ChevronRight, MapPin, Share2, Sunrise, Sun, SunDim, CloudSun, MoonStar, Sunset, Award, BookOpenText, ListChecks, BadgeCheck,
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useCurrentPeriod, useNow } from '../lib/hooks';
 import { useT, type TKey } from '../lib/i18n';
-import { dateKey, formatDuration, n } from '../lib/bn';
+import { formatDuration, n } from '../lib/bn';
 import { formatBangla, formatGregorian, formatHijri, toHijri, WEEKDAYS_BN, WEEKDAYS_EN } from '../lib/dates';
 import { fmtTime, type PeriodId, type PrayerId, type Waqt } from '../lib/prayer';
 import { LocationSheet } from '../components/LocationSheet';
 import { QiblaIcon, TasbihIcon, ZakatIcon, CrescentLanternIcon, HadithBookIcon } from '../components/icons';
-import { IconButton, Sheet, pastel, shareText, toast } from '../components/ui';
+import { IconButton, Sheet, pastel, shareText } from '../components/ui';
 import { usePremiumNav } from '../components/Layout';
 import { dailyAyat } from '../data/dailyContent';
 import { useAmolProgress } from '../lib/amol';
@@ -103,8 +103,6 @@ export default function Home() {
   const { today, times, waqts, period } = useCurrentPeriod(now);
   const { place, lang, hijriAdjust, time24 } = useStore((s) => s.settings);
   const unread = useStore((s) => s.notifications.filter((x) => !x.read).length);
-  const doneList = useStore((s) => s.amol[dateKey(today)]) ?? [];
-  const toggleAmol = useStore((s) => s.toggleAmol);
   const [locOpen, setLocOpen] = useState(false);
   const [detail, setDetail] = useState<Waqt | null>(null);
 
@@ -179,39 +177,24 @@ export default function Home() {
       {/* ---------- prayer timeline ---------- */}
       <div className="section-head">
         <span>আজকের নামাজ</span>
-        <span className="text-[13px] font-semibold text-muted">{n(doneList.filter((d) => waqts.some((w) => w.id === d)).length)}/{n(5)} আদায়</span>
+        <span className="text-[13px] font-semibold text-muted">{lang === 'bn' ? place.bn : place.name}</span>
       </div>
       <ul className="relative mx-4 space-y-2.5 pl-7">
         <span className="absolute bottom-6 left-[9px] top-6 w-0.5 rounded-full bg-brand/25" aria-hidden="true" />
         {waqts.map((w) => {
-          const done = doneList.includes(w.id);
           const past = now > w.end;
           const active = w.id === currentWaqt || (!currentWaqt && w.id === nextId);
           const label = w.id === 'dhuhr' && isFriday ? t('jumuah') : t(w.id);
-          const cardCls = active ? 'bg-night text-white shadow-float' : done ? 'bg-mint text-ink' : 'bg-surface text-ink shadow-card';
           return (
             <li key={w.id} className="relative">
-              <span className={`absolute -left-[25px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full border-[3px] ${active ? 'border-brand bg-brand' : done ? 'border-brand bg-surface' : 'border-line bg-surface'}`} aria-hidden="true" />
-              <div className={`flex items-center gap-3 rounded-[20px] py-2.5 pl-2.5 pr-3 ${cardCls}`}>
-                <button onClick={() => setDetail(w)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
-                  <span className={`tile h-11 w-11 shrink-0 rounded-2xl ${active ? 'bg-white/10 text-white' : `${PRAYER_TINT[w.id]} text-ink`} ${!active && done ? '!bg-white/70' : ''}`}>{PRAYER_ICON[w.id]}</span>
-                  <span className="min-w-0 flex-1">
-                    <span className={`block text-[16px] font-bold ${past && !done && !active ? 'text-muted' : ''}`}>{label}</span>
-                    <span className={`block text-[13px] tabular-nums ${active ? 'text-white/70' : 'text-muted'}`}>{fmt(w.start)} - {fmt(w.end)}</span>
-                  </span>
-                  {w.makruh && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-m-yellow" title="মাকরূহ সময় আছে" />}
-                </button>
-                <button
-                  aria-label={`mark ${w.id}`}
-                  onClick={() => {
-                    if (now < w.start && !done) return toast(lang === 'bn' ? 'এই ওয়াক্ত এখনও শুরু হয়নি' : 'This prayer time has not started yet');
-                    toggleAmol(w.id, dateKey(today));
-                  }}
-                  className={`tap flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 ${done ? 'border-brand bg-brand text-white' : active ? 'border-white/40' : 'border-line bg-surface'}`}
-                >
-                  {done && <Check size={16} strokeWidth={3} />}
-                </button>
-              </div>
+              <span className={`absolute -left-[25px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full border-[3px] ${active ? 'border-brand bg-brand' : past ? 'border-brand/40 bg-surface' : 'border-line bg-surface'}`} aria-hidden="true" />
+              <button onClick={() => setDetail(w)}
+                className={`flex w-full items-center gap-3 rounded-[20px] py-2.5 pl-2.5 pr-4 text-left ${active ? 'bg-night text-white' : 'bg-surface text-ink shadow-card'}`}>
+                <span className={`tile h-11 w-11 shrink-0 rounded-2xl ${active ? 'bg-white/10 text-white' : `${PRAYER_TINT[w.id]} text-ink`}`}>{PRAYER_ICON[w.id]}</span>
+                <span className={`min-w-0 flex-1 text-[16px] font-bold ${past && !active ? 'text-muted' : ''}`}>{label}</span>
+                {w.makruh && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-m-yellow" title="মাকরূহ সময় আছে" />}
+                <span className={`shrink-0 text-[15px] font-semibold tabular-nums ${active ? 'text-white' : past ? 'text-muted' : 'text-ink'}`}>{fmt(w.start)} - {fmt(w.end)}</span>
+              </button>
             </li>
           );
         })}
@@ -275,12 +258,6 @@ export default function Home() {
                 {detail.makruh.note} ({fmt(detail.makruh.from)} - {fmt(detail.makruh.to)})
               </p>
             )}
-            <button className="btn-primary w-full" onClick={() => {
-              if (now < detail.start && !doneList.includes(detail.id)) return toast('এই ওয়াক্ত এখনও শুরু হয়নি');
-              toggleAmol(detail.id, dateKey(today)); setDetail(null);
-            }}>
-              {doneList.includes(detail.id) ? 'আদায় করা হয়নি হিসেবে চিহ্নিত করুন' : 'আদায় করেছি ✓'}
-            </button>
           </div>
         )}
       </Sheet>

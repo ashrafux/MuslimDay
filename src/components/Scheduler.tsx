@@ -67,7 +67,7 @@ export function Scheduler() {
       if (t >= start && t < start + 10 * 60000) fire(`${key}-${w.id}-start`, `${name} এর ওয়াক্ত শুরু হয়েছে`, `এখন ${name} এর সময় (${time})। নামাজ আদায় করে আমল ট্র্যাকারে চিহ্নিত করুন।`, '/amol');
       if (alarm.endReminder && !done.includes(w.id)) {
         const end = w.end.getTime();
-        if (t >= end - 20 * 60000 && t < end) fire(`${key}-${w.id}-end`, `${name} এর ওয়াক্ত শেষ হতে চলেছে`, 'আপনি এখনও নামাজটি চিহ্নিত করেননি।', '/');
+        if (t >= end - 20 * 60000 && t < end) fire(`${key}-${w.id}-end`, `${name} এর ওয়াক্ত শেষ হতে চলেছে`, 'আপনি এখনও নামাজটি চিহ্নিত করেননি।', '/amol');
       }
       if (silent.enabled && silent.prayers[w.id] && t >= start && t < start + 5 * 60000) {
         fire(`${key}-${w.id}-silent`, 'ফোন সাইলেন্ট করুন', `${name} এর জামাতের সময় — পরবর্তী ${silent.minutes} মিনিট ফোন সাইলেন্ট রাখুন।`, '/silent');
