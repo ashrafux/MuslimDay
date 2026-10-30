@@ -31,7 +31,7 @@ export default function AmolTracker() {
         <IconButton label="manage amal" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /></IconButton>
         <IconButton label="add amal" tone="brand" onClick={() => setEditor({ open: true })}><Plus size={20} /></IconButton>
       </>} />
-      <div className="px-5 pb-1 pt-1">
+      <div className="px-5 pt-8">
         <Segmented value={tab} onChange={(v) => setParams(v === 'today' ? {} : { tab: v }, { replace: true })}
           options={[{ value: 'today', label: 'দৈনিক আমল' }, { value: 'stats', label: 'পরিসংখ্যান' }]} />
       </div>
@@ -52,7 +52,7 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
   const today = dateKey();
   const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
   return (
-    <div className="mt-2 flex items-center gap-1 px-3 py-1">
+    <div className="mt-10 flex items-center gap-1 px-3">
       <button aria-label="previous week" className="tap rounded-full p-1.5 text-muted" onClick={() => onSelect(dateKey(addDays(sel, -7)))}><ChevronLeft size={20} /></button>
       <div className="grid flex-1 grid-cols-7 gap-1">
         {days.map((d) => {
@@ -165,7 +165,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
     <div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="mx-5 mt-3 rounded-[10px] bg-lav p-5 text-ink">
+      <div className="mx-5 mt-10 rounded-[10px] bg-lav p-5 text-ink">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="label !text-ink/60">আজকের অগ্রগতি</div>
@@ -182,8 +182,8 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
         </div>
       </div>
 
-      {groups.map((g) => (
-        <section key={g.title} className="page-card mt-2.5">
+      {groups.map((g, gi) => (
+        <section key={g.title} className={`page-card ${gi === 0 ? 'mt-10' : 'mt-2.5'}`}>
           <h3>
             <button onClick={() => toggleGroup(g.title)} aria-expanded={!collapsed.includes(g.title)}
               className={`flex w-full items-center justify-between gap-3 px-5 pt-4 text-left text-[15px] font-bold text-ink ${collapsed.includes(g.title) ? 'pb-4' : 'pb-1'}`}>
@@ -234,12 +234,12 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
         </section>
       ))}
 
-      <div className="px-5 pt-4">
+      <div className="px-5 pt-10">
         <button className="btn-primary w-full" onClick={onAdd}><Plus size={20} /> নিজের আমল তৈরি করুন</button>
         <button className="btn-ghost mt-1 w-full" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /> আমল তালিকা সাজান</button>
       </div>
 
-      <section className="page-card mt-3 px-5 py-4">
+      <section className="page-card mt-7 px-5 py-4">
         <h3 className="text-[17px] font-bold text-ink">আজকের মুহাসাবা</h3>
         <p className="text-[13px] text-muted">দিন শেষে নিজের আমলের হিসাব নিন — কেমন গেল আজকের দিন?</p>
         <div className="mt-4 grid grid-cols-4 gap-2">
@@ -576,7 +576,7 @@ function Stats() {
   const avgMood = moodDays.length ? moodDays.reduce((a, b) => a + b, 0) / moodDays.length : 0;
 
   return (
-    <div className="space-y-2.5 pt-2.5">
+    <div className="space-y-2.5 pt-10">
       <div className="grid grid-cols-3 gap-2.5 px-5">
         {[
           { icon: <Flame className="text-alert" size={20} />, v: n(streak), l: 'নামাজের স্ট্রিক' },
