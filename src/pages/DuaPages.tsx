@@ -156,6 +156,7 @@ export function DuaListPage() {
   const favs = useStore((s) => s.favoriteDuas);
   const set = useStore((s) => s.set);
   const [renaming, setRenaming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [adding, setAdding] = useState(false);
   const [name, setName] = useState('');
   const isFav = id === 'favorites';
@@ -169,7 +170,7 @@ export function DuaListPage() {
       <PageHeader back title={list.name} sub={`${n(duas.length)}টি দোয়া`} right={!isFav && (
         <>
           <button aria-label="rename" onClick={() => { setName(list.name); setRenaming(true); }} className="tap p-2 text-ink"><Pencil size={20} /></button>
-          <button aria-label="delete list" onClick={() => { if (confirm('তালিকাটি মুছে ফেলবেন?')) { set('duaLists', lists.filter((l) => l.id !== list.id)); nav('/dua'); toast('তালিকা মুছে ফেলা হয়েছে'); } }} className="tap p-2 text-ink"><Trash2 size={20} /></button>
+          <button aria-label="delete list" onClick={() => setDeleting(true)} className="tap p-2 text-ink"><Trash2 size={20} /></button>
         </>
       )} />
       {duas.length === 0 ? (
@@ -182,6 +183,13 @@ export function DuaListPage() {
       ))}
       <div className="p-5"><button className="btn-primary w-full" onClick={() => setAdding(true)}><Plus size={18} /> দোয়া যোগ করুন</button></div>
 
+      <Sheet open={deleting} onClose={() => setDeleting(false)} title="তালিকাটি মুছে ফেলবেন?">
+        <p className="text-muted">"{list.name}" তালিকাটি মুছে যাবে। দোয়াগুলো অ্যাপে থেকে যাবে।</p>
+        <div className="mt-4 flex gap-3">
+          <button className="btn-soft flex-1" onClick={() => setDeleting(false)}>বাতিল</button>
+          <button className="btn flex-1 bg-red-600 text-white" onClick={() => { set('duaLists', lists.filter((l) => l.id !== list.id)); nav('/dua'); toast('তালিকা মুছে ফেলা হয়েছে'); }}>মুছে ফেলুন</button>
+        </div>
+      </Sheet>
       <Sheet open={renaming} onClose={() => setRenaming(false)} title="নাম পরিবর্তন">
         <input className="input" value={name} onChange={(e) => setName(e.target.value)} />
         <button className="btn-primary mt-4 w-full" disabled={!name.trim()} onClick={() => { set('duaLists', lists.map((l) => (l.id === list.id ? { ...l, name: name.trim() } : l))); setRenaming(false); }}>সংরক্ষণ করুন</button>

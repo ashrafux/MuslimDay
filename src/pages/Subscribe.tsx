@@ -28,6 +28,7 @@ export default function Subscribe() {
   const [pay, setPay] = useState(false);
   const [method, setMethod] = useState('বিকাশ');
   const [phone, setPhone] = useState('');
+  const [cancelOpen, setCancelOpen] = useState(false);
   const selected = PLANS.find((p) => p.id === plan)!;
 
   if (premium.active && premium.plan !== 'trial') {
@@ -38,7 +39,14 @@ export default function Subscribe() {
           <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gold text-ink"><Crown size={52} fill="currentColor" /></span>
           <h2 className="mt-5 text-2xl text-ink">জাযাকাল্লাহু খাইরান!</h2>
           <p className="mt-2 text-muted">আপনি {premium.plan === 'yearly' ? 'বার্ষিক' : 'মাসিক'} পৃষ্ঠপোষক{premium.since && ` (${new Date(premium.since).toLocaleDateString('bn-BD')} থেকে)`}। সব প্রিমিয়াম ফিচার আনলক করা আছে।</p>
-          <button className="btn-soft mt-8" onClick={() => { if (confirm('সাবস্ক্রিপশন বাতিল করবেন?')) { set('premium', { active: false }); toast('সাবস্ক্রিপশন বাতিল হয়েছে'); } }}>সাবস্ক্রিপশন বাতিল করুন</button>
+          <button className="btn-soft mt-8" onClick={() => setCancelOpen(true)}>সাবস্ক্রিপশন বাতিল করুন</button>
+          <Sheet open={cancelOpen} onClose={() => setCancelOpen(false)} title="সাবস্ক্রিপশন বাতিল করবেন?">
+            <p className="text-left text-muted">বাতিল করলে প্রিমিয়াম ফিচারগুলো লক হয়ে যাবে।</p>
+            <div className="mt-4 flex gap-3">
+              <button className="btn-soft flex-1" onClick={() => setCancelOpen(false)}>না, রাখুন</button>
+              <button className="btn flex-1 bg-red-600 text-white" onClick={() => { set('premium', { active: false }); setCancelOpen(false); toast('সাবস্ক্রিপশন বাতিল হয়েছে'); }}>বাতিল করুন</button>
+            </div>
+          </Sheet>
         </div>
       </div>
     );

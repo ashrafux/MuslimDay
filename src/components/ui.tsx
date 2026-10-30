@@ -30,8 +30,9 @@ export async function shareText(title: string, text: string, url?: string) {
       await navigator.share({ title, text, url: shareUrl });
       return;
     }
-  } catch {
-    return; // user cancelled
+  } catch (e) {
+    if ((e as Error)?.name === 'AbortError') return; // user cancelled
+    // sharing refused (e.g. embedded preview) → copy instead
   }
   await copyText(`${text}\n${shareUrl}`);
 }
