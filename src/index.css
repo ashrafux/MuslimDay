@@ -107,6 +107,11 @@ h1, h2, h3 { text-wrap: balance; }
 input:focus-visible, textarea:focus-visible, select:focus-visible { outline: none; }
 label:has(> input:focus-visible) { box-shadow: 0 0 0 3px rgb(var(--brand) / .18); }
 
+/* iOS Safari zooms the page when a field under 16px is focused */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select { font-size: max(16px, 1em); }
+}
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
