@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 238 243 243;
+  --surface: 255 255 255;
+  --ink: 30 58 52;
+  --muted: 110 128 124;
+  --line: 226 232 231;
+  --mint: 201 239 223;
+  --chip: 218 237 231;
+  --brand: 18 147 106;
+  --brand-dark: 13 110 80;
+  --gold: 250 204 21;
+  --alert: 249 115 22;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 14 22 21;
+  --surface: 24 35 33;
+  --ink: 226 238 234;
+  --muted: 140 160 155;
+  --line: 44 58 55;
+  --mint: 33 70 58;
+  --chip: 32 56 50;
+  --brand: 52 199 145;
+  --brand-dark: 36 160 116;
+  --gold: 250 204 21;
+  --alert: 251 146 60;
+  color-scheme: dark;
+}
+
+html, body, #root { height: 100%; }
+body {
+  @apply bg-bg text-ink font-bn antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+@layer components {
+  .card { @apply bg-surface; }
+  .icon-circle { @apply flex items-center justify-center rounded-full bg-mint text-ink; }
+  .tap { @apply transition active:scale-95 select-none cursor-pointer; }
+  .btn { @apply tap inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-bn; }
+  .btn-primary { @apply btn bg-brand text-white; }
+  .btn-soft { @apply btn bg-chip text-brand; }
+  .btn-ghost { @apply btn text-brand; }
+  .input { @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink outline-none focus:border-brand; }
+  .section-title { @apply text-xl text-ink; }
+  .arabic { @apply font-ar leading-[2.1]; direction: rtl; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.animate-sheet { animation: sheet-up .25s ease-out; }
+.animate-fade { animation: fade-in .2s ease-out; }
+.animate-pop { animation: pop .18s ease-out; }

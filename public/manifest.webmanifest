@@ -1,0 +1,9 @@
+{
+  "name": "আমল ট্র্যাকার",
+  "short_name": "আমল",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#eef3f3",
+  "theme_color": "#12936a",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
