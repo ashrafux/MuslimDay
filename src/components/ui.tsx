@@ -69,7 +69,7 @@ export function PageHeader({ title, back, right, sub }: { title: ReactNode; back
   const nav = useNavigate();
   return (
     <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur-md">
-      <div className="flex min-h-[64px] items-center gap-3 px-4 pb-2 pt-3">
+      <div className="flex min-h-[64px] items-center gap-3 px-5 pb-2 pt-3">
         {back && (
           <IconButton label="back" onClick={() => (typeof back === 'string' ? nav(back) : window.history.length > 1 ? nav(-1) : nav('/'))}>
             <ChevronLeft size={22} />

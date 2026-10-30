@@ -55,7 +55,7 @@ export default function More() {
         </div>
       </section>
 
-      <section className="px-4 pt-6">
+      <section className="px-5 pt-6">
         <button onClick={() => nav('/subscribe')} className="tap grad-sunrise relative flex w-full items-center gap-3 overflow-hidden rounded-[28px] p-5 text-left text-white shadow-float">
           <span className="flex-1">
             <span className="flex items-center gap-2.5">

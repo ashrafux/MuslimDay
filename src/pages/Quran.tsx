@@ -60,7 +60,7 @@ export default function Quran() {
       {lastRead.length > 0 && (
         <>
           <div className="section-head"><span>{t('lastRead')}</span></div>
-          <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-4">
+          <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-5">
             {lastRead.slice(0, 4).map((l, i) => (
               <button key={l.surah} onClick={() => nav(`/quran/${l.surah}?ayah=${l.ayah}`)}
                 className={`tap flex min-w-[150px] shrink-0 flex-col items-start rounded-[22px] p-4 text-left text-ink ${i === 0 ? 'bg-night text-white' : 'bg-surface shadow-card'}`}>
@@ -73,13 +73,13 @@ export default function Quran() {
       )}
 
       <div className="section-head"><span>{t('quickLinks')}</span></div>
-      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-5">
         {QUICK_LINKS.map((q) => (
           <button key={q.label} onClick={() => nav(`/quran/${q.surah}?ayah=${q.ayah}`)} className="tap pill pill-off shrink-0 py-2.5 font-semibold">{q.label}</button>
         ))}
       </div>
 
-      <div className="px-4 pb-3 pt-6">
+      <div className="px-5 pb-3 pt-6">
         <Segmented value={tab} onChange={setTab} options={[{ value: 'surah', label: t('surahs') }, { value: 'para', label: t('para') }]} />
       </div>
       <section className="page-card">

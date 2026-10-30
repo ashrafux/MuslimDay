@@ -66,7 +66,7 @@ export default function Mosques() {
           </div>
         ))}
       </div>
-      {state.list.length > 0 && <p className="p-4 text-center text-xs text-muted">তথ্যসূত্র: © OpenStreetMap contributors</p>}
+      {state.list.length > 0 && <p className="px-5 py-4 text-center text-xs text-muted">তথ্যসূত্র: © OpenStreetMap contributors</p>}
     </div>
   );
 }

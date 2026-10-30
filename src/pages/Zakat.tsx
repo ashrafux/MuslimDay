@@ -49,7 +49,7 @@ export default function Zakat() {
   return (
     <div>
       <PageHeader back title="যাকাত ক্যালকুলেটর" />
-      <section className="m-4 rounded-[28px] bg-night shadow-float p-5 text-white">
+      <section className="mx-5 my-4 rounded-[28px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">প্রদেয় যাকাত (২.৫%)</div>
         <div className="mt-1 text-4xl">{money(zakat)}</div>
         <div className="mt-3 grid grid-cols-2 gap-2 text-sm">

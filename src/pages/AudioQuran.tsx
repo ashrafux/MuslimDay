@@ -17,13 +17,13 @@ export default function AudioQuran() {
   return (
     <div>
       <PageHeader back title="অডিও কুরআন" />
-      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-2">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 py-2">
         {RECITERS.map((r) => (
           <button key={r.id} onClick={() => { update({ reciter: r.id }); if (current) setTimeout(() => player.play({ kind: 'surah', surah: current }), 0); }}
             className={`shrink-0 rounded-full px-4 py-2 text-sm ${reciter === r.id ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{r.name}</button>
         ))}
       </div>
-      <div className="p-4">
+      <div className="px-5 py-4">
         <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="সূরা খুঁজুন" className="w-full bg-transparent py-3 outline-none" /></label>
       </div>
@@ -42,7 +42,7 @@ export default function AudioQuran() {
           );
         })}
       </div>
-      <p className="p-4 text-center text-xs text-muted">অডিও স্ট্রিমিংয়ের জন্য ইন্টারনেট প্রয়োজন • পরের সূরা স্বয়ংক্রিয়ভাবে চলবে</p>
+      <p className="px-5 py-4 text-center text-xs text-muted">অডিও স্ট্রিমিংয়ের জন্য ইন্টারনেট প্রয়োজন • পরের সূরা স্বয়ংক্রিয়ভাবে চলবে</p>
     </div>
   );
 }

@@ -54,7 +54,7 @@ export default function Subscribe() {
   return (
     <div>
       <PageHeader back title="পৃষ্ঠপোষক হোন" />
-      <div className="grad-sunrise mx-4 mt-1 rounded-[32px] px-6 pb-7 pt-6 text-white shadow-float">
+      <div className="grad-sunrise mx-5 mt-1 rounded-[32px] px-6 pb-7 pt-6 text-white shadow-float">
         <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-night text-gold"><Crown size={36} fill="currentColor" /></span>
         <h2 className="mt-4 text-[24px] font-extrabold leading-tight text-white">আরো আপন হোক আপনার ইবাদতের সঙ্গী</h2>
         <p className="mt-2 text-white/90">আপনার সহযোগিতায় অ্যাপটি নির্ভুল ও আরও সমৃদ্ধ হবে ইনশাআল্লাহ।</p>

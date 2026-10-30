@@ -11,17 +11,17 @@ export default function Hajj() {
   return (
     <div>
       <PageHeader back title="হজ্জ ও উমরাহ" />
-      <div className="px-4 pb-1 pt-1">
+      <div className="px-5 pb-1 pt-1">
         <Segmented value={id} onChange={setId} options={[{ value: 'umrah', label: 'উমরাহ' }, { value: 'hajj', label: 'হজ্জ' }]} />
       </div>
       <p className="px-5 py-4 leading-relaxed text-ink">{g.intro}</p>
       {id === 'hajj' && (
-        <div className="mx-4 mb-4 grid gap-3">
+        <div className="mx-5 mb-4 grid gap-3">
           <div className="card p-4"><h3 className="text-[17px] font-bold text-ink">হজ্জের ফরজ</h3><ul className="mt-2 list-disc pl-5 text-ink">{hajjFaraiz.map((f) => <li key={f}>{f}</li>)}</ul></div>
           <div className="card p-4"><h3 className="text-[17px] font-bold text-ink">হজ্জের ওয়াজিব</h3><ul className="mt-2 list-disc pl-5 text-ink">{hajjWajibat.map((f) => <li key={f}>{f}</li>)}</ul></div>
         </div>
       )}
-      <ol className="relative mx-4 border-l-2 border-chip pl-6">
+      <ol className="relative mx-5 border-l-2 border-chip pl-6">
         {g.steps.map((s, i) => {
           const key = `${id}-${i}`;
           return (

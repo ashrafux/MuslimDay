@@ -86,7 +86,7 @@ export function MiniPlayer({ bottom }: { bottom: number }) {
   const s = SURAHS[p.track.surah - 1];
   const reciter = useStore.getState().quran.reciter;
   return (
-    <div className="fixed inset-x-0 z-40 mx-auto max-w-app px-3" style={{ bottom }}>
+    <div className="fixed inset-x-0 z-40 mx-auto max-w-app px-5" style={{ bottom }}>
       <div className="rounded-[22px] bg-night px-4 py-3 text-white shadow-float">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">

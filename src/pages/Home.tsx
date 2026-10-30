@@ -50,7 +50,7 @@ function heroStyle(id: PeriodId): { bg: string; night: boolean } {
 function Waves() {
   const lines = Array.from({ length: 9 }, (_, i) => i);
   return (
-    <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-16 h-32 w-full opacity-[.14]" aria-hidden="true">
+    <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-40 h-32 w-full opacity-[.14]" aria-hidden="true">
       {lines.map((i) => (
         <path key={i} d={`M0 ${60 + i * 2} C 80 ${10 + i * 6}, 140 ${110 - i * 5}, 220 ${55 + i} S 340 ${15 + i * 7}, 400 ${60 - i * 2}`} fill="none" stroke="white" strokeWidth="0.8" />
       ))}
@@ -119,30 +119,26 @@ export default function Home() {
 
   return (
     <div className="pb-2">
-      {/* ---------- greeting / date ---------- */}
-      <div className="flex items-start justify-between gap-3 px-5 pb-1 pt-5">
-        <button onClick={() => nav('/calendar')} className="tap min-w-0 text-left">
-          <div className="label">{(lang === 'bn' ? WEEKDAYS_BN : WEEKDAYS_EN)[today.getDay()]} • {formatHijri(hijri, lang)}</div>
-          <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-[28px] font-extrabold leading-none text-ink">{formatGregorian(today, lang)}</span>
-            {lang === 'bn' && <span className="truncate text-[14px] font-medium text-muted">{formatBangla(today)}</span>}
-          </div>
-        </button>
-        <div className="flex shrink-0 items-center gap-2">
-          <span className="relative">
+      {/* ---------- dark top band: date + countdown ---------- */}
+      <section className="relative overflow-hidden rounded-b-[32px] px-5 pb-6 pt-5 text-white" style={{ background: hero.bg }}>
+        <Waves />
+        <div className="relative mb-5 flex items-start justify-between gap-3">
+          <button onClick={() => nav('/calendar')} className="tap min-w-0 text-left">
+            <div className="label !text-white/55">{(lang === 'bn' ? WEEKDAYS_BN : WEEKDAYS_EN)[today.getDay()]} • {formatHijri(hijri, lang)}</div>
+            <div className="mt-1 flex items-baseline gap-2">
+              <span className="text-[28px] font-extrabold leading-none">{formatGregorian(today, lang)}</span>
+              {lang === 'bn' && <span className="truncate text-[14px] font-medium text-white/55">{formatBangla(today)}</span>}
+            </div>
+          </button>
+          <span className="relative shrink-0">
             <IconButton label="notifications" tone="brand" onClick={() => nav('/notifications')}><Bell size={18} /></IconButton>
             {unread > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 min-w-[20px] rounded-full border-2 border-bg bg-alert px-1 text-center text-[10px] font-bold leading-4 text-white">
+              <span className="absolute -right-1.5 -top-1.5 min-w-[20px] rounded-full border-2 border-[#1d1e23] bg-alert px-1 text-center text-[10px] font-bold leading-4 text-white">
                 {unread > 99 ? `${n(99)}+` : n(unread)}
               </span>
             )}
           </span>
         </div>
-      </div>
-
-      {/* ---------- hero ---------- */}
-      <section className="relative mx-4 mt-4 overflow-hidden rounded-[32px] px-5 pb-5 pt-4 text-white dark:ring-1 dark:ring-white/[.06]" style={{ background: hero.bg }}>
-        <Waves />
         {hero.night && [12, 30, 70, 85, 50, 92].map((x, i) => <span key={i} className="absolute h-1 w-1 rounded-full bg-white/40" style={{ left: `${x}%`, top: `${18 + i * 19}px` }} />)}
         <div className="relative flex items-center justify-between gap-2">
           <span className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-white"><span className="h-1.5 w-1.5 rounded-full bg-m-green" />{now >= period.start ? 'এখন চলছে' : 'পরবর্তী'}</span>
@@ -178,7 +174,7 @@ export default function Home() {
       <div className="section-head">
         <span>আজকের নামাজ</span>
       </div>
-      <ul className="mx-4 space-y-2.5">
+      <ul className="mx-5 space-y-2.5">
         {waqts.map((w) => {
           const past = now > w.end;
           const active = w.id === currentWaqt || (!currentWaqt && w.id === nextId);
@@ -197,7 +193,7 @@ export default function Home() {
         })}
       </ul>
 
-      <div className="mx-4 mt-3 grid grid-cols-2 gap-2.5">
+      <div className="mx-5 mt-3 grid grid-cols-2 gap-2.5">
         <button onClick={() => nav('/alarm')} className="tap card flex items-center gap-3 p-3">
           <span className="tile h-10 w-10 rounded-xl bg-butter text-ink"><Bell size={18} /></span>
           <span className="flex-1 text-left text-[15px] font-semibold text-ink">{t('alarm')}</span>
@@ -290,7 +286,7 @@ function Carousel() {
   return (
     <section className="pt-5">
       <div ref={ref} onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / (e.currentTarget.clientWidth * 0.86)))}
-        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4">
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-5">
         {cards.map((c, i) => (
           <button key={i} onClick={() => nav(c.go)} className={`flex min-h-[168px] w-[86%] shrink-0 snap-center flex-col rounded-[28px] p-5 text-left text-ink ${c.tint}`}>
             <span className="flex w-full items-center justify-between">

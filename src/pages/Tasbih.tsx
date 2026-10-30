@@ -62,7 +62,7 @@ export default function Tasbih() {
   return (
     <div className="flex min-h-screen flex-col">
       <PageHeader back title="তাসবীহ" right={<button aria-label="history" onClick={() => setHist(true)} className="tap p-2 text-ink"><History size={22} /></button>} />
-      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-2">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 py-2">
         {presets.map((p) => (
           <button key={p.id} onClick={() => choose(p.id)} className={`shrink-0 rounded-full px-4 py-2 ${p.id === preset.id ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{p.bn}</button>
         ))}

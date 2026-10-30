@@ -65,7 +65,7 @@ export default function Tools() {
   return (
     <div>
       <PageHeader title={t('tools')} />
-      <button onClick={() => nav('/amol')} className="tap mx-4 mt-2 flex w-[calc(100%-2rem)] flex-col rounded-[28px] bg-lav p-5 text-left text-ink">
+      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] flex-col rounded-[28px] bg-lav p-5 text-left text-ink">
         <span className="flex w-full items-start justify-between gap-3">
           <span>
             <span className="label !text-ink/60">{t('amolTracker')}</span>

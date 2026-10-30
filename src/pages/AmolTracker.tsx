@@ -31,7 +31,7 @@ export default function AmolTracker() {
         <IconButton label="manage amal" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /></IconButton>
         <IconButton label="add amal" tone="brand" onClick={() => setEditor({ open: true })}><Plus size={20} /></IconButton>
       </>} />
-      <div className="px-4 pb-1 pt-1">
+      <div className="px-5 pb-1 pt-1">
         <Segmented value={tab} onChange={(v) => setParams(v === 'today' ? {} : { tab: v }, { replace: true })}
           options={[{ value: 'today', label: 'দৈনিক আমল' }, { value: 'stats', label: 'পরিসংখ্যান' }]} />
       </div>
@@ -176,7 +176,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
       </div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="mx-4 mt-3 rounded-[28px] bg-lav p-5 text-ink">
+      <div className="mx-5 mt-3 rounded-[28px] bg-lav p-5 text-ink">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="label !text-ink/60">আজকের অগ্রগতি</div>
@@ -582,7 +582,7 @@ function Stats() {
 
   return (
     <div className="space-y-2.5 pt-2.5">
-      <div className="grid grid-cols-3 gap-2.5 px-4">
+      <div className="grid grid-cols-3 gap-2.5 px-5">
         {[
           { icon: <Flame className="text-alert" size={20} />, v: n(streak), l: 'নামাজের স্ট্রিক' },
           { icon: <Trophy className="text-m-yellow" size={20} />, v: n(best), l: 'সেরা স্ট্রিক' },

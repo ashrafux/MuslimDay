@@ -66,7 +66,7 @@ export default function Ramadan() {
   return (
     <div>
       <PageHeader back title="রমজান ও রোজা" />
-      <section className="relative mx-4 mt-1 overflow-hidden rounded-[32px] px-5 pb-5 pt-5 text-white shadow-float" style={{ background: "radial-gradient(120% 90% at 100% 0%,#4b3f86 0%,rgba(75,63,134,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2e2c4a 100%)" }}>
+      <section className="relative mx-5 mt-1 overflow-hidden rounded-[32px] px-5 pb-5 pt-5 text-white shadow-float" style={{ background: "radial-gradient(120% 90% at 100% 0%,#4b3f86 0%,rgba(75,63,134,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2e2c4a 100%)" }}>
         <div className="absolute -bottom-3 -right-3 opacity-25"><MosqueArt size={110} /></div>
         <div className="text-sm opacity-80">{formatHijri(h, 'bn', true)} হিজরি</div>
         <div className="mt-1 text-2xl">{inRamadan ? `রমজানের ${n(h.day)}তম দিন` : daysToRamadan !== null && daysToRamadan > 0 ? `রমজান আসতে ${n(daysToRamadan)} দিন বাকি` : 'রমজান মুবারক'}</div>

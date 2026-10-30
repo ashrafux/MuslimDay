@@ -42,7 +42,7 @@ export default function CalendarPage() {
   return (
     <div>
       <PageHeader back title="ক্যালেন্ডার" />
-      <div className="px-4 pb-1 pt-1">
+      <div className="px-5 pb-1 pt-1">
         <Segmented value={tab} onChange={setTab} options={[{ value: 'month', label: 'মাসিক' }, { value: 'convert', label: <span className="flex items-center gap-1"><ArrowLeftRight size={16} /> রূপান্তর</span> }]} />
       </div>
       {tab === 'convert' ? <Converter /> : (

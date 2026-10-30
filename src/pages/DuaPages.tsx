@@ -99,7 +99,7 @@ export function DuaDetail() {
           <button key={a.label} onClick={a.go} className="tap flex flex-col items-center gap-1.5 py-3.5 text-ink">{a.icon}<span className="text-[12px] font-semibold">{a.label}</span></button>
         ))}
       </div>
-      <div className="flex gap-3 px-4 py-4">
+      <div className="flex gap-3 px-5 py-4">
         <button disabled={idx <= 0} onClick={() => nav(`/dua/d/${cat.duas[idx - 1].id}`, { replace: true })} className="btn-soft flex-1 disabled:opacity-40">পূর্ববর্তী</button>
         <button disabled={idx >= cat.duas.length - 1} onClick={() => nav(`/dua/d/${cat.duas[idx + 1].id}`, { replace: true })} className="btn-dark flex-1 disabled:opacity-40">পরবর্তী</button>
       </div>
@@ -134,7 +134,7 @@ export function DuaSearch() {
   return (
     <div>
       <PageHeader back title="দোয়া খুঁজুন" />
-      <div className="sticky top-[64px] z-20 bg-bg px-4 pb-3 pt-1">
+      <div className="sticky top-[64px] z-20 bg-bg px-5 pb-3 pt-1">
         <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card">
           <Search className="text-muted" size={20} />
           <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="যেমন: ঘুম, খাওয়া, সফর" className="w-full bg-transparent py-3.5 text-[16px] text-ink outline-none" />
@@ -187,7 +187,7 @@ export function DuaListPage() {
           ))}
         </div>
       )}
-      <div className="p-4"><button className="btn-primary w-full" onClick={() => setAdding(true)}><Plus size={18} /> দোয়া যোগ করুন</button></div>
+      <div className="px-5 py-4"><button className="btn-primary w-full" onClick={() => setAdding(true)}><Plus size={18} /> দোয়া যোগ করুন</button></div>
 
       <Sheet open={deleting} onClose={() => setDeleting(false)} title="তালিকাটি মুছে ফেলবেন?">
         <p className="text-muted">"{list.name}" তালিকাটি মুছে যাবে। দোয়াগুলো অ্যাপে থেকে যাবে।</p>

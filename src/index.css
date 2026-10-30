@@ -76,7 +76,7 @@ h1, h2, h3 { text-wrap: balance; }
 @layer components {
   /* surfaces */
   .card { @apply overflow-hidden rounded-[24px] bg-surface shadow-card; }
-  .page-card { @apply mx-4 overflow-hidden rounded-[24px] bg-surface shadow-card; }
+  .page-card { @apply mx-5 overflow-hidden rounded-[24px] bg-surface shadow-card; }
   .tile { @apply flex items-center justify-center rounded-[20px]; }
   .icon-circle { @apply flex items-center justify-center rounded-full bg-lav text-ink; }
   .label { @apply text-[11px] font-semibold uppercase tracking-[.08em] text-muted; }

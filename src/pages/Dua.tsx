@@ -80,7 +80,7 @@ export default function Dua() {
         </span>
         <button onClick={() => setCreating(true)} className="tap mt-1 shrink-0 rounded-xl bg-brand px-3 py-2 text-[13px] font-semibold text-white">নতুন তালিকা</button>
       </div>
-      <div className="space-y-2.5 px-4 pb-6">
+      <div className="space-y-2.5 px-5 pb-6">
         {favs.length > 0 && (
           <button onClick={() => nav('/dua/list/favorites')} className="tap card flex w-full items-center gap-4 p-3.5 text-left">
             <span className="tile h-12 w-12 rounded-2xl bg-rose text-m-pink"><Heart size={20} fill="currentColor" /></span>

@@ -105,7 +105,7 @@ export default function QuranReader() {
           <button aria-label="settings" onClick={() => nav('/quran/settings')} className="tap p-2 text-ink"><Settings size={22} /></button>
         </>} />
 
-      <div className="mx-4 mt-1 overflow-hidden rounded-[28px] bg-sand px-5 py-6 text-center">
+      <div className="mx-5 mt-1 overflow-hidden rounded-[28px] bg-sand px-5 py-6 text-center">
         <div className="font-ar text-5xl text-brand" dir="rtl">{info.arabic}</div>
         <div className="mt-2 text-muted">{info.en}</div>
         {surah !== 1 && surah !== 9 && <div className="font-ar mt-4 text-3xl text-ink" dir="rtl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>}
