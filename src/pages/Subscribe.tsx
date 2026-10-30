@@ -11,7 +11,6 @@ const PLANS = [
 ];
 
 const FEATURES = [
-  'সম্পূর্ণ বিজ্ঞাপনমুক্ত অভিজ্ঞতা',
   'কিবলা কম্পাস',
   'ডিজিটাল তাসবীহ — লক্ষ্য, ইতিহাস ও কাস্টম যিকর',
   'হজ্জ ও উমরাহ গাইড',
@@ -58,7 +57,7 @@ export default function Subscribe() {
       <div className="bg-gradient-to-br from-[#12936a] via-[#2c5f7c] to-[#4b3a8f] px-6 pb-8 pt-6 text-white">
         <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gold text-ink"><Crown size={36} fill="currentColor" /></span>
         <h2 className="mt-4 text-2xl text-gold">আরো আপন হোক আপনার ইবাদতের সঙ্গী</h2>
-        <p className="mt-2 text-white/90">আপনার সহযোগিতায় অ্যাপটি বিজ্ঞাপনমুক্ত, নির্ভুল ও আরও সমৃদ্ধ হবে ইনশাআল্লাহ।</p>
+        <p className="mt-2 text-white/90">আপনার সহযোগিতায় অ্যাপটি নির্ভুল ও আরও সমৃদ্ধ হবে ইনশাআল্লাহ।</p>
         {premium.plan === 'trial' && premium.since && <p className="mt-3 rounded-xl bg-white/15 p-3 text-sm">আপনার ফ্রি ট্রায়াল চলছে — {n(Math.max(0, 7 - Math.floor((Date.now() - premium.since) / 86400000)))} দিন বাকি।</p>}
       </div>
       <div className="space-y-3 p-5">

@@ -203,7 +203,7 @@ export default function Home() {
       <div className="h-2.5" />
       <Carousel />
 
-      <button onClick={() => nav('/ramadan')} aria-label="ramadan" className="tap fixed bottom-[150px] right-[max(1.25rem,calc(50%-240px+1.25rem))] z-30 flex h-[68px] w-[68px] items-center justify-center rounded-full bg-surface shadow-[0_6px_24px_rgba(0,0,0,.18)]">
+      <button onClick={() => nav('/ramadan')} aria-label="ramadan" className="tap fixed bottom-[100px] right-[max(1.25rem,calc(50%-240px+1.25rem))] z-30 flex h-[68px] w-[68px] items-center justify-center rounded-full bg-surface shadow-[0_6px_24px_rgba(0,0,0,.18)]">
         <MosqueArt size={46} />
       </button>
 
@@ -273,7 +273,7 @@ function Carousel() {
 
   const cards = useMemo(() => [
     premium
-      ? { icon: <BadgeCheck size={38} className="text-brand" />, title: 'জাযাকাল্লাহু খাইরান! আপনি একজন পৃষ্ঠপোষক।', body: 'আপনার সহযোগিতায় অ্যাপটি বিজ্ঞাপনমুক্ত ও আরও সমৃদ্ধ হচ্ছে।', go: '/subscribe' }
+      ? { icon: <BadgeCheck size={38} className="text-brand" />, title: 'জাযাকাল্লাহু খাইরান! আপনি একজন পৃষ্ঠপোষক।', body: 'আপনার সহযোগিতায় অ্যাপটি আরও সমৃদ্ধ হচ্ছে।', go: '/subscribe' }
       : { icon: <Award size={40} className="text-brand" fill="rgb(var(--mint))" />, title: 'আলহামদুলিল্লাহ, আগামী ৩ দিন আপনি পাচ্ছেন ৬৩% পর্যন্ত ডিসকাউন্ট।', body: 'এই অফারটি আমল ট্র্যাকারের বার্ষিক প্যাকেজে প্রযোজ্য, আরো আপন হোক আপনার ইবাদতের সঙ্গী।', go: '/subscribe' },
     { icon: <ListChecks size={38} className="text-brand" />, title: `আজকের আমল: ${n(done)}/${n(total)} সম্পন্ন`, body: 'নিয়মিত আমলের হিসাব রাখুন, স্ট্রিক ধরে রাখুন ও নিজের উন্নতি দেখুন।', go: '/amol' },
     { icon: <BookOpenText size={38} className="text-brand" />, title: 'আজকের আয়াত', body: `${ayah.bangla} — ${ayah.ref}`, go: `/quran/${ayah.surah}?ayah=${ayah.ayah}` },

@@ -57,7 +57,7 @@ const dict = {
   duaRead: ['দোয়া পঠিত', 'Duas read'],
   tasbihCount: ['তাসবিহ গণনা', 'Tasbih count'],
   beSupporter: ['পৃষ্ঠপোষক হোন', 'Become a supporter'],
-  adFree: ['বিজ্ঞাপনমুক্ত ও আরও প্রিমিয়াম সুবিধা', 'Ad-free and more premium benefits'],
+  adFree: ['সব প্রিমিয়াম ফিচার আনলক করুন', 'Unlock all premium features'],
   subscribe: ['সাবস্ক্রাইব', 'Subscribe'],
   settings: ['সেটিংস', 'Settings'],
   settingsSub: ['লোকেশন, ভাষা, থিম', 'Location, language, theme'],

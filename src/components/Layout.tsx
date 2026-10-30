@@ -2,7 +2,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, BookOpen, User } from 'lucide-react';
 import { create } from 'zustand';
 import { HandsIcon, ToolsDotsIcon } from './icons';
-import { HouseBanner, Sheet } from './ui';
+import { Sheet } from './ui';
 import { MiniPlayer } from './Player';
 import { useT } from '../lib/i18n';
 import { useStore } from '../store/useStore';
@@ -38,8 +38,7 @@ export function BottomNav() {
 
 /** Tab screens: content + banner + bottom navigation (like the original layout). */
 export function TabLayout() {
-  const premium = useStore((s) => s.premium.active);
-  const bottomH = premium ? 84 : 156;
+  const bottomH = 84;
   return (
     <>
       <div style={{ paddingBottom: bottomH }}>
@@ -47,7 +46,6 @@ export function TabLayout() {
       </div>
       <MiniPlayer bottom={bottomH + 6} />
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-app border-t border-line/60 bg-bg">
-        <HouseBanner />
         <BottomNav />
       </div>
     </>
@@ -86,9 +84,9 @@ export function PremiumGateSheet() {
   const loc = useLocation();
   return (
     <Sheet open={!!target} onClose={close} title={<span className="flex items-center gap-2"><Crown className="text-amber-500" fill="currentColor" size={22} /> প্রিমিয়াম ফিচার</span>}>
-      <p className="text-muted">এই ফিচারটি পৃষ্ঠপোষকদের জন্য। সাবস্ক্রাইব করে সব প্রিমিয়াম ফিচার ও বিজ্ঞাপনমুক্ত অভিজ্ঞতা উপভোগ করুন, অথবা ৭ দিনের ফ্রি ট্রায়াল চালু করুন।</p>
+      <p className="text-muted">এই ফিচারটি পৃষ্ঠপোষকদের জন্য। সাবস্ক্রাইব করে সব প্রিমিয়াম ফিচার উপভোগ করুন, অথবা ৭ দিনের ফ্রি ট্রায়াল চালু করুন।</p>
       <ul className="my-4 space-y-2 text-ink">
-        {['কিবলা কম্পাস', 'ডিজিটাল তাসবীহ ও লক্ষ্য নির্ধারণ', 'হজ্জ ও উমরাহ গাইড', 'নামাজে সাইলেন্ট মোড রিমাইন্ডার', 'বিজ্ঞাপনমুক্ত'].map((f) => (
+        {['কিবলা কম্পাস', 'ডিজিটাল তাসবীহ ও লক্ষ্য নির্ধারণ', 'হজ্জ ও উমরাহ গাইড', 'নামাজে সাইলেন্ট মোড রিমাইন্ডার'].map((f) => (
           <li key={f} className="flex items-center gap-2"><Check size={18} className="text-brand" />{f}</li>
         ))}
       </ul>

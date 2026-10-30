@@ -174,26 +174,3 @@ export function Empty({ icon, title, sub, action }: { icon?: ReactNode; title: s
     </div>
   );
 }
-
-/** Banner slot (the original app shows third-party ads here). We show in-app tips; hidden for supporters. */
-const TIPS = [
-  { text: 'যাকাত হিসাব করুন সহজেই', cta: 'যাকাত ক্যালকুলেটর', to: '/zakat' },
-  { text: 'প্রতিদিনের আমল ধরে রাখুন', cta: 'আমল ট্র্যাকার', to: '/amol' },
-  { text: 'কাযা নামাজের হিসাব রাখুন', cta: 'কাযা ট্র্যাকার', to: '/qaza' },
-  { text: 'বিজ্ঞাপনমুক্ত অভিজ্ঞতা', cta: 'পৃষ্ঠপোষক হোন', to: '/subscribe' },
-];
-export function HouseBanner() {
-  const premium = useStore((s) => s.premium.active);
-  const nav = useNavigate();
-  if (premium) return null;
-  const tip = TIPS[Math.floor(Date.now() / 60000) % TIPS.length];
-  return (
-    <div className="bg-bg px-[38px] pb-0 pt-1">
-      <button onClick={() => nav(tip.to)}
-        className="tap flex h-[62px] w-full items-center justify-between gap-3 overflow-hidden rounded-sm bg-gradient-to-r from-amber-50 via-emerald-50 to-emerald-100 px-4 text-left ring-1 ring-line dark:from-emerald-950 dark:to-emerald-900">
-        <span className="text-[15px] leading-tight text-brand-dark dark:text-emerald-200">{tip.text}</span>
-        <span className="shrink-0 rounded-full border-2 border-amber-400 bg-amber-300 px-3 py-1 text-[12px] text-ink shadow">{tip.cta} ›</span>
-      </button>
-    </div>
-  );
-}
