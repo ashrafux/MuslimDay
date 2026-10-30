@@ -10,7 +10,7 @@ import { dateKey, formatDuration, n } from '../lib/bn';
 import { formatBangla, formatGregorian, formatHijri, toHijri, WEEKDAYS_BN, WEEKDAYS_EN } from '../lib/dates';
 import { fmtTime, type PeriodId, type PrayerId, type Waqt } from '../lib/prayer';
 import { LocationSheet } from '../components/LocationSheet';
-import { MosqueArt, QiblaIcon, TasbihIcon, ZakatIcon, CrescentLanternIcon, HadithBookIcon } from '../components/icons';
+import { QiblaIcon, TasbihIcon, ZakatIcon, CrescentLanternIcon, HadithBookIcon } from '../components/icons';
 import { Sheet, shareText, toast } from '../components/ui';
 import { usePremiumNav } from '../components/Layout';
 import { dailyAyat } from '../data/dailyContent';
@@ -202,10 +202,6 @@ export default function Home() {
 
       <div className="h-2.5" />
       <Carousel />
-
-      <button onClick={() => nav('/ramadan')} aria-label="ramadan" className="tap fixed bottom-[100px] right-[max(1.25rem,calc(50%-240px+1.25rem))] z-30 flex h-[68px] w-[68px] items-center justify-center rounded-full bg-surface shadow-[0_6px_24px_rgba(0,0,0,.18)]">
-        <MosqueArt size={46} />
-      </button>
 
       {/* ---------- top features ---------- */}
       <section className="mt-2.5 bg-surface pb-5 pt-4">
