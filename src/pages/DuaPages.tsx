@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Check, ChevronRight, Copy, Heart, ListPlus, Pencil, Search, Share2, Trash2, Plus, Minus, RotateCcw } from 'lucide-react';
-import { Empty, PageHeader, Sheet, copyText, shareText, toast } from '../components/ui';
+import { Empty, IconButton, PageHeader, Sheet, copyText, pastel, shareText, toast } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { allDuas, duaCategories, type Dua } from '../data/duas';
 import { useReadingTimer } from '../lib/hooks';
@@ -10,11 +10,11 @@ import { NewListSheet } from './Dua';
 
 function DuaListItem({ d, index, onClick }: { d: Dua; index?: number; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-4 border-b border-line bg-surface px-5 py-4 text-left active:bg-bg">
-      {index !== undefined && <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-chip text-brand">{n(index + 1)}</span>}
+    <button onClick={onClick} className="flex w-full items-center gap-3.5 border-b border-line px-4 py-3.5 text-left last:border-0 active:bg-bg">
+      {index !== undefined && <span className={`tile h-11 w-11 shrink-0 rounded-2xl text-[14px] font-bold text-ink ${pastel(index)}`}>{n(index + 1)}</span>}
       <span className="min-w-0 flex-1">
-        <span className="block text-[19px] text-ink">{d.title}</span>
-        <span className="font-ar mt-1 block truncate text-right text-lg text-muted" dir="rtl">{d.arabic}</span>
+        <span className="block text-[16px] font-bold text-ink">{d.title}</span>
+        <span className="font-ar mt-0.5 block truncate text-right text-[17px] text-muted" dir="rtl">{d.arabic}</span>
       </span>
       <ChevronRight className="shrink-0 text-muted" size={20} />
     </button>
@@ -29,8 +29,8 @@ export function DuaCategoryPage() {
   return (
     <div>
       <PageHeader back title={c.title} sub={`${n(c.duas.length)}টি দোয়া`} />
-      <p className="px-5 py-4 text-muted">{c.subtitle}</p>
-      {c.duas.map((d, i) => <DuaListItem key={d.id} d={d} index={i} onClick={() => nav(`/dua/d/${d.id}`)} />)}
+      <p className="px-5 pb-3 pt-1 text-[14px] text-muted">{c.subtitle}</p>
+      <div className="page-card">{c.duas.map((d, i) => <DuaListItem key={d.id} d={d} index={i} onClick={() => nav(`/dua/d/${d.id}`)} />)}</div>
     </div>
   );
 }
@@ -39,12 +39,12 @@ function Counter({ target }: { target: number }) {
   const [c, setC] = useState(0);
   const done = c >= target;
   return (
-    <div className="mt-4 flex items-center justify-between rounded-2xl bg-chip px-4 py-3">
-      <span className="text-ink">পাঠ করুন {n(target)} বার</span>
+    <div className="mt-4 flex items-center justify-between rounded-[20px] bg-lav px-4 py-3">
+      <span className="font-semibold text-ink">পাঠ করুন {n(target)} বার</span>
       <div className="flex items-center gap-3">
         <button aria-label="reset" onClick={() => setC(0)} className="text-muted"><RotateCcw size={18} /></button>
         <button onClick={() => { if (!done) { setC(c + 1); navigator.vibrate?.(15); } }}
-          className={`tap flex h-12 min-w-12 items-center justify-center rounded-full px-3 text-lg text-white ${done ? 'bg-brand-dark' : 'bg-brand'}`}>
+          className={`tap flex h-12 min-w-12 items-center justify-center rounded-2xl px-4 text-[16px] font-bold text-white ${done ? 'bg-m-green' : 'bg-night'}`}>
           {done ? <Check /> : `${n(c)}/${n(target)}`}
         </button>
       </div>
@@ -54,14 +54,16 @@ function Counter({ target }: { target: number }) {
 
 export function DuaCard({ d }: { d: Dua }) {
   return (
-    <div className="bg-surface px-5 py-6">
-      <p className="arabic text-right text-[28px] text-ink">{d.arabic}</p>
-      <h4 className="mt-5 text-sm text-brand">উচ্চারণ</h4>
-      <p className="mt-1 text-[18px] leading-relaxed text-ink">{d.transliteration}</p>
-      <h4 className="mt-4 text-sm text-brand">অর্থ</h4>
-      <p className="mt-1 text-[18px] leading-relaxed text-ink">{d.meaning}</p>
-      {d.note && <p className="mt-4 rounded-2xl bg-bg p-4 text-[15px] leading-relaxed text-ink/80">{d.note}</p>}
-      <p className="mt-4 text-sm text-muted">সূত্র: {d.reference}</p>
+    <div className="px-5 py-5">
+      <div className="rounded-[22px] bg-sand px-4 py-5">
+        <p className="arabic text-right text-[27px] text-ink">{d.arabic}</p>
+      </div>
+      <h4 className="label mt-5">উচ্চারণ</h4>
+      <p className="mt-1 text-[16px] leading-relaxed text-ink">{d.transliteration}</p>
+      <h4 className="label mt-4">অর্থ</h4>
+      <p className="mt-1 text-[16px] leading-relaxed text-ink">{d.meaning}</p>
+      {d.note && <p className="mt-4 rounded-2xl bg-sky p-4 text-[14px] leading-relaxed text-ink/85">{d.note}</p>}
+      <p className="mt-4 inline-block rounded-lg bg-chip px-2.5 py-1 text-[12px] font-semibold text-muted">সূত্র: {d.reference}</p>
       {d.count && d.count > 1 && <Counter target={d.count} />}
     </div>
   );
@@ -86,20 +88,20 @@ export function DuaDetail() {
   return (
     <div>
       <PageHeader back title={d.title} sub={cat.title} />
-      <DuaCard d={d} />
-      <div className="grid grid-cols-4 border-y border-line bg-surface">
+      <div className="page-card mt-1"><DuaCard d={d} /></div>
+      <div className="page-card mt-3 grid grid-cols-4">
         {[
           { icon: <Heart size={22} fill={fav ? 'currentColor' : 'none'} className={fav ? 'text-alert' : ''} />, label: 'প্রিয়', go: () => { set('favoriteDuas', fav ? favs.filter((x) => x !== d.id) : [...favs, d.id]); toast(fav ? 'প্রিয় থেকে সরানো হয়েছে' : 'প্রিয় তালিকায় যোগ হয়েছে'); } },
           { icon: <ListPlus size={22} />, label: 'তালিকায়', go: () => setPick(true) },
           { icon: <Copy size={22} />, label: 'কপি', go: () => copyText(text) },
           { icon: <Share2 size={22} />, label: 'শেয়ার', go: () => shareText(d.title, text) },
         ].map((a) => (
-          <button key={a.label} onClick={a.go} className="tap flex flex-col items-center gap-1 py-4 text-ink">{a.icon}<span className="text-sm">{a.label}</span></button>
+          <button key={a.label} onClick={a.go} className="tap flex flex-col items-center gap-1.5 py-3.5 text-ink">{a.icon}<span className="text-[12px] font-semibold">{a.label}</span></button>
         ))}
       </div>
-      <div className="flex gap-3 p-5">
+      <div className="flex gap-3 px-4 py-4">
         <button disabled={idx <= 0} onClick={() => nav(`/dua/d/${cat.duas[idx - 1].id}`, { replace: true })} className="btn-soft flex-1 disabled:opacity-40">পূর্ববর্তী</button>
-        <button disabled={idx >= cat.duas.length - 1} onClick={() => nav(`/dua/d/${cat.duas[idx + 1].id}`, { replace: true })} className="btn-primary flex-1 disabled:opacity-40">পরবর্তী</button>
+        <button disabled={idx >= cat.duas.length - 1} onClick={() => nav(`/dua/d/${cat.duas[idx + 1].id}`, { replace: true })} className="btn-dark flex-1 disabled:opacity-40">পরবর্তী</button>
       </div>
 
       <Sheet open={pick} onClose={() => setPick(false)} title="তালিকায় যোগ করুন">
@@ -132,18 +134,18 @@ export function DuaSearch() {
   return (
     <div>
       <PageHeader back title="দোয়া খুঁজুন" />
-      <div className="sticky top-[72px] z-20 bg-bg p-4">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-sm">
+      <div className="sticky top-[64px] z-20 bg-bg px-4 pb-3 pt-1">
+        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card">
           <Search className="text-muted" size={20} />
-          <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="যেমন: ঘুম, খাওয়া, সফর" className="w-full bg-transparent py-3.5 text-lg text-ink outline-none" />
+          <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="যেমন: ঘুম, খাওয়া, সফর" className="w-full bg-transparent py-3.5 text-[16px] text-ink outline-none" />
         </label>
         {!query && (
           <div className="mt-3 flex flex-wrap gap-2">
-            {['ঘুম', 'খাওয়া', 'সফর', 'অজু', 'মসজিদ', 'ইফতার', 'ক্ষমা', 'ঋণ'].map((s) => <button key={s} onClick={() => setQ(s)} className="rounded-full bg-chip px-4 py-1.5 text-brand">{s}</button>)}
+            {['ঘুম', 'খাওয়া', 'সফর', 'অজু', 'মসজিদ', 'ইফতার', 'ক্ষমা', 'ঋণ'].map((s) => <button key={s} onClick={() => setQ(s)} className="pill pill-off">{s}</button>)}
           </div>
         )}
       </div>
-      {hits.map((d) => <DuaListItem key={d.id} d={d} onClick={() => nav(`/dua/d/${d.id}`)} />)}
+      {hits.length > 0 && <div className="page-card">{hits.map((d) => <DuaListItem key={d.id} d={d} onClick={() => nav(`/dua/d/${d.id}`)} />)}</div>}
       {query && !hits.length && <Empty icon={<Search size={36} />} title="কোনো দোয়া পাওয়া যায়নি" />}
     </div>
   );
@@ -169,19 +171,23 @@ export function DuaListPage() {
     <div>
       <PageHeader back title={list.name} sub={`${n(duas.length)}টি দোয়া`} right={!isFav && (
         <>
-          <button aria-label="rename" onClick={() => { setName(list.name); setRenaming(true); }} className="tap p-2 text-ink"><Pencil size={20} /></button>
-          <button aria-label="delete list" onClick={() => setDeleting(true)} className="tap p-2 text-ink"><Trash2 size={20} /></button>
+          <IconButton label="rename" onClick={() => { setName(list.name); setRenaming(true); }}><Pencil size={17} /></IconButton>
+          <IconButton label="delete list" onClick={() => setDeleting(true)}><Trash2 size={17} /></IconButton>
         </>
       )} />
       {duas.length === 0 ? (
         <Empty icon={<ListPlus size={36} />} title="তালিকাটি খালি" sub="দোয়া যোগ করতে নিচের বাটনে চাপুন" />
-      ) : duas.map((d) => (
-        <div key={d.id} className="flex items-center bg-surface">
-          <div className="flex-1"><DuaListItem d={d} onClick={() => nav(`/dua/d/${d.id}`)} /></div>
-          <button aria-label="remove" onClick={() => update(list.duaIds.filter((x) => x !== d.id))} className="border-b border-line p-[26px] text-muted"><Minus size={18} /></button>
+      ) : (
+        <div className="page-card">
+          {duas.map((d) => (
+            <div key={d.id} className="flex items-center border-b border-line last:border-0">
+              <div className="min-w-0 flex-1 [&>button]:border-0"><DuaListItem d={d} onClick={() => nav(`/dua/d/${d.id}`)} /></div>
+              <button aria-label="remove" onClick={() => update(list.duaIds.filter((x) => x !== d.id))} className="tap mr-3 flex h-9 w-9 items-center justify-center rounded-xl bg-rose text-ink"><Minus size={16} /></button>
+            </div>
+          ))}
         </div>
-      ))}
-      <div className="p-5"><button className="btn-primary w-full" onClick={() => setAdding(true)}><Plus size={18} /> দোয়া যোগ করুন</button></div>
+      )}
+      <div className="p-4"><button className="btn-primary w-full" onClick={() => setAdding(true)}><Plus size={18} /> দোয়া যোগ করুন</button></div>
 
       <Sheet open={deleting} onClose={() => setDeleting(false)} title="তালিকাটি মুছে ফেলবেন?">
         <p className="text-muted">"{list.name}" তালিকাটি মুছে যাবে। দোয়াগুলো অ্যাপে থেকে যাবে।</p>

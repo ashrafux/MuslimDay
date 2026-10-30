@@ -49,7 +49,7 @@ export default function Zakat() {
   return (
     <div>
       <PageHeader back title="যাকাত ক্যালকুলেটর" />
-      <section className="m-4 rounded-3xl bg-gradient-to-br from-brand to-brand-dark p-5 text-white">
+      <section className="m-4 rounded-[28px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">প্রদেয় যাকাত (২.৫%)</div>
         <div className="mt-1 text-4xl">{money(zakat)}</div>
         <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
@@ -59,7 +59,7 @@ export default function Zakat() {
         <div className="mt-3 text-sm">{nisab <= 0 ? 'স্বর্ণ/রুপার দাম দিন' : due ? 'আপনার উপর যাকাত ফরজ হয়েছে (যদি এক চন্দ্র বছর পূর্ণ হয়)।' : 'আপনার সম্পদ নিসাব পরিমাণ নয় — যাকাত ফরজ নয়।'}</div>
       </section>
 
-      <section className="bg-surface px-5 py-4">
+      <section className="page-card px-5 py-4">
         <div className="mb-3 text-ink">নিসাবের ভিত্তি</div>
         <Segmented value={basis} onChange={setBasis} options={[{ value: 'silver', label: 'রুপা (৫২.৫ ভরি)' }, { value: 'gold', label: 'স্বর্ণ (৭.৫ ভরি)' }]} />
         <div className="mt-4 grid grid-cols-2 gap-3">
@@ -69,10 +69,10 @@ export default function Zakat() {
         <p className="mt-2 flex gap-1 text-xs text-muted"><Info size={14} className="shrink-0" /> আজকের বাজারদর অনুযায়ী দাম পরিবর্তন করুন। আলেমগণ সাধারণত গরিবদের সুবিধার্থে রুপার নিসাব অনুসরণের পরামর্শ দেন।</p>
       </section>
 
-      <h3 className="px-5 pb-2 pt-5 text-sm text-muted">সম্পদ</h3>
-      <section className="bg-surface">{ASSETS.map(input)}</section>
-      <h3 className="px-5 pb-2 pt-5 text-sm text-muted">দায়</h3>
-      <section className="bg-surface">{LIABS.map(input)}</section>
+      <h3 className="label px-6 pb-2 pt-5">সম্পদ</h3>
+      <section className="page-card">{ASSETS.map(input)}</section>
+      <h3 className="label px-6 pb-2 pt-5">দায়</h3>
+      <section className="page-card">{LIABS.map(input)}</section>
 
       <div className="flex gap-3 p-5">
         <button className="btn-soft flex-1" onClick={() => setV({})}>রিসেট</button>

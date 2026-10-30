@@ -43,13 +43,13 @@ export default function Mosques() {
   return (
     <div>
       <PageHeader back title="নিকটস্থ মসজিদ" />
-      <div className="flex items-center gap-2 bg-surface px-5 py-3">
+      <div className="page-card mt-1 flex items-center gap-2 px-4 py-3">
         <span className="flex flex-1 items-center gap-2 text-ink"><MapPin size={18} className="text-brand" /> {pos.label}</span>
         <button onClick={gps} className="flex items-center gap-1 rounded-full bg-chip px-3 py-1.5 text-sm text-brand"><Crosshair size={16} /> GPS</button>
       </div>
       <div className="flex gap-2 px-5 py-3">
         {[1000, 2000, 5000].map((r) => (
-          <button key={r} onClick={() => setRadius(r)} className={`rounded-full px-4 py-1.5 ${radius === r ? 'bg-brand text-white' : 'bg-surface text-ink'}`}>{n(r / 1000)} কিমি</button>
+          <button key={r} onClick={() => setRadius(r)} className={`rounded-full px-4 py-1.5 ${radius === r ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{n(r / 1000)} কিমি</button>
         ))}
       </div>
       {state.loading && <div className="flex justify-center gap-2 p-10 text-muted"><Loader2 className="animate-spin" /> খোঁজা হচ্ছে…</div>}
@@ -57,10 +57,10 @@ export default function Mosques() {
         <Empty icon={<MosquePinIcon size={40} />} title={state.error ?? 'এই এলাকায় কোনো মসজিদ পাওয়া যায়নি'} sub="গুগল ম্যাপে খুঁজে দেখুন"
           action={<a href={mapsSearch} target="_blank" rel="noreferrer" className="btn-primary"><ExternalLink size={18} /> গুগল ম্যাপে খুলুন</a>} />
       )}
-      <div className="bg-surface">
+      <div className="page-card">
         {state.list.map((m) => (
           <div key={m.id} className="flex items-center gap-4 border-b border-line px-5 py-4">
-            <span className="icon-circle h-12 w-12 shrink-0 text-brand"><MosquePinIcon size={24} /></span>
+            <span className="tile h-12 w-12 shrink-0 rounded-2xl bg-lav text-ink"><MosquePinIcon size={24} /></span>
             <span className="min-w-0 flex-1"><span className="block truncate text-[17px] text-ink">{m.name}</span><span className="text-sm text-muted">{m.dist < 1 ? `${n(Math.round(m.dist * 1000))} মিটার` : `${n(m.dist.toFixed(1))} কিমি`} দূরে</span></span>
             <a aria-label="directions" href={`https://www.google.com/maps/dir/?api=1&destination=${m.lat},${m.lng}`} target="_blank" rel="noreferrer" className="rounded-full bg-brand p-2.5 text-white"><Navigation size={18} /></a>
           </div>

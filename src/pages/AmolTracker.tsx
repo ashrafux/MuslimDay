@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Bell, Check, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck } from 'lucide-react';
-import { PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast } from '../components/ui';
+import { IconButton, PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast } from '../components/ui';
+import { MoodFace } from '../components/icons';
 import { useStore, type CustomAmol, type PrayerMode } from '../store/useStore';
 import { addDays, dateKey, keyToDate, n } from '../lib/bn';
 import { formatGregorian, formatHijri, toHijri, WEEKDAYS_BN, WEEKDAYS_BN_FULL } from '../lib/dates';
@@ -27,10 +28,10 @@ export default function AmolTracker() {
   return (
     <div>
       <PageHeader back title="আমল ট্র্যাকার" right={<>
-        <button aria-label="add amal" onClick={() => setEditor({ open: true })} className="tap p-2 text-brand"><Plus size={24} /></button>
-        <button aria-label="manage amal" onClick={() => nav('/amol/manage')} className="tap p-2 text-ink"><SlidersHorizontal size={21} /></button>
+        <IconButton label="manage amal" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /></IconButton>
+        <IconButton label="add amal" tone="brand" onClick={() => setEditor({ open: true })}><Plus size={20} /></IconButton>
       </>} />
-      <div className="bg-surface px-5 py-3">
+      <div className="px-4 pb-1 pt-1">
         <Segmented value={tab} onChange={(v) => setParams(v === 'today' ? {} : { tab: v }, { replace: true })}
           options={[{ value: 'today', label: 'দৈনিক আমল' }, { value: 'stats', label: 'পরিসংখ্যান' }]} />
       </div>
@@ -55,7 +56,7 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
   const today = dateKey();
   const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
   return (
-    <div className="flex items-center gap-1 bg-surface px-2 pb-3">
+    <div className="page-card mt-2 flex items-center gap-1 px-1.5 py-2.5">
       <button aria-label="previous week" className="tap rounded-full p-1.5 text-muted" onClick={() => onSelect(dateKey(addDays(sel, -7)))}><ChevronLeft size={20} /></button>
       <div className="grid flex-1 grid-cols-7 gap-1">
         {days.map((d) => {
@@ -67,10 +68,10 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
           const active = k === selected;
           return (
             <button key={k} disabled={future} onClick={() => onSelect(k)}
-              className={`flex flex-col items-center gap-1 rounded-2xl py-1.5 transition disabled:opacity-35 ${active ? 'bg-chip' : ''}`}>
-              <span className={`text-[11px] ${d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
-              <ProgressRing value={items.length ? done / items.length : 0} size={34} stroke={3.5} color="rgb(var(--brand))" track="rgb(var(--brand) / .14)">
-                <span className={`text-[13px] ${k === today ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
+              className={`flex flex-col items-center gap-1 rounded-2xl py-1.5 transition disabled:opacity-35 ${active ? 'bg-night text-white' : ''}`}>
+              <span className={`text-[11px] font-semibold ${active ? 'text-white/70' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
+              <ProgressRing value={items.length ? done / items.length : 0} size={34} stroke={3.5} color={active ? '#ffffff' : 'rgb(var(--brand))'} track={active ? 'rgb(255 255 255 / .2)' : 'rgb(var(--chip))'}>
+                <span className={`text-[13px] font-bold ${active ? 'text-white' : k === today ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
               </ProgressRing>
             </button>
           );
@@ -169,32 +170,34 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
 
   return (
     <div>
-      <div className="bg-surface pb-1 pt-1 text-center">
-        <div className="text-[16px] text-ink">{isToday ? 'আজ, ' : `${WEEKDAYS_BN_FULL[date.getDay()]}, `}{formatGregorian(date, 'bn', true)}</div>
-        <div className="text-[13px] text-muted">{formatHijri(toHijri(date, hijriAdjust), 'bn', true)} হিজরি</div>
+      <div className="px-5 pt-2">
+        <div className="label">{formatHijri(toHijri(date, hijriAdjust), 'bn', true)} হিজরি</div>
+        <div className="mt-0.5 text-[20px] font-bold text-ink">{isToday ? 'আজ, ' : `${WEEKDAYS_BN_FULL[date.getDay()]}, `}{formatGregorian(date, 'bn', true)}</div>
       </div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="flex items-center gap-5 border-y border-line bg-surface px-5 py-4">
-        <ProgressRing value={total ? count / total : 0} size={84} stroke={7} color="rgb(var(--brand))" track="rgb(var(--brand) / .12)">
-          <span className="text-[20px] text-ink">{n(pct)}%</span>
-        </ProgressRing>
-        <div className="min-w-0 flex-1">
-          <div className="text-[18px] text-ink">{n(count)}/{n(total)} আমল সম্পন্ন</div>
-          <div className="mt-1 text-[13px] text-muted">{count === total && total > 0 ? 'মাশাআল্লাহ! সব আমল সম্পন্ন।' : 'প্রতিটি আমল সম্পন্ন হলে টিক দিন।'}</div>
-          <div className="mt-2 flex flex-wrap gap-2 text-[12px]">
-            <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"><Flame size={13} /> {n(prayerStreak)} দিন নামাজ</span>
-            <span className="flex items-center gap-1 rounded-full bg-chip px-2.5 py-0.5 text-brand"><CalendarCheck size={13} /> নামাজ {n(prayersDone)}/{n(5)}</span>
-            <span className="flex items-center gap-1 rounded-full bg-chip px-2.5 py-0.5 text-brand"><Users size={13} /> জামাতে {n(jamaat)}</span>
+      <div className="mx-4 mt-3 rounded-[28px] bg-lav p-5 text-ink">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="label !text-ink/60">আজকের অগ্রগতি</div>
+            <div className="mt-1 text-[17px] font-bold">{n(count)}/{n(total)} আমল সম্পন্ন</div>
+            <div className="mt-0.5 text-[13px] text-ink/70">{count === total && total > 0 ? 'মাশাআল্লাহ! সব আমল সম্পন্ন।' : 'প্রতিটি আমল সম্পন্ন হলে টিক দিন।'}</div>
           </div>
+          <ProgressRing value={total ? count / total : 0} size={56} stroke={6} color="rgb(var(--accent))" track="rgb(255 255 255 / .7)" />
+        </div>
+        <div className="mt-3 text-[44px] font-extrabold leading-none tracking-tight">{n(pct)}%</div>
+        <div className="mt-4 flex flex-wrap gap-2 text-[12px] font-semibold">
+          <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Flame size={13} className="text-alert" /> {n(prayerStreak)} দিন নামাজ</span>
+          <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><CalendarCheck size={13} /> নামাজ {n(prayersDone)}/{n(5)}</span>
+          <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Users size={13} /> জামাতে {n(jamaat)}</span>
         </div>
       </div>
 
       {groups.map((g) => (
-        <section key={g.title} className="mt-2.5 bg-surface">
-          <h3 className="flex items-center justify-between px-5 pb-1 pt-3.5 text-[15px] text-muted">
+        <section key={g.title} className="page-card mt-2.5">
+          <h3 className="flex items-center justify-between px-5 pb-1 pt-4 text-[15px] font-bold text-ink">
             <span>{g.title}{g.title === GROUP_AVOID && <span className="ml-1 text-[12px]">(বিরত থাকলে টিক দিন)</span>}</span>
-            <span className="text-[13px]">{n(g.items.filter((i) => done.includes(i.id)).length)}/{n(g.items.length)}</span>
+            <span className="rounded-full bg-chip px-2 py-0.5 text-[12px] text-muted">{n(g.items.filter((i) => done.includes(i.id)).length)}/{n(g.items.length)}</span>
           </h3>
           <ul className="divide-y divide-line">
             {g.items.map((it) => {
@@ -225,7 +228,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
                     <div className="ml-[48px] mt-2 flex gap-2">
                       {MODES.map((m) => (
                         <button key={m.v} onClick={() => setMode(it.id as PrayerId, m.v)}
-                          className={`rounded-full px-3 py-0.5 text-[13px] ${modes[it.id as PrayerId] === m.v ? (m.v === 'qaza' ? 'bg-alert text-white' : 'bg-brand text-white') : 'bg-chip text-ink'}`}>{m.l}</button>
+                          className={`rounded-full px-3 py-1 text-[12.5px] font-semibold ${modes[it.id as PrayerId] === m.v ? (m.v === 'qaza' ? 'bg-alert text-white' : 'bg-night text-white') : 'bg-chip text-ink'}`}>{m.l}</button>
                       ))}
                     </div>
                   )}
@@ -241,14 +244,20 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
         <button className="btn-ghost mt-1 w-full" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /> আমল তালিকা সাজান</button>
       </div>
 
-      <section className="mt-3 bg-surface px-5 py-4">
-        <h3 className="text-[17px] text-ink">আজকের মুহাসাবা</h3>
+      <section className="page-card mt-3 px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">আজকের মুহাসাবা</h3>
         <p className="text-[13px] text-muted">দিন শেষে নিজের আমলের হিসাব নিন — কেমন গেল আজকের দিন?</p>
-        <div className="mt-3 grid grid-cols-4 gap-2">
-          {MOODS.map((m, i) => (
-            <button key={m} onClick={() => setJournal({ mood: journal.mood === i + 1 ? undefined : i + 1 })}
-              className={`rounded-xl py-2 text-[14px] ${journal.mood === i + 1 ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{m}</button>
-          ))}
+        <div className="mt-4 grid grid-cols-4 gap-2">
+          {MOODS.map((m, i) => {
+            const on = journal.mood === i + 1;
+            return (
+              <button key={m} onClick={() => setJournal({ mood: on ? undefined : i + 1 })} aria-pressed={on}
+                className={`tap flex flex-col items-center gap-1.5 rounded-2xl py-2 transition ${on ? 'bg-chip' : ''} ${journal.mood && !on ? 'opacity-45' : ''}`}>
+                <MoodFace level={(i + 1) as 1 | 2 | 3 | 4} size={46} />
+                <span className="text-[12.5px] font-semibold text-ink">{m}</span>
+              </button>
+            );
+          })}
         </div>
         <textarea id={`journal-${key}`} value={journal.text ?? ''} onChange={(e) => setJournal({ text: e.target.value })} placeholder="আজ কী ভালো করেছি, কোথায় উন্নতি দরকার, আগামীকালের নিয়ত…"
           className="input mt-3 min-h-[96px] text-[15px]" />
@@ -383,7 +392,7 @@ export function AmolEditor({ open, item, onClose }: { open: boolean; item?: Cust
             <span className="mb-1.5 block text-[13px] text-muted">বিভাগ</span>
             <div className="flex flex-wrap gap-2">
               {GROUP_CHOICES.map((g) => (
-                <button key={g} onClick={() => setF({ ...f, group: g })} className={`rounded-full px-3 py-1 text-[14px] ${f.group === g ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{g}</button>
+                <button key={g} onClick={() => setF({ ...f, group: g })} className={`rounded-full px-3 py-1 text-[14px] ${f.group === g ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{g}</button>
               ))}
             </div>
           </div>
@@ -392,7 +401,7 @@ export function AmolEditor({ open, item, onClose }: { open: boolean; item?: Cust
             <span className="mb-1.5 block text-[13px] text-muted">কখন করবেন</span>
             <div className="flex flex-wrap gap-2">
               {([['daily', 'প্রতিদিন'], ['weekdays', 'নির্দিষ্ট বারে'], ['bid', 'আইয়ামে বীয (১৩-১৫ হিজরি)']] as const).map(([v, l]) => (
-                <button key={v} onClick={() => setF({ ...f, freq: v })} className={`rounded-full px-3 py-1 text-[14px] ${f.freq === v ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{l}</button>
+                <button key={v} onClick={() => setF({ ...f, freq: v })} className={`rounded-full px-3 py-1 text-[14px] ${f.freq === v ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{l}</button>
               ))}
             </div>
             {f.freq === 'weekdays' && (
@@ -401,7 +410,7 @@ export function AmolEditor({ open, item, onClose }: { open: boolean; item?: Cust
                   const on = f.days.includes(d);
                   return (
                     <button key={d} onClick={() => setF({ ...f, days: on ? f.days.filter((x) => x !== d) : [...f.days, d] })}
-                      className={`rounded-lg py-2 text-[13px] ${on ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{WEEKDAYS_BN[d]}</button>
+                      className={`rounded-lg py-2 text-[13px] ${on ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{WEEKDAYS_BN[d]}</button>
                   );
                 })}
               </div>
@@ -453,9 +462,9 @@ export function AmolManage() {
 
   return (
     <div>
-      <PageHeader back title="আমল তালিকা" right={<button aria-label="add amal" onClick={() => setEditor({ open: true })} className="tap p-2 text-brand"><Plus size={24} /></button>} />
-      <h3 className="px-5 pb-2 pt-5 text-[13px] text-muted">আমার তৈরি আমল ({n(custom.length)})</h3>
-      <div className="bg-surface">
+      <PageHeader back title="আমল তালিকা" right={<IconButton label="add amal" tone="brand" onClick={() => setEditor({ open: true })}><Plus size={20} /></IconButton>} />
+      <h3 className="label px-6 pb-2 pt-5">আমার তৈরি আমল ({n(custom.length)})</h3>
+      <div className="page-card">
         {custom.length === 0 && (
           <div className="px-5 py-6 text-center">
             <p className="text-ink">এখনও কোনো নিজস্ব আমল নেই</p>
@@ -480,8 +489,8 @@ export function AmolManage() {
         ))}
       </div>
 
-      <h3 className="px-5 pb-2 pt-6 text-[13px] text-muted">ডিফল্ট আমল — প্রয়োজন না হলে বন্ধ রাখুন</h3>
-      <div className="bg-surface">
+      <h3 className="label px-6 pb-2 pt-6">ডিফল্ট আমল — প্রয়োজন না হলে বন্ধ রাখুন</h3>
+      <div className="page-card">
         {BUILTIN.map((b) => (
           <div key={b.id} className="flex items-center justify-between border-b border-line px-5 py-3">
             <span>
@@ -576,38 +585,41 @@ function Stats() {
       <div className="grid grid-cols-3 gap-2.5 px-4">
         {[
           { icon: <Flame className="text-alert" size={20} />, v: n(streak), l: 'নামাজের স্ট্রিক' },
-          { icon: <Trophy className="text-amber-500" size={20} />, v: n(best), l: 'সেরা স্ট্রিক' },
+          { icon: <Trophy className="text-m-yellow" size={20} />, v: n(best), l: 'সেরা স্ট্রিক' },
           { icon: <Check className="text-brand" size={20} />, v: `${n(avg)}%`, l: '৩০ দিনের গড়' },
           { icon: <Users className="text-brand" size={20} />, v: `${n(prayed ? Math.round((jam / prayed) * 100) : 0)}%`, l: 'জামাতে নামাজ' },
           { icon: <CalendarCheck className="text-brand" size={20} />, v: n(prayed), l: '৩০ দিনে নামাজ' },
           { icon: <Minus className="text-alert" size={20} />, v: n(qaza), l: 'কাযা আদায়' },
         ].map((s) => (
-          <div key={s.l} className="rounded-2xl bg-surface p-3 text-center">
-            <div className="flex justify-center">{s.icon}</div>
-            <div className="mt-1 text-[20px] text-ink">{s.v}</div>
-            <div className="text-[11px] text-muted">{s.l}</div>
+          <div key={s.l} className="card p-3">
+            <div className="flex">{s.icon}</div>
+            <div className="mt-2 text-[22px] font-extrabold leading-none tracking-tight text-ink">{s.v}</div>
+            <div className="mt-1 text-[11px] text-muted">{s.l}</div>
           </div>
         ))}
       </div>
 
-      <section className="bg-surface px-5 py-4">
-        <h3 className="text-[16px] text-ink">গত ৭ দিনের নামাজ</h3>
-        <div className="mt-4 flex h-36 items-end justify-between gap-2" role="img" aria-label="last 7 days prayers chart">
-          {last7.map((d) => {
+      <section className="page-card px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">গত ৭ দিনের নামাজ</h3>
+        <div className="mt-4 flex h-44 items-end justify-between gap-2" role="img" aria-label="last 7 days prayers chart">
+          {last7.map((d, i) => {
             const c = prayerCount(d);
+            const tone = c === 5 ? 'bg-m-green' : c === 4 ? 'bg-m-yellow' : c === 3 ? 'bg-m-blue' : c > 0 ? 'bg-m-pink' : 'bg-line';
+            const level = (c === 5 ? 4 : c === 4 ? 3 : c >= 2 ? 2 : 1) as 1 | 2 | 3 | 4;
+            const isLast = i === last7.length - 1;
             return (
-              <div key={dateKey(d)} className="flex flex-1 flex-col items-center gap-1">
-                <span className="text-xs text-muted">{n(c)}</span>
-                <div className="w-full max-w-[28px] rounded-t-md bg-brand transition-all" style={{ height: `${(c / 5) * 96 + 4}px`, opacity: c ? 1 : 0.25 }} />
-                <span className="text-xs text-muted">{WEEKDAYS_BN[d.getDay()]}</span>
+              <div key={dateKey(d)} className="flex flex-1 flex-col items-center gap-1.5">
+                {c > 0 && <MoodFace level={level} size={26} />}
+                <div className={`w-full max-w-[26px] rounded-full transition-all ${tone}`} style={{ height: `${(c / 5) * 96 + 18}px` }} title={`${n(c)}/${n(5)}`} />
+                <span className={`text-[11px] font-semibold ${isLast ? 'text-ink' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
               </div>
             );
           })}
         </div>
       </section>
 
-      <section className="bg-surface px-5 py-4">
-        <h3 className="text-[16px] text-ink">ওয়াক্ত অনুযায়ী (৩০ দিন)</h3>
+      <section className="page-card px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">ওয়াক্ত অনুযায়ী (৩০ দিন)</h3>
         <div className="mt-3 space-y-3">
           {perPrayer.map(({ p, c }) => (
             <div key={p}>
@@ -618,8 +630,8 @@ function Stats() {
         </div>
       </section>
 
-      <section className="bg-surface px-5 py-4">
-        <h3 className="text-[16px] text-ink">আমল অনুযায়ী ধারাবাহিকতা (৩০ দিন)</h3>
+      <section className="page-card px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">আমল অনুযায়ী ধারাবাহিকতা (৩০ দিন)</h3>
         <div className="mt-2 divide-y divide-line">
           {perDeed.map(({ def, applicable, doneCount, rate, streak: s }) => (
             <div key={def.id} className="py-2.5">
@@ -634,8 +646,8 @@ function Stats() {
         </div>
       </section>
 
-      <section className="bg-surface px-5 py-4">
-        <h3 className="text-[16px] text-ink">৩০ দিনের আমল ক্যালেন্ডার</h3>
+      <section className="page-card px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">৩০ দিনের আমল ক্যালেন্ডার</h3>
         <div className="mt-3 grid grid-cols-10 gap-1.5">
           {days.map((d, i) => (
             <div key={dateKey(d)} title={`${dateKey(d)}: ${Math.round(dayPct[i] * 100)}%`} className="aspect-square rounded"
@@ -646,8 +658,8 @@ function Stats() {
       </section>
 
       {moodDays.length > 0 && (
-        <section className="bg-surface px-5 py-4">
-          <h3 className="text-[16px] text-ink">মুহাসাবা</h3>
+        <section className="page-card px-5 py-4">
+          <h3 className="text-[17px] font-bold text-ink">মুহাসাবা</h3>
           <p className="mt-1 text-[14px] text-muted">{n(moodDays.length)} দিন হিসাব নিয়েছেন • গড় অনুভূতি: {MOODS[Math.round(avgMood) - 1]}</p>
         </section>
       )}

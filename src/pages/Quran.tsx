@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Bookmark, FileText, Search, Settings } from 'lucide-react';
-import { PageHeader, Segmented } from '../components/ui';
+import { IconButton, PageHeader, Segmented, pastel } from '../components/ui';
 import { useT } from '../lib/i18n';
 import { useStore } from '../store/useStore';
 import { QUICK_LINKS, SURAHS } from '../lib/quran';
@@ -10,24 +10,24 @@ import { n } from '../lib/bn';
 
 export function MakkiIcon({ meccan }: { meccan: boolean }) {
   return meccan ? (
-    <svg width="21" height="18" viewBox="0 0 26 22" className="text-muted"><path d="M2 6l11-4 11 4v12l-11 4-11-4z" fill="currentColor" /><path d="M2 9l11 4 11-4" stroke="rgb(var(--surface))" strokeWidth="1.6" fill="none" /></svg>
+    <svg width="17" height="15" viewBox="0 0 26 22" className="text-muted"><path d="M2 6l11-4 11 4v12l-11 4-11-4z" fill="currentColor" /><path d="M2 9l11 4 11-4" stroke="rgb(var(--surface))" strokeWidth="1.6" fill="none" /></svg>
   ) : (
-    <svg width="21" height="19" viewBox="0 0 26 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-muted"><path d="M3 22h20M6 22V12c0-3 3-5 6-6 3 1 6 3 6 6v10M17 22V4l2-2 2 2v18M12 6V3" /></svg>
+    <svg width="17" height="16" viewBox="0 0 26 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-muted"><path d="M3 22h20M6 22V12c0-3 3-5 6-6 3 1 6 3 6 6v10M17 22V4l2-2 2 2v18M12 6V3" /></svg>
   );
 }
 
 export function SurahRow({ s, onClick, right }: { s: (typeof SURAHS)[number]; onClick: () => void; right?: React.ReactNode }) {
   const t = useT();
   return (
-    <button onClick={onClick} className="flex h-[88px] w-full items-center gap-4 border-b border-line px-4 text-left transition active:bg-bg">
-      <span className="flex h-[47px] w-[47px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-brand text-[16px] text-ink">{n(s.n)}</span>
+    <button onClick={onClick} className="flex w-full items-center gap-3.5 border-b border-line px-4 py-3.5 text-left transition last:border-0 active:bg-bg">
+      <span className={`tile h-12 w-12 shrink-0 rounded-2xl text-[15px] font-bold text-ink ${pastel(s.n)}`}>{n(s.n)}</span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[19px] text-ink">{t('surah')} {s.bn}</span>
-        <span className="mt-0.5 flex items-center gap-2 text-[14px] text-ink/80">
+        <span className="block truncate text-[16.5px] font-bold text-ink">{t('surah')} {s.bn}</span>
+        <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted">
           <MakkiIcon meccan={s.meccan} /> {s.meccan ? t('makki') : t('madani')} • {n(s.verses)} {t('ayat')}
         </span>
       </span>
-      {right ?? <span className="font-ar text-[29px] leading-none text-brand" dir="rtl">{s.arabic}</span>}
+      {right ?? <span className="font-ar text-[26px] leading-none text-brand" dir="rtl">{s.arabic}</span>}
     </button>
   );
 }
@@ -39,60 +39,60 @@ export default function Quran() {
   const [tab, setTab] = useState<'surah' | 'para'>('surah');
 
   const tiles = [
-    { label: t('tilawat'), icon: <BookOpen size={28} strokeWidth={1.5} />, go: () => nav(lastRead[0] ? `/quran/${lastRead[0].surah}?ayah=${lastRead[0].ayah}` : '/quran/1') },
-    { label: t('tafsir'), icon: <FileText size={26} strokeWidth={1.8} />, go: () => nav('/tafsir') },
-    { label: t('search'), icon: <Search size={26} strokeWidth={2.4} />, go: () => nav('/quran/search') },
-    { label: t('bookmarks'), icon: <Bookmark size={24} fill="currentColor" />, go: () => nav('/quran/bookmarks') },
+    { label: t('tilawat'), tint: 'bg-lav', icon: <BookOpen size={24} strokeWidth={1.8} />, go: () => nav(lastRead[0] ? `/quran/${lastRead[0].surah}?ayah=${lastRead[0].ayah}` : '/quran/1') },
+    { label: t('tafsir'), tint: 'bg-sand', icon: <FileText size={23} strokeWidth={1.8} />, go: () => nav('/tafsir') },
+    { label: t('search'), tint: 'bg-sky', icon: <Search size={23} strokeWidth={2.2} />, go: () => nav('/quran/search') },
+    { label: t('bookmarks'), tint: 'bg-rose', icon: <Bookmark size={22} strokeWidth={2} />, go: () => nav('/quran/bookmarks') },
   ];
 
   return (
     <div>
-      <PageHeader title={t('quran')} right={<button aria-label="settings" onClick={() => nav('/quran/settings')} className="tap p-2 text-ink"><Settings size={26} fill="currentColor" stroke="rgb(var(--surface))" strokeWidth={1.5} /></button>} />
-      <section className="bg-bg pb-5 pt-7">
-        <div className="grid grid-cols-4 px-4">
-          {tiles.map((x) => (
-            <button key={x.label} onClick={x.go} className="tap flex flex-col items-center gap-2.5">
-              <span className="flex h-[60px] w-[60px] items-center justify-center rounded-[18px] bg-chip text-brand">{x.icon}</span>
-              <span className="text-[14px] text-ink">{x.label}</span>
-            </button>
-          ))}
-        </div>
-
-        {lastRead.length > 0 && (
-          <>
-            <h2 className="mt-7 px-5 text-[20px] text-ink">{t('lastRead')}</h2>
-            <div className="no-scrollbar mt-3 flex gap-2.5 overflow-x-auto px-5">
-              {lastRead.slice(0, 4).map((l) => (
-                <button key={l.surah} onClick={() => nav(`/quran/${l.surah}?ayah=${l.ayah}`)} className="tap h-[49px] shrink-0 rounded-[14px] bg-chip px-5 text-brand">
-                  <span className="text-[16.5px]">সূরা {SURAHS[l.surah - 1].bn}</span> <span className="text-[12px]">আয়াত {n(l.ayah)}</span>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        <h2 className="mt-5 px-5 text-[20px] text-ink">{t('quickLinks')}</h2>
-        <div className="no-scrollbar mt-3 flex gap-2.5 overflow-x-auto px-5">
-          {QUICK_LINKS.map((q) => (
-            <button key={q.label} onClick={() => nav(`/quran/${q.surah}?ayah=${q.ayah}`)} className="tap h-[49px] shrink-0 rounded-[14px] bg-chip px-5 text-[16.5px] text-brand">{q.label}</button>
-          ))}
-        </div>
+      <PageHeader title={t('quran')} right={<IconButton label="settings" onClick={() => nav('/quran/settings')}><Settings size={19} /></IconButton>} />
+      <section className="page-card mt-2 grid grid-cols-4 px-2 py-4">
+        {tiles.map((x) => (
+          <button key={x.label} onClick={x.go} className="tap flex flex-col items-center gap-2">
+            <span className={`tile h-14 w-14 text-ink ${x.tint}`}>{x.icon}</span>
+            <span className="text-[12.5px] font-medium text-ink">{x.label}</span>
+          </button>
+        ))}
       </section>
 
-      <section className="bg-surface">
-        <div className="px-5 pb-3 pt-6">
-          <Segmented value={tab} onChange={setTab} options={[{ value: 'surah', label: <span className="text-[18px]">{t('surahs')}</span> }, { value: 'para', label: <span className="text-[18px]">{t('para')}</span> }]} />
-        </div>
+      {lastRead.length > 0 && (
+        <>
+          <div className="section-head"><span>{t('lastRead')}</span></div>
+          <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-4">
+            {lastRead.slice(0, 4).map((l, i) => (
+              <button key={l.surah} onClick={() => nav(`/quran/${l.surah}?ayah=${l.ayah}`)}
+                className={`tap flex min-w-[150px] shrink-0 flex-col items-start rounded-[22px] p-4 text-left text-ink ${i === 0 ? 'bg-night text-white' : 'bg-surface shadow-card'}`}>
+                <span className={`label ${i === 0 ? '!text-white/60' : ''}`}>আয়াত {n(l.ayah)}</span>
+                <span className="mt-1 text-[16px] font-bold">সূরা {SURAHS[l.surah - 1].bn}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      <div className="section-head"><span>{t('quickLinks')}</span></div>
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4">
+        {QUICK_LINKS.map((q) => (
+          <button key={q.label} onClick={() => nav(`/quran/${q.surah}?ayah=${q.ayah}`)} className="tap pill pill-off shrink-0 py-2.5 font-semibold">{q.label}</button>
+        ))}
+      </div>
+
+      <div className="px-4 pb-3 pt-6">
+        <Segmented value={tab} onChange={setTab} options={[{ value: 'surah', label: t('surahs') }, { value: 'para', label: t('para') }]} />
+      </div>
+      <section className="page-card">
         {tab === 'surah'
           ? SURAHS.map((s) => <SurahRow key={s.n} s={s} onClick={() => nav(`/quran/${s.n}`)} />)
           : juzStarts.map((j) => (
-            <button key={j.juz} onClick={() => nav(`/quran/${j.surah}?ayah=${j.ayah}`)} className="flex h-[88px] w-full items-center gap-4 border-b border-line px-4 text-left active:bg-bg">
-              <span className="flex h-[47px] w-[47px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-brand text-[16px] text-ink">{n(j.juz)}</span>
+            <button key={j.juz} onClick={() => nav(`/quran/${j.surah}?ayah=${j.ayah}`)} className="flex w-full items-center gap-3.5 border-b border-line px-4 py-3.5 text-left last:border-0 active:bg-bg">
+              <span className={`tile h-12 w-12 shrink-0 rounded-2xl text-[15px] font-bold text-ink ${pastel(j.juz)}`}>{n(j.juz)}</span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[19px] text-ink">পারা {n(j.juz)}</span>
-                <span className="mt-0.5 block text-[14px] text-muted">শুরু: সূরা {SURAHS[j.surah - 1].bn}, আয়াত {n(j.ayah)}</span>
+                <span className="block text-[16.5px] font-bold text-ink">পারা {n(j.juz)}</span>
+                <span className="mt-0.5 block text-[13px] text-muted">শুরু: সূরা {SURAHS[j.surah - 1].bn}, আয়াত {n(j.ayah)}</span>
               </span>
-              <span className="font-ar text-[24px] text-brand" dir="rtl">{j.name}</span>
+              <span className="font-ar text-[22px] text-brand" dir="rtl">{j.name}</span>
             </button>
           ))}
       </section>

@@ -175,7 +175,7 @@ export function ToolsDotsIcon({ size = 24, active, ...p }: P & { active?: boolea
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...p}>
       {[4, 12].map((y) => [4, 12].map((x) => <circle key={`${x}${y}`} cx={x} cy={y} r="1.6" />))}
       {[4, 12, 20].map((x) => <circle key={`b${x}`} cx={x} cy="20" r="1.6" />)}
-      <circle cx="19" cy="5" r="4" fill="#f97316" stroke={active ? 'rgb(var(--chip))' : 'rgb(var(--bg))'} strokeWidth="1.5" />
+      <circle cx="19" cy="5" r="3.6" fill="rgb(var(--alert))" stroke={active ? 'rgb(var(--night))' : 'rgb(var(--surface))'} strokeWidth="1.5" />
     </svg>
   );
 }
@@ -210,5 +210,27 @@ export function RuqyahIcon({ size = 24 }: { size?: number }) {
       </svg>
       <span className="font-ar relative" style={{ fontSize: size * 0.62 }}>رقية</span>
     </span>
+  );
+}
+
+/** Mood face in a coloured circle (check-in style). level 1 = low … 4 = great. */
+export function MoodFace({ level, size = 44 }: { level: 1 | 2 | 3 | 4; size?: number }) {
+  const bg = { 1: 'rgb(var(--m-pink))', 2: 'rgb(var(--m-gray))', 3: 'rgb(var(--m-yellow))', 4: 'rgb(var(--m-green))' }[level];
+  const mouth = {
+    1: 'M17 33c3-4 11-4 14 0',
+    2: 'M17 31h14',
+    3: 'M17 29c3 3 11 3 14 0',
+    4: 'M15 27c4 7 14 7 18 0',
+  }[level];
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="24" fill={bg} />
+      <g fill="none" stroke="#1f2a24" strokeWidth="2" strokeLinecap="round">
+        <path d="M14 16c2-2 5-2 7 0M27 16c2-2 5-2 7 0" />
+        <path d="M18 20v3M30 20v3" />
+        <path d="M24 21v6l-2 1" />
+        <path d={mouth} />
+      </g>
+    </svg>
   );
 }

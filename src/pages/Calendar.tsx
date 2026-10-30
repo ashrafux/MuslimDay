@@ -42,12 +42,12 @@ export default function CalendarPage() {
   return (
     <div>
       <PageHeader back title="ক্যালেন্ডার" />
-      <div className="bg-surface px-5 py-3">
+      <div className="px-4 pb-1 pt-1">
         <Segmented value={tab} onChange={setTab} options={[{ value: 'month', label: 'মাসিক' }, { value: 'convert', label: <span className="flex items-center gap-1"><ArrowLeftRight size={16} /> রূপান্তর</span> }]} />
       </div>
       {tab === 'convert' ? <Converter /> : (
         <>
-          <div className="bg-surface px-3 pb-4">
+          <div className="page-card px-3 pb-4">
             <div className="flex items-center justify-between py-2">
               <button aria-label="previous month" className="tap rounded-full p-2" onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))}><ChevronLeft /></button>
               <button className="text-center" onClick={() => { const d = new Date(); setCursor(new Date(d.getFullYear(), d.getMonth(), 1)); }}>
@@ -70,7 +70,7 @@ export default function CalendarPage() {
                 const prayed = (amol[k] ?? []).filter((x) => ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].includes(x)).length;
                 return (
                   <button key={k} onClick={() => setSelected(d)}
-                    className={`relative flex aspect-square flex-col items-center justify-center rounded-xl ${k === today ? 'bg-brand text-white' : ev ? 'bg-amber-100 dark:bg-amber-900/40' : 'hover:bg-chip'} ${inMonth ? '' : 'opacity-35'}`}>
+                    className={`relative flex aspect-square flex-col items-center justify-center rounded-full ${k === today ? 'bg-brand text-white shadow-card' : ev ? 'bg-butter' : 'hover:ring-2 hover:ring-accent/60'} ${inMonth ? '' : 'opacity-35'}`}>
                     <span className={`text-lg leading-none ${k === today ? 'text-white' : d.getDay() === 5 ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
                     <span className={`mt-0.5 text-[11px] leading-none ${k === today ? 'text-white/85' : 'text-muted'}`}>{n(h.day)}</span>
                     {prayed > 0 && <span className={`absolute bottom-1 h-1 w-1 rounded-full ${prayed === 5 ? 'bg-brand' : 'bg-alert'} ${k === today ? 'bg-white' : ''}`} />}
@@ -80,12 +80,12 @@ export default function CalendarPage() {
             </div>
             <div className="mt-3 flex flex-wrap gap-4 px-2 text-xs text-muted">
               <span>বড় সংখ্যা: ইংরেজি</span><span>ছোট সংখ্যা: হিজরি</span>
-              <span className="flex items-center gap-1"><span className="h-3 w-3 rounded bg-amber-100" /> ইসলামিক দিবস</span>
+              <span className="flex items-center gap-1"><span className="h-3 w-3 rounded bg-butter" /> ইসলামিক দিবস</span>
             </div>
           </div>
 
-          <section className="mt-4 bg-surface px-5 py-4">
-            <h3 className="text-lg text-ink">এই মাসের ইসলামিক দিবস</h3>
+          <section className="page-card mt-4 px-5 py-4">
+            <h3 className="text-[17px] font-bold text-ink">এই মাসের ইসলামিক দিবস</h3>
             {monthEvents.length === 0 ? <p className="mt-2 text-sm text-muted">এই মাসে বিশেষ কোনো দিবস নেই।</p> : monthEvents.map(({ date, e }) => (
               <button key={dateKey(date) + e.title} onClick={() => setSelected(date)} className="mt-3 flex w-full gap-4 text-left">
                 <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-chip text-brand">
@@ -109,7 +109,7 @@ export default function CalendarPage() {
             <div className="space-y-3">
               <p className="text-brand">{formatHijri(h, 'bn', true)} হিজরি • {formatBangla(selected)} বঙ্গাব্দ</p>
               {ev.map((e) => (
-                <div key={e.title} className="rounded-2xl bg-amber-50 p-4 dark:bg-amber-900/30">
+                <div key={e.title} className="rounded-2xl bg-butter p-4">
                   <div className="text-lg text-ink">{e.title}</div><p className="text-sm text-ink/80">{e.description}</p>
                   {e.fastingRecommended && <p className="mt-1 text-sm text-brand">এই দিনে রোজা রাখা মুস্তাহাব।</p>}
                 </div>
@@ -141,15 +141,15 @@ function Converter() {
   const toG = fromHijri(hd, adj);
   return (
     <div className="space-y-4 p-5">
-      <div className="rounded-2xl bg-surface p-5">
-        <h3 className="text-lg text-ink">ইংরেজি → হিজরি</h3>
+      <div className="card p-5">
+        <h3 className="text-[17px] font-bold text-ink">ইংরেজি → হিজরি</h3>
         <input type="date" value={g} onChange={(e) => setG(e.target.value)} className="input mt-3" />
         {!Number.isNaN(gd.getTime()) && (
           <p className="mt-3 text-xl text-brand">{formatHijri(toHijri(gd, adj), 'bn', true)} হিজরি<span className="block text-sm text-muted">{formatBangla(gd)} বঙ্গাব্দ • {WEEKDAYS_BN_FULL[gd.getDay()]}</span></p>
         )}
       </div>
-      <div className="rounded-2xl bg-surface p-5">
-        <h3 className="text-lg text-ink">হিজরি → ইংরেজি</h3>
+      <div className="card p-5">
+        <h3 className="text-[17px] font-bold text-ink">হিজরি → ইংরেজি</h3>
         <div className="mt-3 grid grid-cols-3 gap-2">
           <input type="number" min={1} max={30} value={hd.day} onChange={(e) => setHd({ ...hd, day: Number(e.target.value) })} className="input" aria-label="day" />
           <select value={hd.month} onChange={(e) => setHd({ ...hd, month: Number(e.target.value) })} className="input" aria-label="month">

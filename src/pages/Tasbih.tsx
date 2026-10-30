@@ -62,9 +62,9 @@ export default function Tasbih() {
   return (
     <div className="flex min-h-screen flex-col">
       <PageHeader back title="তাসবীহ" right={<button aria-label="history" onClick={() => setHist(true)} className="tap p-2 text-ink"><History size={22} /></button>} />
-      <div className="no-scrollbar flex gap-2 overflow-x-auto bg-surface px-4 py-3">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-2">
         {presets.map((p) => (
-          <button key={p.id} onClick={() => choose(p.id)} className={`shrink-0 rounded-full px-4 py-2 ${p.id === preset.id ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{p.bn}</button>
+          <button key={p.id} onClick={() => choose(p.id)} className={`shrink-0 rounded-full px-4 py-2 ${p.id === preset.id ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{p.bn}</button>
         ))}
         <button onClick={() => setAdding(true)} className="flex shrink-0 items-center gap-1 rounded-full border-2 border-dashed border-brand/50 px-4 py-2 text-brand"><Plus size={16} /> নতুন</button>
       </div>
@@ -74,7 +74,7 @@ export default function Tasbih() {
         <p className="mt-1 text-lg text-muted">{preset.bn}</p>
         <button onClick={tap} aria-label="count" className="mt-8 rounded-full active:scale-[.97] transition">
           <ProgressRing value={inRound / preset.target || (tasbih.count > 0 && inRound === 0 ? 1 : 0)} size={260} stroke={14} color="rgb(var(--brand))" track="rgb(var(--brand) / .12)">
-            <span className="flex h-[210px] w-[210px] flex-col items-center justify-center rounded-full bg-gradient-to-br from-brand to-brand-dark text-white shadow-xl">
+            <span className="flex h-[210px] w-[210px] flex-col items-center justify-center rounded-full bg-night text-white shadow-xl">
               <span className="text-6xl tabular-nums">{n(tasbih.count)}</span>
               <span className="mt-1 text-sm opacity-80">লক্ষ্য {n(preset.target)} • রাউন্ড {n(rounds)}</span>
               <span className="mt-3 text-xs opacity-70">চাপ দিন</span>
@@ -83,8 +83,8 @@ export default function Tasbih() {
         </button>
         <div className="mt-8 flex gap-4">
           <button aria-label="reset" onClick={reset} className="tap flex h-14 w-14 items-center justify-center rounded-full bg-surface text-ink shadow"><RotateCcw /></button>
-          <button aria-label="sound" onClick={() => setSound(!sound)} className={`tap flex h-14 w-14 items-center justify-center rounded-full shadow ${sound ? 'bg-brand text-white' : 'bg-surface text-ink'}`}>{sound ? <Volume2 /> : <VolumeX />}</button>
-          <button aria-label="vibrate" onClick={() => setVibrate(!vibrate)} className={`tap flex h-14 w-14 items-center justify-center rounded-full shadow ${vibrate ? 'bg-brand text-white' : 'bg-surface text-ink'}`}><Vibrate /></button>
+          <button aria-label="sound" onClick={() => setSound(!sound)} className={`tap flex h-14 w-14 items-center justify-center rounded-full shadow ${sound ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{sound ? <Volume2 /> : <VolumeX />}</button>
+          <button aria-label="vibrate" onClick={() => setVibrate(!vibrate)} className={`tap flex h-14 w-14 items-center justify-center rounded-full shadow ${vibrate ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}><Vibrate /></button>
         </div>
         <p className="mt-6 text-muted">সর্বমোট গণনা: {n(tasbih.total)}</p>
       </div>

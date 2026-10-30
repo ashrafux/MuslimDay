@@ -37,12 +37,12 @@ export default function Alarm() {
     <div>
       <PageHeader back title="অ্যালার্ম" />
       {perm !== 'granted' && (
-        <div className="m-5 rounded-2xl bg-amber-50 p-4 text-amber-900 dark:bg-amber-900/30 dark:text-amber-100">
+        <div className="m-5 rounded-2xl bg-butter p-4 text-ink">
           <p>নামাজের সময় নোটিফিকেশন পেতে অনুমতি দিন।</p>
           <button className="btn-primary mt-3" onClick={ask}><BellRing size={18} /> অনুমতি দিন</button>
         </div>
       )}
-      <div className="mt-4 bg-surface">
+      <div className="page-card mt-4">
         {waqts.map((w) => (
           <div key={w.id} className="flex items-center justify-between border-b border-line px-5 py-4">
             <div>
@@ -53,15 +53,15 @@ export default function Alarm() {
           </div>
         ))}
       </div>
-      <div className="mt-4 bg-surface px-5 py-4">
+      <div className="page-card mt-4 px-5 py-4">
         <div className="text-[17px] text-ink">ওয়াক্ত শুরুর আগে রিমাইন্ডার</div>
         <div className="mt-3 flex flex-wrap gap-2">
           {[0, 5, 10, 15, 30].map((m) => (
-            <button key={m} onClick={() => set('alarm', { ...alarm, before: m })} className={`rounded-full px-4 py-1.5 ${alarm.before === m ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{m === 0 ? 'বন্ধ' : `${n(m)} মিনিট`}</button>
+            <button key={m} onClick={() => set('alarm', { ...alarm, before: m })} className={`rounded-full px-4 py-1.5 ${alarm.before === m ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{m === 0 ? 'বন্ধ' : `${n(m)} মিনিট`}</button>
           ))}
         </div>
       </div>
-      <div className="mt-4 divide-y divide-line bg-surface">
+      <div className="page-card mt-4 divide-y divide-line">
         <div className="flex items-center justify-between px-5 py-4">
           <span><span className="block text-[17px] text-ink">ওয়াক্ত শেষের রিমাইন্ডার</span><span className="text-sm text-muted">নামাজ চিহ্নিত না করলে শেষ হওয়ার ২০ মিনিট আগে</span></span>
           <Toggle checked={alarm.endReminder} onChange={(v) => set('alarm', { ...alarm, endReminder: v })} />

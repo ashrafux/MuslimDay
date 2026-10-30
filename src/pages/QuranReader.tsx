@@ -105,7 +105,7 @@ export default function QuranReader() {
           <button aria-label="settings" onClick={() => nav('/quran/settings')} className="tap p-2 text-ink"><Settings size={22} /></button>
         </>} />
 
-      <div className="bg-gradient-to-b from-chip to-bg px-5 py-6 text-center">
+      <div className="mx-4 mt-1 overflow-hidden rounded-[28px] bg-sand px-5 py-6 text-center">
         <div className="font-ar text-5xl text-brand" dir="rtl">{info.arabic}</div>
         <div className="mt-2 text-muted">{info.en}</div>
         {surah !== 1 && surah !== 9 && <div className="font-ar mt-4 text-3xl text-ink" dir="rtl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>}
@@ -114,17 +114,17 @@ export default function QuranReader() {
       {error && <div className="p-8 text-center text-muted">সূরাটি লোড করা যায়নি। <button className="text-brand" onClick={() => loadChapter(surah).then(setData).then(() => setError(false))}>আবার চেষ্টা করুন</button></div>}
       {!data && !error && <div className="flex justify-center p-10 text-brand"><Loader2 className="animate-spin" size={32} /></div>}
 
-      <div ref={listRef}>
+      <div ref={listRef} className="page-card mt-3">
         {data?.verses.map((v) => {
           const marked = bookmarks.some((b) => b.surah === surah && b.ayah === v.id);
           const active = playingAyah === v.id || (targetAyah === v.id && !playingAyah);
           return (
             <article key={v.id} id={`ayah-${v.id}`} data-ayah={v.id}
-              className={`scroll-mt-24 border-b border-line px-5 py-5 transition-colors ${active ? 'bg-chip/60' : 'bg-surface'}`}>
+              className={`scroll-mt-24 border-b border-line px-4 py-5 transition-colors last:border-0 ${active ? 'bg-lav/60' : ''}`}>
               <div className="flex items-center justify-between">
-                <span className="flex h-9 min-w-9 items-center justify-center rounded-full bg-chip px-2 text-sm text-brand">{n(surah)}:{n(v.id)}</span>
+                <span className="flex h-8 min-w-9 items-center justify-center rounded-xl bg-night px-2.5 text-[12px] font-bold text-white">{n(surah)}:{n(v.id)}</span>
                 <div className="flex items-center gap-1 text-muted">
-                  {sajdah.has(v.id) && <span className="mr-1 rounded-full bg-amber-100 px-2 text-xs text-amber-800">সিজদা</span>}
+                  {sajdah.has(v.id) && <span className="mr-1 rounded-full bg-butter px-2 text-xs text-ink">সিজদা</span>}
                   <button aria-label="play ayah" className="tap rounded-full p-2 hover:text-brand"
                     onClick={() => (playingAyah === v.id ? player.toggle() : player.play({ kind: 'ayah', surah, ayah: v.id }))}>
                     {playingAyah === v.id && player.playing ? <Pause size={19} /> : <Play size={19} />}

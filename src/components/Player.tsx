@@ -87,21 +87,21 @@ export function MiniPlayer({ bottom }: { bottom: number }) {
   const reciter = useStore.getState().quran.reciter;
   return (
     <div className="fixed inset-x-0 z-40 mx-auto max-w-app px-3" style={{ bottom }}>
-      <div className="rounded-2xl bg-brand-dark px-4 py-2.5 text-white shadow-xl">
+      <div className="rounded-[22px] bg-night px-4 py-3 text-white shadow-float">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[17px]">সূরা {s.bn}{p.track.kind === 'ayah' && ` • আয়াত ${n(p.track.ayah)}`}</div>
+            <div className="truncate text-[15px] font-semibold">সূরা {s.bn}{p.track.kind === 'ayah' && ` • আয়াত ${n(p.track.ayah)}`}</div>
             <div className="truncate text-xs opacity-80">{reciter.replace('ar.', '')} • {fmt(p.progress)} / {fmt(p.duration)}</div>
           </div>
           <button onClick={p.prev} className="tap p-1" aria-label="previous"><SkipBack size={20} /></button>
-          <button onClick={p.toggle} className="tap rounded-full bg-white p-2 text-brand-dark" aria-label="play/pause">
+          <button onClick={p.toggle} className="tap rounded-full bg-white p-2 text-night" aria-label="play/pause">
             {p.loading ? <Loader2 size={20} className="animate-spin" /> : p.playing ? <Pause size={20} /> : <Play size={20} />}
           </button>
           <button onClick={p.next} className="tap p-1" aria-label="next"><SkipForward size={20} /></button>
           <button onClick={p.stop} className="tap p-1 opacity-80" aria-label="close"><X size={20} /></button>
         </div>
         <input type="range" min={0} max={p.duration || 0} step={1} value={p.progress} onChange={(e) => p.seek(Number(e.target.value))}
-          className="mt-1 h-1 w-full accent-amber-300" aria-label="seek" />
+          className="mt-2 h-1 w-full accent-[#f2c14e]" aria-label="seek" />
       </div>
     </div>
   );

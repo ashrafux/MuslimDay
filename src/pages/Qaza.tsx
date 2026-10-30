@@ -30,12 +30,12 @@ export default function Qaza() {
   return (
     <div>
       <PageHeader back title="কাযা নামাজ" />
-      <section className="m-4 rounded-3xl bg-gradient-to-br from-brand to-brand-dark p-5 text-white">
+      <section className="m-4 rounded-[28px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">মোট বাকি কাযা নামাজ</div>
         <div className="text-5xl">{n(total)}</div>
         <p className="mt-2 text-sm opacity-85">প্রতিদিন অন্তত এক ওয়াক্তের কাযা আদায় করলে {n(Math.ceil(total / 6))} দিনে শেষ হবে ইনশাআল্লাহ।</p>
       </section>
-      <div className="bg-surface">
+      <div className="page-card">
         {ROWS.map((r) => (
           <div key={r.id} className="flex items-center justify-between border-b border-line px-5 py-4">
             <span className="text-[19px] text-ink">{r.label}</span>

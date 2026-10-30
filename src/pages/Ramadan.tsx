@@ -66,8 +66,8 @@ export default function Ramadan() {
   return (
     <div>
       <PageHeader back title="রমজান ও রোজা" />
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#1e2a4a] via-[#2b3f6e] to-[#12936a] px-5 pb-6 pt-5 text-white">
-        <div className="absolute -right-4 -top-2 opacity-90"><MosqueArt size={120} /></div>
+      <section className="relative mx-4 mt-1 overflow-hidden rounded-[32px] px-5 pb-5 pt-5 text-white shadow-float" style={{ background: "radial-gradient(120% 90% at 100% 0%,#4b3f86 0%,rgba(75,63,134,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2e2c4a 100%)" }}>
+        <div className="absolute -bottom-3 -right-3 opacity-25"><MosqueArt size={110} /></div>
         <div className="text-sm opacity-80">{formatHijri(h, 'bn', true)} হিজরি</div>
         <div className="mt-1 text-2xl">{inRamadan ? `রমজানের ${n(h.day)}তম দিন` : daysToRamadan !== null && daysToRamadan > 0 ? `রমজান আসতে ${n(daysToRamadan)} দিন বাকি` : 'রমজান মুবারক'}</div>
         {nextEvent && (
@@ -82,10 +82,10 @@ export default function Ramadan() {
         </div>
       </section>
 
-      <section className="mt-4 bg-surface px-5 py-4">
-        <h3 className="text-lg text-ink">আজকের রোজা</h3>
+      <section className="page-card mt-4 px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">আজকের রোজা</h3>
         <div className="mt-3 flex gap-3">
-          <button onClick={() => { mark(todayKey, 'fasted'); toast('আলহামদুলিল্লাহ'); }} className={`btn flex-1 ${fasting[todayKey] === 'fasted' ? 'bg-brand text-white' : 'bg-chip text-brand'}`}><Check size={18} /> রেখেছি</button>
+          <button onClick={() => { mark(todayKey, 'fasted'); toast('আলহামদুলিল্লাহ'); }} className={`btn flex-1 ${fasting[todayKey] === 'fasted' ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}><Check size={18} /> রেখেছি</button>
           <button onClick={() => mark(todayKey, 'missed')} className={`btn flex-1 ${fasting[todayKey] === 'missed' ? 'bg-alert text-white' : 'bg-chip text-ink'}`}><X size={18} /> রাখিনি (কাযা)</button>
         </div>
         <div className="mt-3 flex justify-between text-sm text-muted"><span>মোট রোজা: {n(fastedCount)}</span><span>কাযা বাকি: {n(missedCount)}</span></div>
@@ -95,8 +95,8 @@ export default function Ramadan() {
         </div>
       </section>
 
-      <section className="mt-4 bg-surface px-5 py-4">
-        <h3 className="text-lg text-ink">আসন্ন সুন্নাত রোজা</h3>
+      <section className="page-card mt-4 px-5 py-4">
+        <h3 className="text-[17px] font-bold text-ink">আসন্ন সুন্নাত রোজা</h3>
         {sunnah.map((s) => (
           <div key={dateKey(s.d)} className="flex justify-between border-b border-line py-2.5 text-ink">
             <span>{WEEKDAYS_BN[s.d.getDay()]}, {formatGregorian(s.d, 'bn')}</span><span className="text-brand">{s.why}</span>
@@ -105,8 +105,8 @@ export default function Ramadan() {
       </section>
 
       {schedule.length > 0 && (
-        <section className="mt-4 bg-surface px-5 py-4">
-          <h3 className="text-lg text-ink">রমজান {n(inRamadan ? h.year : ramadanYear)} সময়সূচি — {place.bn}</h3>
+        <section className="page-card mt-4 px-5 py-4">
+          <h3 className="text-[17px] font-bold text-ink">রমজান {n(inRamadan ? h.year : ramadanYear)} সময়সূচি — {place.bn}</h3>
           <p className="text-xs text-muted">চাঁদ দেখার উপর নির্ভর করে ১ দিন আগে-পরে হতে পারে</p>
           <div className="mt-3 grid grid-cols-[auto_1fr_auto_auto] gap-x-4 text-sm">
             <span className="py-2 text-muted">রোজা</span><span className="py-2 text-muted">তারিখ</span><span className="py-2 text-muted">সেহরি</span><span className="py-2 text-muted">ইফতার</span>

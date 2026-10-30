@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ChevronRight, Crown, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Crown, X } from 'lucide-react';
 import { create } from 'zustand';
 import { useStore } from '../store/useStore';
 
@@ -18,7 +18,7 @@ export function ToastHost() {
   if (!msg) return null;
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-28 z-[80] flex justify-center px-6">
-      <div className="animate-fade rounded-full bg-ink/90 px-5 py-2.5 text-sm text-surface shadow-lg">{msg}</div>
+      <div className="animate-fade rounded-2xl bg-night px-5 py-3 text-sm font-medium text-white shadow-float">{msg}</div>
     </div>
   );
 }
@@ -52,25 +52,34 @@ export async function copyText(text: string) {
 }
 
 /* ---------- page header ---------- */
+export const PASTELS = ['bg-lav', 'bg-sand', 'bg-mint', 'bg-sky', 'bg-rose', 'bg-butter'] as const;
+export const pastel = (i: number) => PASTELS[((i % PASTELS.length) + PASTELS.length) % PASTELS.length];
+
+/** Square-ish action button used in headers (like the blue badge / grey close button in the references). */
+export function IconButton({ label, onClick, children, tone = 'soft' }: { label: string; onClick?: () => void; children: ReactNode; tone?: 'soft' | 'brand' | 'dark' }) {
+  const toneCls = tone === 'brand' ? 'bg-brand text-white' : tone === 'dark' ? 'bg-night text-white' : 'bg-surface text-ink shadow-card';
+  return (
+    <button aria-label={label} onClick={onClick} className={`tap flex h-10 w-10 items-center justify-center rounded-2xl ${toneCls}`}>
+      {children}
+    </button>
+  );
+}
+
 export function PageHeader({ title, back, right, sub }: { title: ReactNode; back?: boolean | string; right?: ReactNode; sub?: ReactNode }) {
   const nav = useNavigate();
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-surface/95 backdrop-blur">
-      <div className="relative flex h-[72px] items-center justify-center px-14">
+    <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur-md">
+      <div className="flex min-h-[64px] items-center gap-3 px-4 pb-2 pt-3">
         {back && (
-          <button
-            aria-label="back"
-            onClick={() => (typeof back === 'string' ? nav(back) : window.history.length > 1 ? nav(-1) : nav('/'))}
-            className="tap absolute left-3 rounded-full p-2 text-ink hover:bg-chip"
-          >
-            <ArrowLeft size={24} />
-          </button>
+          <IconButton label="back" onClick={() => (typeof back === 'string' ? nav(back) : window.history.length > 1 ? nav(-1) : nav('/'))}>
+            <ChevronLeft size={22} />
+          </IconButton>
         )}
-        <div className="truncate text-center">
-          <h1 className="truncate text-[25px] leading-tight text-ink">{title}</h1>
-          {sub && <div className="truncate text-xs text-muted">{sub}</div>}
+        <div className="min-w-0 flex-1">
+          <h1 className={`truncate font-bold leading-tight tracking-tight text-ink ${back ? 'text-[22px]' : 'text-[30px]'}`}>{title}</h1>
+          {sub && <div className="truncate text-[13px] text-muted">{sub}</div>}
         </div>
-        {right && <div className="absolute right-3 flex items-center gap-1">{right}</div>}
+        {right && <div className="flex shrink-0 items-center gap-2">{right}</div>}
       </div>
     </header>
   );
@@ -87,13 +96,16 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center">
-      <div className="animate-fade absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="animate-sheet relative max-h-[88vh] w-full max-w-app overflow-y-auto rounded-t-3xl bg-surface pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <div className="sticky top-0 z-10 flex items-center justify-between bg-surface px-5 pb-2 pt-4">
-          <h3 className="text-xl text-ink">{title}</h3>
-          <button onClick={onClose} className="tap rounded-full p-1.5 text-muted hover:bg-chip" aria-label="close"><X size={22} /></button>
+      <div className="animate-fade absolute inset-0 bg-night/50 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="animate-sheet relative max-h-[88vh] w-full max-w-app overflow-y-auto rounded-t-[32px] bg-surface pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="sticky top-0 z-10 bg-surface px-5 pb-2 pt-3">
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-[20px] font-bold text-ink">{title}</h3>
+            <button onClick={onClose} className="tap flex h-9 w-9 items-center justify-center rounded-full bg-chip text-ink" aria-label="close"><X size={18} /></button>
+          </div>
         </div>
-        <div className="px-5 pb-3">{children}</div>
+        <div className="px-5 pb-3 pt-1">{children}</div>
       </div>
     </div>
   );
@@ -102,23 +114,23 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
 /* ---------- misc ---------- */
 export function CrownBadge({ className = '' }: { className?: string }) {
   return (
-    <span className={`flex h-7 w-7 items-center justify-center rounded-lg bg-gold text-ink shadow-sm ${className}`}>
-      <Crown size={16} fill="currentColor" />
+    <span className={`flex h-6 w-6 items-center justify-center rounded-lg bg-night text-gold shadow-sm ${className}`}>
+      <Crown size={13} fill="currentColor" />
     </span>
   );
 }
 
 export function NewDot({ className = '' }: { className?: string }) {
-  return <span className={`block h-3 w-3 rounded-full border-2 border-surface bg-alert ${className}`} />;
+  return <span className={`block h-2.5 w-2.5 rounded-full border-2 border-surface bg-alert ${className}`} />;
 }
 
-export function ProgressRing({ value, size = 64, stroke = 6, color = 'rgb(var(--alert))', track = 'rgb(var(--alert) / 0.12)', children }: {
+export function ProgressRing({ value, size = 64, stroke = 6, color = 'rgb(var(--brand))', track = 'rgb(var(--chip))', children }: {
   value: number; size?: number; stroke?: number; color?: string; track?: string; children?: ReactNode;
 }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative inline-flex shrink-0 items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
         <circle cx={size / 2} cy={size / 2} r={r} stroke={track} strokeWidth={stroke} fill="none" />
         <circle cx={size / 2} cy={size / 2} r={r} stroke={color} strokeWidth={stroke} fill="none" strokeLinecap="round"
@@ -132,31 +144,32 @@ export function ProgressRing({ value, size = 64, stroke = 6, color = 'rgb(var(--
 export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label?: string }) {
   return (
     <button role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)}
-      className={`relative h-7 w-12 shrink-0 rounded-full transition ${checked ? 'bg-brand' : 'bg-line'}`}>
+      className={`relative h-7 w-12 shrink-0 rounded-full transition ${checked ? 'bg-brand' : 'bg-chip ring-1 ring-line'}`}>
       <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all ${checked ? 'left-[22px]' : 'left-0.5'}`} />
     </button>
   );
 }
 
-export function ListRow({ icon, title, sub, onClick, right }: { icon?: ReactNode; title: ReactNode; sub?: ReactNode; onClick?: () => void; right?: ReactNode }) {
+export function ListRow({ icon, title, sub, onClick, right, tint }: { icon?: ReactNode; title: ReactNode; sub?: ReactNode; onClick?: () => void; right?: ReactNode; tint?: string }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-5 px-5 py-4 text-left transition hover:bg-bg/60 active:bg-bg">
-      {icon && <span className="shrink-0 text-brand">{icon}</span>}
+    <button onClick={onClick} className="flex w-full items-center gap-4 px-4 py-3.5 text-left transition hover:bg-bg/60 active:bg-bg">
+      {icon && <span className={`tile h-11 w-11 shrink-0 rounded-2xl text-ink ${tint ?? 'bg-chip'}`}>{icon}</span>}
       <span className="min-w-0 flex-1">
-        <span className="block text-[17px] text-ink">{title}</span>
-        {sub && <span className="block truncate text-sm text-muted">{sub}</span>}
+        <span className="block text-[16px] font-semibold text-ink">{title}</span>
+        {sub && <span className="block truncate text-[13px] text-muted">{sub}</span>}
       </span>
-      {right ?? (onClick && <ChevronRight className="shrink-0 text-ink" size={22} />)}
+      {right ?? (onClick && <ChevronRight className="shrink-0 text-muted" size={20} />)}
     </button>
   );
 }
 
+/** Pill track with a raised active segment (as in the Courses / Source files tabs). */
 export function Segmented<T extends string>({ value, options, onChange }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void }) {
   return (
-    <div className="flex gap-3">
+    <div className="flex rounded-2xl bg-chip p-1">
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)}
-          className={`tap rounded-full px-5 py-2 text-[16px] ${value === o.value ? 'bg-brand text-white' : 'bg-bg text-ink'}`}>
+          className={`flex flex-1 items-center justify-center gap-1 rounded-xl px-3 py-2 text-[14px] font-semibold transition ${value === o.value ? 'bg-surface text-ink shadow-card' : 'text-muted'}`}>
           {o.label}
         </button>
       ))}
@@ -167,8 +180,8 @@ export function Segmented<T extends string>({ value, options, onChange }: { valu
 export function Empty({ icon, title, sub, action }: { icon?: ReactNode; title: string; sub?: string; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center px-8 py-14 text-center">
-      {icon && <div className="icon-circle mb-4 h-20 w-20 text-brand">{icon}</div>}
-      <p className="text-lg text-ink">{title}</p>
+      {icon && <div className="icon-circle mb-4 h-20 w-20 text-ink">{icon}</div>}
+      <p className="text-[17px] font-bold text-ink">{title}</p>
       {sub && <p className="mt-1 text-sm text-muted">{sub}</p>}
       {action && <div className="mt-5">{action}</div>}
     </div>

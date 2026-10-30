@@ -15,17 +15,17 @@ export function AsmaulHusnaPage() {
   return (
     <div>
       <PageHeader back title="আসমাউল হুসনা" sub="আল্লাহর ৯৯টি সুন্দর নাম" />
-      <div className="bg-gradient-to-b from-chip to-bg px-5 py-5 text-center">
+      <div className="mx-4 mt-1 rounded-[28px] bg-sand px-5 py-5 text-center">
         <p className="font-ar text-2xl text-ink" dir="rtl">وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا</p>
         <p className="mt-1 text-sm text-muted">আর আল্লাহর জন্যই রয়েছে সুন্দর নামসমূহ, সুতরাং সেগুলোর মাধ্যমে তাঁকে ডাকো। — সূরা আল-আরাফ ৭:১৮০</p>
       </div>
       <div className="px-4 pb-2">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4"><Search size={18} className="text-muted" />
+        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="নাম বা অর্থ খুঁজুন" className="w-full bg-transparent py-3 outline-none" /></label>
       </div>
       <div className="grid grid-cols-2 gap-3 p-4">
         {list.map((a) => (
-          <button key={a.n} onClick={() => setSel(a)} className="tap relative rounded-2xl bg-surface p-4 text-center shadow-sm">
+          <button key={a.n} onClick={() => setSel(a)} className="tap relative card p-4 text-center shadow-sm">
             <span className="absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-chip text-xs text-brand">{n(a.n)}</span>
             <span className="font-ar mt-3 block text-3xl text-brand" dir="rtl">{a.arabic}</span>
             <span className="mt-2 block text-[17px] text-ink">{a.bn}</span>
@@ -63,26 +63,26 @@ export function HadithPage() {
   return (
     <div>
       <PageHeader back title="হাদিস" sub={`${n(hadithCollection.length)}টি নির্বাচিত হাদিস`} />
-      <section className="m-4 rounded-3xl bg-gradient-to-br from-brand to-brand-dark p-5 text-white">
+      <section className="m-4 rounded-[28px] bg-night shadow-float p-5 text-white">
         <div className="text-sm opacity-80">আজকের হাদিস</div>
         <p className="mt-2 text-lg leading-relaxed">{today.bangla}</p>
         <p className="mt-2 text-sm opacity-80">— {today.narrator} • {today.reference}</p>
       </section>
       <div className="px-4">
-        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4"><Search size={18} className="text-muted" />
+        <label className="flex items-center gap-2 rounded-2xl bg-surface px-4 shadow-card"><Search size={18} className="text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="হাদিস খুঁজুন" className="w-full bg-transparent py-3 outline-none" /></label>
       </div>
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-3">
-        <button onClick={() => setChapter(null)} className={`shrink-0 rounded-full px-4 py-1.5 ${!chapter ? 'bg-brand text-white' : 'bg-surface text-ink'}`}>সব</button>
+        <button onClick={() => setChapter(null)} className={`shrink-0 rounded-full px-4 py-1.5 ${!chapter ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>সব</button>
         {hadithChapters.map((c) => (
-          <button key={c} onClick={() => setChapter(c)} className={`shrink-0 rounded-full px-4 py-1.5 ${chapter === c ? 'bg-brand text-white' : 'bg-surface text-ink'}`}>{c}</button>
+          <button key={c} onClick={() => setChapter(c)} className={`shrink-0 rounded-full px-4 py-1.5 ${chapter === c ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{c}</button>
         ))}
       </div>
       <div className="space-y-3 px-4 pb-4">
         {list.map((h) => {
           const text = `${h.arabic ? h.arabic + '\n\n' : ''}${h.bangla}\n— ${h.narrator}\n${h.reference}`;
           return (
-            <article key={h.id} className="rounded-2xl bg-surface p-5">
+            <article key={h.id} className="card p-5">
               <div className="flex items-center justify-between">
                 <span className="rounded-full bg-chip px-3 py-0.5 text-sm text-brand">{h.chapter}</span>
                 <span className="text-xs text-muted">#{n(h.id)}</span>
@@ -109,19 +109,19 @@ export function RuqyahPage() {
   return (
     <div>
       <PageHeader back title="রুকইয়াহ" sub="কুরআন ও সুন্নাহভিত্তিক ঝাড়ফুঁক" />
-      <section className="m-4 rounded-2xl bg-surface p-5">
+      <section className="m-4 card p-5">
         <h3 className="flex items-center gap-2 text-lg text-brand"><ShieldCheck size={20} /> শরয়ী রুকইয়াহ কী?</h3>
         {ruqyahIntro.split('\n\n').map((p, i) => <p key={i} className="mt-3 text-[16px] leading-relaxed text-ink">{p}</p>)}
       </section>
       {ruqyahSections.map((s) => (
-        <section key={s.id} className="mb-3">
-          <button onClick={() => setOpen(open === s.id ? null : s.id)} className="flex w-full items-center justify-between bg-surface px-5 py-4 text-left">
+        <section key={s.id} className="page-card mb-3">
+          <button onClick={() => setOpen(open === s.id ? null : s.id)} className="flex w-full items-center justify-between px-5 py-4 text-left">
             <span><span className="block text-xl text-ink">{s.title}</span><span className="text-sm text-muted">{s.description}</span></span>
             <span className="text-2xl text-brand">{open === s.id ? '−' : '+'}</span>
           </button>
           {open === s.id && s.items.map((d) => (
             <div key={d.id} className="border-t border-line">
-              <h4 className="bg-surface px-5 pt-4 text-lg text-brand">{d.title}</h4>
+              <h4 className="page-card px-5 pt-4 text-lg text-brand">{d.title}</h4>
               <DuaCard d={d} />
             </div>
           ))}

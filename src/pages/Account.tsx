@@ -36,7 +36,7 @@ export function ProfileEdit() {
   return (
     <div>
       <PageHeader back title="প্রোফাইল" />
-      <div className="flex flex-col items-center bg-surface py-6">
+      <div className="page-card mt-1 flex flex-col items-center py-6">
         <button className="relative" onClick={() => fileRef.current?.click()} aria-label="upload photo">
           <Avatar id={form.avatar} size={110} />
           <span className="absolute bottom-0 right-0 rounded-full bg-brand p-2 text-white"><Camera size={16} /></span>
@@ -66,7 +66,7 @@ function Choice<T extends string | number>({ value, options, onChange }: { value
   return (
     <div className="flex flex-wrap gap-2">
       {options.map((o) => (
-        <button key={String(o.v)} onClick={() => onChange(o.v)} className={`rounded-full px-4 py-1.5 ${value === o.v ? 'bg-brand text-white' : 'bg-chip text-ink'}`}>{o.l}</button>
+        <button key={String(o.v)} onClick={() => onChange(o.v)} className={`rounded-full px-4 py-1.5 ${value === o.v ? 'bg-night text-white' : 'bg-surface text-ink ring-1 ring-line'}`}>{o.l}</button>
       ))}
     </div>
   );
@@ -102,8 +102,8 @@ export function SettingsPage() {
   return (
     <div>
       <PageHeader back title="সেটিংস" />
-      <h3 className="px-5 pb-2 pt-5 text-sm text-muted">সাধারণ</h3>
-      <div className="bg-surface">
+      <h3 className="label px-6 pb-2 pt-5">সাধারণ</h3>
+      <div className="page-card">
         <ListRow title="লোকেশন" sub={`${s.place.bn} (${s.place.name})`} onClick={() => setLoc(true)} />
         <div className="px-5 py-4">
           <div className="mb-2 text-[17px] text-ink">ভাষা / Language</div>
@@ -119,8 +119,8 @@ export function SettingsPage() {
         </div>
       </div>
 
-      <h3 className="px-5 pb-2 pt-5 text-sm text-muted">নামাজের সময়</h3>
-      <div className="bg-surface">
+      <h3 className="label px-6 pb-2 pt-5">নামাজের সময়</h3>
+      <div className="page-card">
         <ListRow title="হিসাব পদ্ধতি" sub={METHODS.find((m) => m.id === s.method)?.bn} onClick={() => setMethod(true)} />
         <div className="px-5 py-4">
           <div className="mb-2 text-[17px] text-ink">আসরের মাযহাব</div>
@@ -134,8 +134,8 @@ export function SettingsPage() {
         <ListRow title="অ্যালার্ম ও নোটিফিকেশন" onClick={() => nav('/alarm')} />
       </div>
 
-      <h3 className="px-5 pb-2 pt-5 text-sm text-muted">ডেটা</h3>
-      <div className="bg-surface">
+      <h3 className="label px-6 pb-2 pt-5">ডেটা</h3>
+      <div className="page-card">
         <ListRow title="ব্যাকআপ ডাউনলোড করুন" sub="আমল, বুকমার্ক, তালিকা — JSON ফাইল" onClick={exportData} />
         <label className="flex w-full cursor-pointer items-center gap-4 px-5 py-4">
           <span className="flex-1"><span className="block text-[19px] text-ink">ব্যাকআপ রিস্টোর করুন</span><span className="block text-sm text-muted">আগের ব্যাকআপ ফাইল নির্বাচন করুন</span></span>
@@ -181,7 +181,7 @@ export function ContactPage() {
         <Choice value={type} onChange={setType} options={['জিজ্ঞাসা', 'পরামর্শ', 'মতামত'].map((v) => ({ v, l: v }))} />
         <textarea className="input min-h-[160px]" placeholder="আপনার বার্তা লিখুন…" value={msg} onChange={(e) => setMsg(e.target.value)} />
         <button className="btn-primary w-full" disabled={msg.trim().length < 3} onClick={send}><Send size={18} /> পাঠান</button>
-        <div className="divide-y divide-line rounded-2xl bg-surface">
+        <div className="card divide-y divide-line">
           <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-center gap-3 p-4 text-ink"><Mail className="text-brand" /> {SUPPORT_EMAIL}</a>
           <button onClick={() => window.open('https://wa.me/?text=' + encodeURIComponent('আমল ট্র্যাকার সম্পর্কে জানতে চাই'), '_blank')} className="flex w-full items-center gap-3 p-4 text-ink"><MessageCircle className="text-brand" /> হোয়াটসঅ্যাপে শেয়ার করুন</button>
         </div>

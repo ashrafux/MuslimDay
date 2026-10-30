@@ -2,33 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Design system: warm off-white canvas, white rounded cards with soft shadows,
+  royal-blue primary, pastel "mood" tints for categories, near-black for emphasis,
+  and a sunrise gradient (butter → coral → sky) for hero moments.
+*/
 :root {
-  --bg: 238 243 243;
+  --bg: 244 241 236;
   --surface: 255 255 255;
-  --ink: 30 58 52;
-  --muted: 110 128 124;
-  --line: 226 232 231;
-  --mint: 201 239 223;
-  --chip: 218 237 231;
-  --brand: 18 147 106;
-  --brand-dark: 13 110 80;
-  --gold: 250 204 21;
-  --alert: 249 115 22;
+  --ink: 23 24 28;
+  --muted: 128 128 138;
+  --line: 236 233 228;
+  --chip: 239 237 233;
+  --brand: 33 96 217;
+  --brand-dark: 24 72 170;
+  --accent: 123 92 229;
+  --night: 36 37 42;
+  --gold: 247 200 72;
+  --alert: 242 107 29;
+
+  --mint: 221 239 220;
+  --lav: 236 226 246;
+  --sand: 243 235 221;
+  --sky: 222 234 248;
+  --rose: 249 224 224;
+  --butter: 248 237 196;
+
+  --m-green: 139 196 138;
+  --m-yellow: 232 198 81;
+  --m-blue: 121 173 219;
+  --m-gray: 169 168 192;
+  --m-pink: 226 139 149;
+
+  --grad-sunrise: linear-gradient(135deg, #f2c14e 0%, #ee8a78 45%, #9f8fd8 75%, #5ba8e8 100%);
   color-scheme: light;
 }
 
 .dark {
-  --bg: 14 22 21;
-  --surface: 24 35 33;
-  --ink: 226 238 234;
-  --muted: 140 160 155;
-  --line: 44 58 55;
-  --mint: 33 70 58;
-  --chip: 32 56 50;
-  --brand: 52 199 145;
-  --brand-dark: 36 160 116;
-  --gold: 250 204 21;
-  --alert: 251 146 60;
+  --bg: 15 16 19;
+  --surface: 27 28 33;
+  --ink: 240 240 243;
+  --muted: 150 150 162;
+  --line: 44 45 52;
+  --chip: 40 41 48;
+  --brand: 104 146 247;
+  --brand-dark: 76 120 228;
+  --accent: 160 136 245;
+  --night: 60 62 78;
+  --gold: 247 200 72;
+  --alert: 251 140 70;
+
+  --mint: 34 56 42;
+  --lav: 50 42 68;
+  --sand: 56 50 40;
+  --sky: 32 46 68;
+  --rose: 66 40 44;
+  --butter: 60 54 32;
   color-scheme: dark;
 }
 
@@ -38,26 +67,46 @@ body {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
 }
+h1, h2, h3 { text-wrap: balance; }
 
 @layer components {
-  .card { @apply bg-surface; }
-  .icon-circle { @apply flex items-center justify-center rounded-full bg-mint text-ink; }
-  .tap { @apply transition active:scale-95 select-none cursor-pointer; }
-  .btn { @apply tap inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-bn; }
+  /* surfaces */
+  .card { @apply overflow-hidden rounded-[24px] bg-surface shadow-card; }
+  .page-card { @apply mx-4 overflow-hidden rounded-[24px] bg-surface shadow-card; }
+  .tile { @apply flex items-center justify-center rounded-[20px]; }
+  .icon-circle { @apply flex items-center justify-center rounded-full bg-lav text-ink; }
+  .label { @apply text-[11px] font-semibold uppercase tracking-[.08em] text-muted; }
+  .section-head { @apply flex items-center justify-between px-5 pb-3 pt-6 text-[19px] font-bold text-ink; }
+
+  /* controls */
+  .tap { @apply transition active:scale-[.97] select-none cursor-pointer; }
+  .btn { @apply tap inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold disabled:opacity-40; }
   .btn-primary { @apply btn bg-brand text-white; }
-  .btn-soft { @apply btn bg-chip text-brand; }
+  .btn-dark { @apply btn bg-night text-white; }
+  .btn-soft { @apply btn bg-chip text-ink; }
   .btn-ghost { @apply btn text-brand; }
-  .input { @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink outline-none focus:border-brand; }
-  .section-title { @apply text-xl text-ink; }
+  .pill { @apply rounded-full px-3.5 py-1.5 text-[14px] font-medium transition; }
+  .pill-on { @apply bg-night text-white; }
+  .pill-off { @apply bg-surface text-ink ring-1 ring-line; }
+  .input { @apply w-full rounded-2xl border border-line bg-surface px-4 py-3 text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-brand/10; }
   .arabic { @apply font-ar leading-[2.1]; direction: rtl; }
+  .grad-sunrise { background: var(--grad-sunrise); }
 }
+
+:focus-visible { outline: 2px solid rgb(var(--brand)); outline-offset: 2px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: none; }
+label:has(> input:focus-visible) { box-shadow: 0 0 0 3px rgb(var(--brand) / .18); }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
-.animate-sheet { animation: sheet-up .25s ease-out; }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.animate-sheet { animation: sheet-up .28s cubic-bezier(.2,.8,.2,1); }
 .animate-fade { animation: fade-in .2s ease-out; }
-.animate-pop { animation: pop .18s ease-out; }
+.animate-pop { animation: pop .2s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-sheet, .animate-fade, .animate-pop { animation: none; }
+  .tap { transition: none; }
+}

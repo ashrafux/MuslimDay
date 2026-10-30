@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, ListPlus, Search } from 'lucide-react';
-import { PageHeader, Sheet, toast } from '../components/ui';
+import { ChevronRight, Heart, ListPlus, Search } from 'lucide-react';
+import { IconButton, PageHeader, Sheet, pastel, toast } from '../components/ui';
 import { PrayingManIcon, CalendarCheckIcon, CrescentLanternIcon, SunriseSeaIcon, QuranStandIcon, FourDotsIcon } from '../components/icons';
 import { useStore } from '../store/useStore';
 import { duaCategories } from '../data/duas';
 import { n } from '../lib/bn';
 
+const TONES: Record<string, string> = { salat: 'bg-m-green', daily: 'bg-m-yellow', sawm: 'bg-m-gray', adhkar: 'bg-m-blue', quran: 'bg-m-pink', misc: 'bg-lav' };
+
 const ICONS: Record<string, JSX.Element> = {
-  salat: <PrayingManIcon size={78} />,
-  daily: <CalendarCheckIcon size={74} />,
-  sawm: <CrescentLanternIcon size={74} />,
-  adhkar: <SunriseSeaIcon size={74} />,
-  quran: <QuranStandIcon size={74} />,
-  misc: <FourDotsIcon size={56} />,
+  salat: <PrayingManIcon size={62} />,
+  daily: <CalendarCheckIcon size={58} />,
+  sawm: <CrescentLanternIcon size={58} />,
+  adhkar: <SunriseSeaIcon size={58} />,
+  quran: <QuranStandIcon size={58} />,
+  misc: <FourDotsIcon size={42} />,
 };
 
 export const FREE_LISTS = 3;
@@ -57,44 +59,46 @@ export default function Dua() {
 
   return (
     <div>
-      <PageHeader title="দোয়া" right={<button aria-label="search" onClick={() => nav('/dua/search')} className="tap p-2 text-ink"><Search size={26} strokeWidth={2.6} /></button>} />
-      <div className="grid grid-cols-2 gap-y-6 px-4 pt-6">
-        {duaCategories.map((c) => (
-          <button key={c.id} onClick={() => nav(`/dua/c/${c.id}`)} className="tap flex flex-col items-center gap-4">
-            <span className="icon-circle h-[125px] w-[125px]">{ICONS[c.id]}</span>
-            <span className="text-[19px] text-ink">{c.title}</span>
-          </button>
-        ))}
-      </div>
-
-      <section className="mt-8 px-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h2 className="text-[21px] text-ink">আমার দু'আ কালেকশন</h2>
-            <p className="mt-2 text-[14px] leading-relaxed text-ink/80">৩টি কাস্টম লিস্ট ব্যবহার করুন একদম ফ্রিতে! পৃষ্ঠপোষক হিসেবে যুক্ত হয়ে ২০টি পর্যন্ত লিস্ট তৈরির সুবিধা আনলক করুন।</p>
-          </div>
-          <button onClick={() => setCreating(true)} className="mt-11 shrink-0 text-[16.5px] text-brand">নতুন তালিকা</button>
-        </div>
-        <div className="mt-4 space-y-3 pb-6">
-          {favs.length > 0 && (
-            <button onClick={() => nav('/dua/list/favorites')} className="flex w-full items-center gap-4 rounded-2xl bg-surface p-4 text-left">
-              <span className="icon-circle h-12 w-12 text-alert">♥</span>
-              <span className="flex-1"><span className="block text-lg text-ink">প্রিয় দোয়া</span><span className="text-sm text-muted">{n(favs.length)}টি দোয়া</span></span>
-              <ChevronRight className="text-muted" />
-            </button>
-          )}
-          {lists.map((l) => (
-            <button key={l.id} onClick={() => nav(`/dua/list/${l.id}`)} className="flex w-full items-center gap-4 rounded-2xl bg-surface p-4 text-left">
-              <span className="icon-circle h-12 w-12 text-brand"><ListPlus size={22} /></span>
-              <span className="flex-1"><span className="block text-lg text-ink">{l.name}</span><span className="text-sm text-muted">{n(l.duaIds.length)}টি দোয়া</span></span>
-              <ChevronRight className="text-muted" />
+      <PageHeader title="দোয়া" right={<IconButton label="search" onClick={() => nav('/dua/search')}><Search size={19} /></IconButton>} />
+      <section className="page-card mt-2 px-3 pb-6 pt-5">
+        <div className="label px-2">দোয়ার বিভাগ</div>
+        <div className="mt-4 grid grid-cols-2 gap-y-5">
+          {duaCategories.map((c) => (
+            <button key={c.id} onClick={() => nav(`/dua/c/${c.id}`)} className="tap flex flex-col items-center gap-2.5">
+              <span className={`flex h-[104px] w-[104px] items-center justify-center rounded-full text-ink ${TONES[c.id]}`}>{ICONS[c.id]}</span>
+              <span className="text-[15px] font-semibold text-ink">{c.title}</span>
+              <span className="-mt-2 text-[12px] text-muted">{n(c.duas.length)}টি দোয়া</span>
             </button>
           ))}
-          {lists.length === 0 && favs.length === 0 && (
-            <button onClick={() => setCreating(true)} className="w-full rounded-2xl border-2 border-dashed border-brand/40 p-5 text-brand">+ প্রথম তালিকা তৈরি করুন</button>
-          )}
         </div>
       </section>
+
+      <div className="section-head items-start">
+        <span className="min-w-0">
+          আমার দু'আ কালেকশন
+          <span className="mt-1 block text-[13px] font-normal leading-relaxed text-muted">৩টি কাস্টম লিস্ট ব্যবহার করুন একদম ফ্রিতে! পৃষ্ঠপোষক হিসেবে যুক্ত হয়ে ২০টি পর্যন্ত লিস্ট তৈরির সুবিধা আনলক করুন।</span>
+        </span>
+        <button onClick={() => setCreating(true)} className="tap mt-1 shrink-0 rounded-xl bg-brand px-3 py-2 text-[13px] font-semibold text-white">নতুন তালিকা</button>
+      </div>
+      <div className="space-y-2.5 px-4 pb-6">
+        {favs.length > 0 && (
+          <button onClick={() => nav('/dua/list/favorites')} className="tap card flex w-full items-center gap-4 p-3.5 text-left">
+            <span className="tile h-12 w-12 rounded-2xl bg-rose text-m-pink"><Heart size={20} fill="currentColor" /></span>
+            <span className="flex-1"><span className="block text-[16px] font-bold text-ink">প্রিয় দোয়া</span><span className="text-[13px] text-muted">{n(favs.length)}টি দোয়া</span></span>
+            <ChevronRight className="text-muted" size={20} />
+          </button>
+        )}
+        {lists.map((l, i) => (
+          <button key={l.id} onClick={() => nav(`/dua/list/${l.id}`)} className="tap card flex w-full items-center gap-4 p-3.5 text-left">
+            <span className={`tile h-12 w-12 rounded-2xl text-ink ${pastel(i + 1)}`}><ListPlus size={20} /></span>
+            <span className="flex-1"><span className="block text-[16px] font-bold text-ink">{l.name}</span><span className="text-[13px] text-muted">{n(l.duaIds.length)}টি দোয়া</span></span>
+            <ChevronRight className="text-muted" size={20} />
+          </button>
+        ))}
+        {lists.length === 0 && favs.length === 0 && (
+          <button onClick={() => setCreating(true)} className="w-full rounded-[22px] border-2 border-dashed border-line p-5 font-semibold text-muted">+ প্রথম তালিকা তৈরি করুন</button>
+        )}
+      </div>
       <NewListSheet open={creating} onClose={() => setCreating(false)} onCreated={(id) => nav(`/dua/list/${id}`)} />
     </div>
   );

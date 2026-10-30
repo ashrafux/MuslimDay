@@ -35,7 +35,7 @@ export default function Subscribe() {
       <div>
         <PageHeader back title="পৃষ্ঠপোষকতা" />
         <div className="flex flex-col items-center p-8 text-center">
-          <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gold text-ink"><Crown size={52} fill="currentColor" /></span>
+          <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-night text-gold"><Crown size={52} fill="currentColor" /></span>
           <h2 className="mt-5 text-2xl text-ink">জাযাকাল্লাহু খাইরান!</h2>
           <p className="mt-2 text-muted">আপনি {premium.plan === 'yearly' ? 'বার্ষিক' : 'মাসিক'} পৃষ্ঠপোষক{premium.since && ` (${new Date(premium.since).toLocaleDateString('bn-BD')} থেকে)`}। সব প্রিমিয়াম ফিচার আনলক করা আছে।</p>
           <button className="btn-soft mt-8" onClick={() => setCancelOpen(true)}>সাবস্ক্রিপশন বাতিল করুন</button>
@@ -54,9 +54,9 @@ export default function Subscribe() {
   return (
     <div>
       <PageHeader back title="পৃষ্ঠপোষক হোন" />
-      <div className="bg-gradient-to-br from-[#12936a] via-[#2c5f7c] to-[#4b3a8f] px-6 pb-8 pt-6 text-white">
-        <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gold text-ink"><Crown size={36} fill="currentColor" /></span>
-        <h2 className="mt-4 text-2xl text-gold">আরো আপন হোক আপনার ইবাদতের সঙ্গী</h2>
+      <div className="grad-sunrise mx-4 mt-1 rounded-[32px] px-6 pb-7 pt-6 text-white shadow-float">
+        <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-night text-gold"><Crown size={36} fill="currentColor" /></span>
+        <h2 className="mt-4 text-[24px] font-extrabold leading-tight text-white">আরো আপন হোক আপনার ইবাদতের সঙ্গী</h2>
         <p className="mt-2 text-white/90">আপনার সহযোগিতায় অ্যাপটি নির্ভুল ও আরও সমৃদ্ধ হবে ইনশাআল্লাহ।</p>
         {premium.plan === 'trial' && premium.since && <p className="mt-3 rounded-xl bg-white/15 p-3 text-sm">আপনার ফ্রি ট্রায়াল চলছে — {n(Math.max(0, 7 - Math.floor((Date.now() - premium.since) / 86400000)))} দিন বাকি।</p>}
       </div>
@@ -75,7 +75,7 @@ export default function Subscribe() {
             {p.badge && <span className="absolute -top-3 right-4 rounded-full bg-alert px-3 py-0.5 text-sm text-white">{p.badge}</span>}
           </button>
         ))}
-        <ul className="space-y-2.5 rounded-2xl bg-surface p-5">
+        <ul className="space-y-2.5 card p-5">
           {FEATURES.map((f) => <li key={f} className="flex items-start gap-3 text-ink"><Check className="mt-0.5 shrink-0 text-brand" size={20} />{f}</li>)}
         </ul>
         <button className="btn-primary w-full py-3.5 text-lg" onClick={() => setPay(true)}>৳{n(selected.price)} দিয়ে সাবস্ক্রাইব করুন</button>
