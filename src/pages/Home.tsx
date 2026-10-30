@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Bell, CalendarDays, ChevronDown, ChevronRight, MapPin, Share2, Sunrise, Sun, SunDim, CloudSun, MoonStar, Sunset, Award, BookOpenText, ListChecks, BadgeCheck,
+  Bell, CalendarDays, ChevronDown, ChevronRight, MapPin, Sunrise, Sun, SunDim, CloudSun, MoonStar, Sunset, Award, BookOpenText, ListChecks, BadgeCheck,
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useCurrentPeriod, useNow } from '../lib/hooks';
@@ -11,7 +11,7 @@ import { formatBangla, formatGregorian, formatHijri, toHijri, WEEKDAYS_BN, WEEKD
 import { fmtTime, type PeriodId, type PrayerId, type Waqt } from '../lib/prayer';
 import { LocationSheet } from '../components/LocationSheet';
 import { QiblaIcon, TasbihIcon, ZakatIcon, CrescentLanternIcon, HadithBookIcon } from '../components/icons';
-import { IconButton, Sheet, pastel, shareText } from '../components/ui';
+import { IconButton, Sheet, pastel } from '../components/ui';
 import { usePremiumNav } from '../components/Layout';
 import { dailyAyat } from '../data/dailyContent';
 import { useAmolProgress } from '../lib/amol';
@@ -177,7 +177,6 @@ export default function Home() {
       {/* ---------- prayer timeline ---------- */}
       <div className="section-head">
         <span>আজকের নামাজ</span>
-        <span className="text-[13px] font-semibold text-muted">{lang === 'bn' ? place.bn : place.name}</span>
       </div>
       <ul className="mx-4 space-y-2.5">
         {waqts.map((w) => {
@@ -238,7 +237,6 @@ export default function Home() {
         </div>
       </section>
 
-      <DailyAyahCard />
 
       <LocationSheet open={locOpen} onClose={() => setLocOpen(false)} />
       <Sheet open={!!detail} onClose={() => setDetail(null)} title={detail ? (detail.id === 'dhuhr' && isFriday ? t('jumuah') : t(detail.id)) : ''}>
@@ -308,24 +306,6 @@ function Carousel() {
       <div className="mt-3 flex items-center justify-center gap-1.5">
         {cards.map((_, i) => <span key={i} className={`h-2 rounded-full transition-all ${i === idx ? 'w-6 bg-night' : 'w-2 bg-line'}`} />)}
       </div>
-    </section>
-  );
-}
-
-function DailyAyahCard() {
-  const nav = useNavigate();
-  const ayah = dailyAyat[(Math.floor(Date.now() / 86400000) + 7) % dailyAyat.length];
-  return (
-    <section className="mx-4 mt-6 rounded-[28px] bg-night p-5 text-white shadow-float">
-      <div className="flex items-center justify-between">
-        <span className="label !text-white/60">আজকের অনুপ্রেরণা</span>
-        <button aria-label="share ayah" onClick={() => shareText('আজকের আয়াত', `${ayah.arabic}\n\n${ayah.bangla}\n— ${ayah.ref}`)} className="tap flex h-9 w-9 items-center justify-center rounded-xl bg-white/10"><Share2 size={16} /></button>
-      </div>
-      <button onClick={() => nav(`/quran/${ayah.surah}?ayah=${ayah.ayah}`)} className="mt-3 w-full text-left">
-        <p className="arabic text-right text-[24px]">{ayah.arabic}</p>
-        <p className="mt-3 text-[15px] leading-relaxed text-white/85">{ayah.bangla}</p>
-        <p className="mt-3 text-[13px] font-semibold text-gold">{ayah.ref}</p>
-      </button>
     </section>
   );
 }
