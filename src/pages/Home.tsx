@@ -33,26 +33,24 @@ const SUNNAH: Record<PrayerId, string> = {
   isha: '৪ রাকাত ফরজ + ২ রাকাত সুন্নাত + ৩ রাকাত বিতর',
 };
 
-/** Hero gradient follows the time of day, drawn from the sunrise palette (butter → coral → lilac → sky). */
+/** Dark hero card; a soft glow in the corner still follows the time of day. */
+const HERO_GLOW: Record<PeriodId, string> = {
+  tahajjud: '#4b3f86', isha: '#3b4f9a', fajr: '#6f86d6', sunrise: '#f2c14e', duha: '#f2c14e',
+  zawal: '#f0a35e', dhuhr: '#f0a35e', asr: '#ee8a78', maghrib: '#c27fb7',
+};
 function heroStyle(id: PeriodId): { bg: string; night: boolean } {
-  switch (id) {
-    case 'tahajjud': return { bg: 'radial-gradient(120% 90% at 100% 0%,#4b3f86 0%,rgba(75,63,134,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2e2c4a 100%)', night: true };
-    case 'isha': return { bg: 'radial-gradient(120% 90% at 100% 0%,#3b4f9a 0%,rgba(59,79,154,0) 60%),linear-gradient(160deg,#1b1c21 0%,#24252a 55%,#2a3150 100%)', night: true };
-    case 'fajr': return { bg: 'linear-gradient(140deg,#6f86d6 0%,#9f8fd8 40%,#ee8a78 80%,#f2c14e 100%)', night: false };
-    case 'sunrise':
-    case 'duha': return { bg: 'linear-gradient(135deg,#f2c14e 0%,#ee8a78 45%,#9f8fd8 75%,#5ba8e8 100%)', night: false };
-    case 'zawal':
-    case 'dhuhr': return { bg: 'linear-gradient(135deg,#f5c94f 0%,#f0a35e 45%,#ee8a78 75%,#c58bc8 100%)', night: false };
-    case 'asr': return { bg: 'linear-gradient(135deg,#f0a35e 0%,#ee8a78 40%,#b58ad0 75%,#7f9ae6 100%)', night: false };
-    case 'maghrib': return { bg: 'linear-gradient(135deg,#ee8a78 0%,#c27fb7 40%,#7f7fd8 75%,#4f78d8 100%)', night: false };
-  }
+  const glow = HERO_GLOW[id];
+  return {
+    bg: `radial-gradient(90% 70% at 100% 0%, ${glow}59 0%, ${glow}00 70%), radial-gradient(70% 60% at 0% 100%, #5ba8e826 0%, #5ba8e800 70%), linear-gradient(160deg, #1d1e23 0%, #23242a 55%, #2a2b33 100%)`,
+    night: id === 'isha' || id === 'tahajjud',
+  };
 }
 
 /** Decorative wave lines (as in the call-screen reference). */
 function Waves() {
   const lines = Array.from({ length: 9 }, (_, i) => i);
   return (
-    <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-16 h-32 w-full opacity-30" aria-hidden="true">
+    <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-16 h-32 w-full opacity-[.14]" aria-hidden="true">
       {lines.map((i) => (
         <path key={i} d={`M0 ${60 + i * 2} C 80 ${10 + i * 6}, 140 ${110 - i * 5}, 220 ${55 + i} S 340 ${15 + i * 7}, 400 ${60 - i * 2}`} fill="none" stroke="white" strokeWidth="0.8" />
       ))}
@@ -77,8 +75,16 @@ function Arc({ progress }: { progress: number }) {
   const end = startDeg + Math.max(0.5, sweep * Math.min(1, progress));
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="absolute inset-0 overflow-visible">
-      <path d={arcPath(startDeg, startDeg + sweep)} stroke="rgba(255,255,255,.28)" strokeWidth="10" fill="none" strokeLinecap="round" />
-      <path d={arcPath(startDeg, end)} stroke="#ffffff" strokeWidth="10" fill="none" strokeLinecap="round" style={{ transition: 'all .6s' }} />
+      <defs>
+        <linearGradient id="hero-arc" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stopColor="#f2c14e" />
+          <stop offset="45%" stopColor="#ee8a78" />
+          <stop offset="75%" stopColor="#9f8fd8" />
+          <stop offset="100%" stopColor="#5ba8e8" />
+        </linearGradient>
+      </defs>
+      <path d={arcPath(startDeg, startDeg + sweep)} stroke="rgba(255,255,255,.1)" strokeWidth="10" fill="none" strokeLinecap="round" />
+      <path d={arcPath(startDeg, end)} stroke="url(#hero-arc)" strokeWidth="10" fill="none" strokeLinecap="round" style={{ transition: 'all .6s' }} />
     </svg>
   );
 }
@@ -142,12 +148,12 @@ export default function Home() {
       </div>
 
       {/* ---------- hero ---------- */}
-      <section className="relative mx-4 mt-4 overflow-hidden rounded-[32px] px-5 pb-5 pt-4 text-white shadow-float" style={{ background: hero.bg }}>
+      <section className="relative mx-4 mt-4 overflow-hidden rounded-[32px] px-5 pb-5 pt-4 text-white dark:ring-1 dark:ring-white/[.06]" style={{ background: hero.bg }}>
         <Waves />
-        {hero.night && [12, 30, 70, 85, 50, 92].map((x, i) => <span key={i} className="absolute h-1 w-1 rounded-full bg-white/60" style={{ left: `${x}%`, top: `${18 + i * 19}px` }} />)}
+        {hero.night && [12, 30, 70, 85, 50, 92].map((x, i) => <span key={i} className="absolute h-1 w-1 rounded-full bg-white/40" style={{ left: `${x}%`, top: `${18 + i * 19}px` }} />)}
         <div className="relative flex items-center justify-between gap-2">
-          <span className="rounded-lg bg-night/80 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-white">{now >= period.start ? 'এখন চলছে' : 'পরবর্তী'}</span>
-          <button onClick={() => setLocOpen(true)} className="tap flex h-9 items-center gap-1.5 rounded-full bg-white/20 px-3 backdrop-blur">
+          <span className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-white"><span className="h-1.5 w-1.5 rounded-full bg-m-green" />{now >= period.start ? 'এখন চলছে' : 'পরবর্তী'}</span>
+          <button onClick={() => setLocOpen(true)} className="tap flex h-9 items-center gap-1.5 rounded-full bg-white/10 px-3 ring-1 ring-white/10">
             <MapPin size={15} />
             <span className="max-w-[110px] truncate text-[13px] font-semibold">{lang === 'bn' && place.country === 'INTL' ? place.bn : place.name}</span>
             <ChevronDown size={14} />
@@ -158,18 +164,18 @@ export default function Home() {
           <Arc progress={progress} />
           <div className="absolute inset-x-0 top-[36px] text-center">
             <div className="text-[22px] font-bold leading-tight">{periodLabel(period.id, isFriday, t)}</div>
-            <div className="mt-1 text-[12px] font-medium uppercase tracking-[.08em] opacity-85">{t('remaining')}</div>
+            <div className="mt-1 text-[12px] font-medium uppercase tracking-[.08em] text-white/60">{t('remaining')}</div>
             <div className="mt-1 text-[32px] font-extrabold tabular-nums tracking-tight">{formatDuration(period.end.getTime() - now.getTime())}</div>
           </div>
         </div>
 
         <div className="relative mt-1 grid grid-cols-2 gap-2.5">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 px-3 py-2.5 backdrop-blur">
-            <Sunrise size={20} />
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[.07] px-3 py-2.5 ring-1 ring-white/10">
+            <Sunrise size={20} className="text-m-yellow" />
             <span><span className="block text-[11px] opacity-85">{t('sunrise')}</span><span className="block text-[15px] font-bold tabular-nums">{fmt(times.sunrise)}</span></span>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 px-3 py-2.5 backdrop-blur">
-            <Sunset size={20} />
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/[.07] px-3 py-2.5 ring-1 ring-white/10">
+            <Sunset size={20} className="text-[#ee8a78]" />
             <span><span className="block text-[11px] opacity-85">{t('sunset')}</span><span className="block text-[15px] font-bold tabular-nums">{fmt(times.sunset)}</span></span>
           </div>
         </div>
