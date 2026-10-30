@@ -166,13 +166,15 @@ export function ListRow({ icon, title, sub, onClick, right, tint }: { icon?: Rea
 /** Pill track with a raised active segment (as in the Courses / Source files tabs). */
 export function Segmented<T extends string>({ value, options, onChange }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void }) {
   return (
-    <div className="flex rounded-2xl bg-chip p-1">
+    <div className="flex justify-center">
+      <div className="inline-flex rounded-2xl bg-chip p-1">
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)}
-          className={`flex flex-1 items-center justify-center gap-1 rounded-xl px-3 py-2 text-[14px] font-semibold transition ${value === o.value ? 'bg-surface text-ink shadow-card' : 'text-muted'}`}>
+          className={`flex min-w-[112px] items-center justify-center gap-1 rounded-xl px-4 py-2 text-[14px] font-semibold transition ${value === o.value ? 'bg-surface text-ink shadow-card' : 'text-muted'}`}>
           {o.label}
         </button>
       ))}
+      </div>
     </div>
   );
 }

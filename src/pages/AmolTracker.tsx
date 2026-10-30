@@ -46,10 +46,6 @@ export default function AmolTracker() {
 /* ------------------------------------------------------------------ */
 
 function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: string) => void }) {
-  const amol = useStore((s) => s.amol);
-  const custom = useStore((s) => s.customAmol);
-  const hidden = useStore((s) => s.hiddenAmol);
-  const adj = useStore((s) => s.settings.hijriAdjust);
   const sel = keyToDate(selected);
   // Bangladeshi week: Saturday → Friday
   const start = addDays(sel, -((sel.getDay() + 1) % 7));
@@ -62,17 +58,14 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
         {days.map((d) => {
           const k = dateKey(d);
           const future = k > today;
-          const items = itemsFor(d, adj, custom, hidden);
-          const ids = new Set(items.map((i) => i.id));
-          const done = (amol[k] ?? []).filter((x) => ids.has(x)).length;
           const active = k === selected;
           return (
             <button key={k} disabled={future} onClick={() => onSelect(k)}
               className={`flex flex-col items-center gap-1 rounded-2xl py-1.5 transition disabled:opacity-35 ${active ? 'bg-night text-white' : ''}`}>
               <span className={`text-[11px] font-semibold ${active ? 'text-white/70' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
-              <ProgressRing value={items.length ? done / items.length : 0} size={34} stroke={3.5} color={active ? '#ffffff' : 'rgb(var(--brand))'} track={active ? 'rgb(255 255 255 / .2)' : 'rgb(var(--chip))'}>
-                <span className={`text-[13px] font-bold ${active ? 'text-white' : k === today ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
-              </ProgressRing>
+              <span className={`flex h-[34px] w-[34px] items-center justify-center rounded-full text-[13px] font-bold ${active ? 'bg-white/15 text-white' : `bg-chip ${k === today ? 'text-brand' : 'text-ink'}`}`}>
+                {n(d.getDate())}
+              </span>
             </button>
           );
         })}
