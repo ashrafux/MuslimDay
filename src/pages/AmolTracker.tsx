@@ -610,12 +610,12 @@ function Stats() {
             className={`pill shrink-0 ${range.kind === r.v ? 'bg-brand text-white' : 'pill-off'}`}>{r.l}</button>
         ))}
       </div>
-      <button onClick={() => chooseRange('custom')} className="mx-5 flex items-center gap-1.5 pb-1.5 text-[13px] text-muted">
+      <button onClick={() => chooseRange('custom')} className="mx-5 flex items-center gap-1.5 text-[13px] text-muted">
         <CalendarDays size={15} />
         {formatGregorian(keyToDate(fromKey), lang, keyToDate(fromKey).getFullYear() !== keyToDate(toKey).getFullYear())} – {formatGregorian(keyToDate(toKey), lang, true)}
         <span className="text-ink/40">•</span> {n(len)} দিন
       </button>
-      <div className="grid grid-cols-3 gap-2.5 px-5">
+      <div className="!mt-10 grid grid-cols-3 gap-2.5 px-5">
         {[
           { icon: <Flame className="text-alert" size={20} />, v: n(streak), l: 'নামাজের স্ট্রিক' },
           { icon: <Trophy className="text-m-yellow" size={20} />, v: n(best), l: 'সেরা স্ট্রিক' },
@@ -632,7 +632,7 @@ function Stats() {
         ))}
       </div>
 
-      <section className="page-card px-5 py-4">
+      <section className="page-card !mt-10 px-5 py-4">
         <h3 className="text-[17px] font-bold text-ink">{toKey === todayKey ? 'গত ৭ দিনের নামাজ' : `${formatGregorian(keyToDate(toKey), lang)} পর্যন্ত ৭ দিনের নামাজ`}</h3>
         <div className="mt-4 flex h-44 items-end justify-between gap-2" role="img" aria-label="last 7 days prayers chart">
           {last7.map((d, i) => {
