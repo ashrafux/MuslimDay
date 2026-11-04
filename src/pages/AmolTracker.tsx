@@ -42,6 +42,9 @@ export default function AmolTracker() {
 /* Daily                                                               */
 /* ------------------------------------------------------------------ */
 
+// Thursday is too long to sit inside the day circle
+const shortDay = (i: number) => (i === 4 ? 'বৃহঃ' : WEEKDAYS_BN[i]);
+
 function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: string) => void }) {
   const sel = keyToDate(selected);
   // Bangladeshi week: Saturday → Friday
@@ -50,27 +53,25 @@ function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: str
   const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
   return (
     <div className="mt-10 flex items-center gap-1 px-3">
-      <button aria-label="previous week" className="tap rounded-full p-1.5 text-muted" onClick={() => onSelect(dateKey(addDays(sel, -7)))}><ChevronLeft size={20} /></button>
-      <div className="grid flex-1 grid-cols-7 gap-1">
+      <button aria-label="previous week" className="tap shrink-0 rounded-full p-1 text-muted" onClick={() => onSelect(dateKey(addDays(sel, -7)))}><ChevronLeft size={18} /></button>
+      <div className="grid min-w-0 flex-1 grid-cols-7 gap-0.5">
         {days.map((d) => {
           const k = dateKey(d);
           const future = k > today;
           const active = k === selected;
           return (
-            <button key={k} disabled={future} onClick={() => onSelect(k)}
-              className={`flex flex-col items-center gap-1 rounded-[10px] py-1.5 transition disabled:opacity-35 ${active ? 'bg-night text-white' : ''}`}>
-              <span className={`text-[11px] font-semibold ${active ? 'text-white/70' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{WEEKDAYS_BN[d.getDay()]}</span>
-              <span className={`flex h-[34px] w-[34px] items-center justify-center rounded-full text-[13px] font-bold ${active ? 'text-white' : `bg-chip ${k === today ? 'text-brand' : 'text-ink'}`}`}>
-                {n(d.getDate())}
-              </span>
+            <button key={k} disabled={future} onClick={() => onSelect(k)} aria-pressed={active}
+              className={`mx-auto flex aspect-square w-full max-w-[42px] flex-col items-center justify-center gap-[3px] rounded-full leading-none transition disabled:opacity-35 ${active ? 'bg-brand text-white' : 'bg-chip'}`}>
+              <span className={`text-[9.5px] font-semibold ${active ? 'text-white/75' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{shortDay(d.getDay())}</span>
+              <span className={`text-[13px] font-bold ${active ? '' : k === today ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
             </button>
           );
         })}
       </div>
-      <button aria-label="next week" disabled={dateKey(addDays(start, 7)) > today} className="tap rounded-full p-1.5 text-muted disabled:opacity-30" onClick={() => {
+      <button aria-label="next week" disabled={dateKey(addDays(start, 7)) > today} className="tap shrink-0 rounded-full p-1 text-muted disabled:opacity-30" onClick={() => {
         const next = addDays(sel, 7);
         onSelect(dateKey(next) > today ? today : dateKey(next));
-      }}><ChevronRight size={20} /></button>
+      }}><ChevronRight size={18} /></button>
     </div>
   );
 }
