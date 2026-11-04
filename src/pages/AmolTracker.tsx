@@ -163,7 +163,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
     <div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="mx-5 mt-10 rounded-[10px] bg-chip/60 p-5 text-ink">
+      <div className="mx-5 mt-6 rounded-[10px] bg-chip/60 p-5 text-ink">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="label !text-ink/60">আজকের অগ্রগতি</div>
