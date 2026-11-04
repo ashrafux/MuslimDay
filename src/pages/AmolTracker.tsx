@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Bell, Check, ChevronDown, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck, CalendarDays } from 'lucide-react';
 import { IconButton, PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast } from '../components/ui';
+import { RangeCalendar } from '../components/RangeCalendar';
 import { MoodFace } from '../components/icons';
 import { useStore, type CustomAmol, type PrayerMode } from '../store/useStore';
 import { addDays, dateKey, keyToDate, n } from '../lib/bn';
@@ -518,7 +519,7 @@ const MAX_RANGE_DAYS = 366;
 function Stats() {
   const [range, setRange] = useState<{ kind: RangeKind; from: string; to: string }>(() => ({ kind: '30', from: dateKey(addDays(new Date(), -29)), to: dateKey() }));
   const [picking, setPicking] = useState(false);
-  const [draft, setDraft] = useState({ from: range.from, to: range.to });
+  const [draft, setDraft] = useState<{ from: string; to: string | null }>({ from: range.from, to: range.to });
   const lang = useStore((s) => s.settings.lang);
   const amol = useStore((s) => s.amol);
   const modes = useStore((s) => s.prayerMode);
@@ -543,7 +544,6 @@ function Stats() {
     if (kind === 'custom') { setDraft({ from: fromKey, to: toKey }); setPicking(true); return; }
     setRange((r) => ({ ...r, kind }));
   };
-  const draftOk = !!draft.from && !!draft.to && draft.from <= draft.to && draft.to <= todayKey;
 
   const prayerCount = (d: Date) => (amol[dateKey(d)] ?? []).filter((x) => (PRAYER_IDS as string[]).includes(x)).length;
   const last7 = days.slice(-7);
@@ -698,20 +698,17 @@ function Stats() {
       )}
 
       <Sheet open={picking} onClose={() => setPicking(false)} title="তারিখ বাছাই করুন">
-        <div className="grid grid-cols-2 gap-3">
-          <label className="text-sm text-muted">শুরু
-            <input id="stats-from" type="date" className="input mt-1" max={draft.to || todayKey} value={draft.from} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
-          </label>
-          <label className="text-sm text-muted">শেষ
-            <input id="stats-to" type="date" className="input mt-1" min={draft.from} max={todayKey} value={draft.to} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
-          </label>
+        <RangeCalendar from={draft.from} to={draft.to} max={todayKey} lang={lang} onChange={(from, to) => setDraft({ from, to })} />
+        <p className="mt-1 text-xs text-muted">সর্বোচ্চ {n(MAX_RANGE_DAYS)} দিন দেখা যাবে।</p>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <button className="btn-soft" onClick={() => { setRange((r) => ({ ...r, kind: '30' })); setPicking(false); }}>৩০ দিনে ফিরুন</button>
+          <button className="btn-primary" onClick={() => {
+            const to = draft.to ?? draft.from;
+            const earliest = dateKey(addDays(keyToDate(to), -(MAX_RANGE_DAYS - 1)));
+            setRange({ kind: 'custom', from: draft.from < earliest ? earliest : draft.from, to });
+            setPicking(false);
+          }}>দেখান</button>
         </div>
-        <p className="mt-2 text-xs text-muted">সর্বোচ্চ {n(MAX_RANGE_DAYS)} দিন দেখা যাবে।</p>
-        <button className="btn-primary mt-4 w-full" disabled={!draftOk} onClick={() => {
-          const from = draft.from < dateKey(addDays(keyToDate(draft.to), -(MAX_RANGE_DAYS - 1))) ? dateKey(addDays(keyToDate(draft.to), -(MAX_RANGE_DAYS - 1))) : draft.from;
-          setRange({ kind: 'custom', from, to: draft.to });
-          setPicking(false);
-        }}>দেখান</button>
       </Sheet>
     </div>
   );
