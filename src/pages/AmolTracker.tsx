@@ -234,10 +234,9 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
 
       <div className="px-5 pt-10">
         <button className="btn-primary w-full" onClick={onAdd}><Plus size={20} /> নিজের আমল তৈরি করুন</button>
-        <button className="btn-ghost mt-1 w-full" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /> আমল তালিকা সাজান</button>
       </div>
 
-      <section className="page-card mt-7 px-5 py-4">
+      <section className="page-card mt-10 px-5 py-4">
         <h3 className="text-[17px] font-bold text-ink">আজকের মুহাসাবা</h3>
         <p className="text-[13px] text-muted">দিন শেষে নিজের আমলের হিসাব নিন — কেমন গেল আজকের দিন?</p>
         <div className="mt-4 grid grid-cols-4 gap-2">
