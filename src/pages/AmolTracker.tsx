@@ -624,7 +624,7 @@ function Stats() {
           { icon: <CalendarCheck className="text-brand" size={20} />, v: n(prayed), l: `${n(len)} দিনে নামাজ` },
           { icon: <Minus className="text-alert" size={20} />, v: n(qaza), l: 'কাযা আদায়' },
         ].map((s) => (
-          <div key={s.l} className="card p-3">
+          <div key={s.l} className="rounded-[10px] bg-chip/60 p-3">
             <div className="flex">{s.icon}</div>
             <div className="mt-2 text-[22px] font-extrabold leading-none text-ink">{s.v}</div>
             <div className="mt-1 text-[11px] text-muted">{s.l}</div>
