@@ -183,7 +183,7 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
         <section key={g.title} className={`page-card ${gi === 0 ? 'mt-10' : 'mt-2.5'}`}>
           <h3>
             <button onClick={() => toggleGroup(g.title)} aria-expanded={!collapsed.includes(g.title)}
-              className={`flex w-full items-center justify-between gap-3 px-5 pt-4 text-left text-[15px] font-bold text-ink ${collapsed.includes(g.title) ? 'pb-4' : 'pb-1'}`}>
+              className={`flex w-full items-center justify-between gap-3 px-5 pt-[22px] text-left text-[15px] font-bold text-ink ${collapsed.includes(g.title) ? 'pb-[22px]' : 'pb-1.5'}`}>
               <span className="min-w-0">{g.title}{g.title === GROUP_AVOID && <span className="ml-1 text-[12px]">(বিরত থাকলে টিক দিন)</span>}</span>
               <span className="flex shrink-0 items-center gap-2">
                 <span className="rounded-full bg-chip px-2 py-0.5 text-[12px] text-muted">{n(g.items.filter((i) => done.includes(i.id)).length)}/{n(g.items.length)}</span>
