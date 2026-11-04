@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Bell, Check, ChevronDown, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck } from 'lucide-react';
+import { Bell, Check, ChevronDown, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck, CalendarDays } from 'lucide-react';
 import { IconButton, PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast } from '../components/ui';
 import { MoodFace } from '../components/icons';
 import { useStore, type CustomAmol, type PrayerMode } from '../store/useStore';
 import { addDays, dateKey, keyToDate, n } from '../lib/bn';
-import { toHijri, WEEKDAYS_BN } from '../lib/dates';
+import { formatGregorian, toHijri, WEEKDAYS_BN } from '../lib/dates';
 import { PRAYER_IDS, type PrayerId } from '../lib/prayer';
 import {
   BUILTIN, customToDef, GROUP_AVOID, GROUP_DHIKR, GROUP_MINE, GROUP_OTHER, GROUP_SUNNAH, LIBRARY, groupItems, itemsFor, streakOf, useAmolItems, useAmolProgress, type AmolDef,
@@ -505,7 +505,21 @@ export function AmolManage() {
 /* Stats                                                               */
 /* ------------------------------------------------------------------ */
 
+type RangeKind = '7' | '30' | '90' | 'month' | 'custom';
+const RANGES: { v: RangeKind; l: string }[] = [
+  { v: '7', l: '৭ দিন' },
+  { v: '30', l: '৩০ দিন' },
+  { v: '90', l: '৯০ দিন' },
+  { v: 'month', l: 'এই মাস' },
+  { v: 'custom', l: 'তারিখ বাছাই' },
+];
+const MAX_RANGE_DAYS = 366;
+
 function Stats() {
+  const [range, setRange] = useState<{ kind: RangeKind; from: string; to: string }>(() => ({ kind: '30', from: dateKey(addDays(new Date(), -29)), to: dateKey() }));
+  const [picking, setPicking] = useState(false);
+  const [draft, setDraft] = useState({ from: range.from, to: range.to });
+  const lang = useStore((s) => s.settings.lang);
   const amol = useStore((s) => s.amol);
   const modes = useStore((s) => s.prayerMode);
   const custom = useStore((s) => s.customAmol);
@@ -513,7 +527,23 @@ function Stats() {
   const adj = useStore((s) => s.settings.hijriAdjust);
   const journal = useStore((s) => s.journal);
   const todayKey = dateKey();
-  const days = useMemo(() => Array.from({ length: 30 }, (_, i) => addDays(keyToDate(todayKey), -29 + i)), [todayKey]);
+  const [fromKey, toKey] = useMemo(() => {
+    const today = keyToDate(todayKey);
+    if (range.kind === 'custom') return [range.from, range.to];
+    if (range.kind === 'month') return [dateKey(new Date(today.getFullYear(), today.getMonth(), 1)), todayKey];
+    return [dateKey(addDays(today, -(Number(range.kind) - 1))), todayKey];
+  }, [range, todayKey]);
+  const days = useMemo(() => {
+    const out: Date[] = [];
+    for (let d = keyToDate(fromKey); dateKey(d) <= toKey && out.length < MAX_RANGE_DAYS; d = addDays(d, 1)) out.push(d);
+    return out;
+  }, [fromKey, toKey]);
+  const len = days.length;
+  const chooseRange = (kind: RangeKind) => {
+    if (kind === 'custom') { setDraft({ from: fromKey, to: toKey }); setPicking(true); return; }
+    setRange((r) => ({ ...r, kind }));
+  };
+  const draftOk = !!draft.from && !!draft.to && draft.from <= draft.to && draft.to <= todayKey;
 
   const prayerCount = (d: Date) => (amol[dateKey(d)] ?? []).filter((x) => (PRAYER_IDS as string[]).includes(x)).length;
   const last7 = days.slice(-7);
@@ -539,7 +569,7 @@ function Stats() {
     const c = (amol[dateKey(d)] ?? []).filter((x) => ids.has(x)).length;
     return items.length ? c / items.length : 0;
   });
-  const avg = Math.round((dayPct.reduce((a, b) => a + b, 0) / days.length) * 100);
+  const avg = len ? Math.round((dayPct.reduce((a, b) => a + b, 0) / len) * 100) : 0;
 
   // jamaat ratio over prayed prayers
   let prayed = 0, jam = 0, qaza = 0;
@@ -574,13 +604,24 @@ function Stats() {
 
   return (
     <div className="space-y-2.5 pt-10">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-5" role="group" aria-label="তারিখের পরিসর">
+        {RANGES.map((r) => (
+          <button key={r.v} onClick={() => chooseRange(r.v)} aria-pressed={range.kind === r.v}
+            className={`pill shrink-0 ${range.kind === r.v ? 'bg-brand text-white' : 'pill-off'}`}>{r.l}</button>
+        ))}
+      </div>
+      <button onClick={() => chooseRange('custom')} className="mx-5 flex items-center gap-1.5 pb-1.5 text-[13px] text-muted">
+        <CalendarDays size={15} />
+        {formatGregorian(keyToDate(fromKey), lang, keyToDate(fromKey).getFullYear() !== keyToDate(toKey).getFullYear())} – {formatGregorian(keyToDate(toKey), lang, true)}
+        <span className="text-ink/40">•</span> {n(len)} দিন
+      </button>
       <div className="grid grid-cols-3 gap-2.5 px-5">
         {[
           { icon: <Flame className="text-alert" size={20} />, v: n(streak), l: 'নামাজের স্ট্রিক' },
           { icon: <Trophy className="text-m-yellow" size={20} />, v: n(best), l: 'সেরা স্ট্রিক' },
-          { icon: <Check className="text-brand" size={20} />, v: `${n(avg)}%`, l: '৩০ দিনের গড়' },
+          { icon: <Check className="text-brand" size={20} />, v: `${n(avg)}%`, l: `${n(len)} দিনের গড়` },
           { icon: <Users className="text-brand" size={20} />, v: `${n(prayed ? Math.round((jam / prayed) * 100) : 0)}%`, l: 'জামাতে নামাজ' },
-          { icon: <CalendarCheck className="text-brand" size={20} />, v: n(prayed), l: '৩০ দিনে নামাজ' },
+          { icon: <CalendarCheck className="text-brand" size={20} />, v: n(prayed), l: `${n(len)} দিনে নামাজ` },
           { icon: <Minus className="text-alert" size={20} />, v: n(qaza), l: 'কাযা আদায়' },
         ].map((s) => (
           <div key={s.l} className="card p-3">
@@ -592,7 +633,7 @@ function Stats() {
       </div>
 
       <section className="page-card px-5 py-4">
-        <h3 className="text-[17px] font-bold text-ink">গত ৭ দিনের নামাজ</h3>
+        <h3 className="text-[17px] font-bold text-ink">{toKey === todayKey ? 'গত ৭ দিনের নামাজ' : `${formatGregorian(keyToDate(toKey), lang)} পর্যন্ত ৭ দিনের নামাজ`}</h3>
         <div className="mt-4 flex h-44 items-end justify-between gap-2" role="img" aria-label="last 7 days prayers chart">
           {last7.map((d, i) => {
             const c = prayerCount(d);
@@ -611,19 +652,19 @@ function Stats() {
       </section>
 
       <section className="page-card px-5 py-4">
-        <h3 className="text-[17px] font-bold text-ink">ওয়াক্ত অনুযায়ী (৩০ দিন)</h3>
+        <h3 className="text-[17px] font-bold text-ink">ওয়াক্ত অনুযায়ী ({n(len)} দিন)</h3>
         <div className="mt-3 space-y-3">
           {perPrayer.map(({ p, c }) => (
             <div key={p}>
-              <div className="flex justify-between text-sm text-ink"><span>{names[p]}</span><span>{n(c)}/{n(30)}</span></div>
-              <div className="mt-1 h-2 rounded-full bg-chip"><div className="h-full rounded-full bg-brand" style={{ width: `${(c / 30) * 100}%` }} /></div>
+              <div className="flex justify-between text-sm text-ink"><span>{names[p]}</span><span>{n(c)}/{n(len)}</span></div>
+              <div className="mt-1 h-2 rounded-full bg-chip"><div className="h-full rounded-full bg-brand" style={{ width: `${len ? (c / len) * 100 : 0}%` }} /></div>
             </div>
           ))}
         </div>
       </section>
 
       <section className="page-card px-5 py-4">
-        <h3 className="text-[17px] font-bold text-ink">আমল অনুযায়ী ধারাবাহিকতা (৩০ দিন)</h3>
+        <h3 className="text-[17px] font-bold text-ink">আমল অনুযায়ী ধারাবাহিকতা ({n(len)} দিন)</h3>
         <div className="mt-2 divide-y divide-line">
           {perDeed.map(({ def, applicable, doneCount, rate, streak: s }) => (
             <div key={def.id} className="py-2.5">
@@ -639,8 +680,8 @@ function Stats() {
       </section>
 
       <section className="page-card px-5 py-4">
-        <h3 className="text-[17px] font-bold text-ink">৩০ দিনের আমল ক্যালেন্ডার</h3>
-        <div className="mt-3 grid grid-cols-10 gap-1.5">
+        <h3 className="text-[17px] font-bold text-ink">{n(len)} দিনের আমল ক্যালেন্ডার</h3>
+        <div className={`mt-3 grid gap-1.5 ${len <= 7 ? 'grid-cols-7' : 'grid-cols-10'}`}>
           {days.map((d, i) => (
             <div key={dateKey(d)} title={`${dateKey(d)}: ${Math.round(dayPct[i] * 100)}%`} className="aspect-square rounded"
               style={{ background: dayPct[i] ? `rgb(var(--brand) / ${0.15 + dayPct[i] * 0.85})` : 'rgb(var(--line))' }} />
@@ -655,6 +696,23 @@ function Stats() {
           <p className="mt-1 text-[14px] text-muted">{n(moodDays.length)} দিন হিসাব নিয়েছেন • গড় অনুভূতি: {MOODS[Math.round(avgMood) - 1]}</p>
         </section>
       )}
+
+      <Sheet open={picking} onClose={() => setPicking(false)} title="তারিখ বাছাই করুন">
+        <div className="grid grid-cols-2 gap-3">
+          <label className="text-sm text-muted">শুরু
+            <input id="stats-from" type="date" className="input mt-1" max={draft.to || todayKey} value={draft.from} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
+          </label>
+          <label className="text-sm text-muted">শেষ
+            <input id="stats-to" type="date" className="input mt-1" min={draft.from} max={todayKey} value={draft.to} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
+          </label>
+        </div>
+        <p className="mt-2 text-xs text-muted">সর্বোচ্চ {n(MAX_RANGE_DAYS)} দিন দেখা যাবে।</p>
+        <button className="btn-primary mt-4 w-full" disabled={!draftOk} onClick={() => {
+          const from = draft.from < dateKey(addDays(keyToDate(draft.to), -(MAX_RANGE_DAYS - 1))) ? dateKey(addDays(keyToDate(draft.to), -(MAX_RANGE_DAYS - 1))) : draft.from;
+          setRange({ kind: 'custom', from, to: draft.to });
+          setPicking(false);
+        }}>দেখান</button>
+      </Sheet>
     </div>
   );
 }
