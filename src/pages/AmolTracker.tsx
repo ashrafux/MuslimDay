@@ -135,6 +135,16 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
   const { done: count, total } = useAmolProgress(key);
   const groups = groupItems(items);
   const collapsed = useStore((s) => s.collapsedGroups);
+  // Tick (or clear) every deed in a group at once; counters jump to their target or back to zero
+  const setGroupDone = (items: AmolDef[], on: boolean) => {
+    const st = useStore.getState();
+    const cur = st.amol[key] ?? [];
+    for (const it of items) {
+      if (it.type === 'count') st.setAmolCount(it.id, key, on ? it.target : 0, it.target);
+      else if (cur.includes(it.id) !== on) st.toggleAmol(it.id, key);
+    }
+    navigator.vibrate?.(on ? [40, 30, 40] : 10);
+  };
   const toggleGroup = (title: string) => set('collapsedGroups', collapsed.includes(title) ? collapsed.filter((x) => x !== title) : [...collapsed, title]);
   const pct = total ? Math.round((count / total) * 100) : 0;
 
@@ -183,16 +193,31 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
 
       {groups.map((g, gi) => (
         <section key={g.title} className={`page-card ${gi === 0 ? 'mt-10' : 'mt-2.5'}`}>
-          <h3>
-            <button onClick={() => toggleGroup(g.title)} aria-expanded={!collapsed.includes(g.title)}
-              className={`flex w-full items-center justify-between gap-3 px-5 pt-[22px] text-left text-[15px] font-bold text-ink ${collapsed.includes(g.title) ? 'pb-[22px]' : 'pb-1.5'}`}>
-              <span className="min-w-0">{g.title}{g.title === GROUP_AVOID && <span className="ml-1 text-[12px]">(বিরত থাকলে টিক দিন)</span>}</span>
-              <span className="flex shrink-0 items-center gap-2">
-                <span className="rounded-full bg-chip px-2 py-0.5 text-[12px] text-muted">{n(g.items.filter((i) => done.includes(i.id)).length)}/{n(g.items.length)}</span>
-                <ChevronDown size={18} className={`text-muted transition-transform ${collapsed.includes(g.title) ? '-rotate-90' : ''}`} />
-              </span>
-            </button>
-          </h3>
+          {(() => {
+            const doneN = g.items.filter((i) => done.includes(i.id)).length;
+            const all = doneN === g.items.length;
+            const open = !collapsed.includes(g.title);
+            const pad = `pt-[22px] ${open ? 'pb-1.5' : 'pb-[22px]'}`;
+            return (
+              <h3 className="flex items-stretch gap-3.5 px-5">
+                {/* sits in the same column as the item circles below */}
+                <button onClick={() => setGroupDone(g.items, !all)} aria-label={all ? `${g.title}: সব টিক তুলুন` : `${g.title}: সব টিক দিন`} aria-pressed={all}
+                  className={`tap flex w-[34px] shrink-0 items-center justify-center ${pad}`}>
+                  <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-full transition ${all ? 'bg-brand text-white' : doneN ? 'border-2 border-brand' : 'border-2 border-line'}`}>
+                    {all ? <Check size={13} strokeWidth={3.5} /> : doneN > 0 && <span className="h-0.5 w-2 rounded-full bg-brand" />}
+                  </span>
+                </button>
+                <button onClick={() => toggleGroup(g.title)} aria-expanded={open}
+                  className={`flex min-w-0 flex-1 items-center justify-between gap-3 text-left text-[15px] font-bold text-ink ${pad}`}>
+                  <span className="min-w-0">{g.title}{g.title === GROUP_AVOID && <span className="ml-1 text-[12px]">(বিরত থাকলে টিক দিন)</span>}</span>
+                  <span className="flex shrink-0 items-center gap-2">
+                    <span className="rounded-full bg-chip px-2 py-0.5 text-[12px] text-muted">{n(doneN)}/{n(g.items.length)}</span>
+                    <ChevronDown size={18} className={`text-muted transition-transform ${open ? '' : '-rotate-90'}`} />
+                  </span>
+                </button>
+              </h3>
+            );
+          })()}
           {!collapsed.includes(g.title) && <ul className="divide-y divide-line">
             {g.items.map((it) => {
               const checked = done.includes(it.id);
