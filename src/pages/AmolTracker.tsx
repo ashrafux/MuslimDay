@@ -179,21 +179,20 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
     <div>
       <WeekStrip selected={key} onSelect={setKey} />
 
-      <div className="mx-5 mt-6 rounded-[10px] bg-chip/60 p-5 text-ink">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <div className="label !text-ink/60">আজকের অগ্রগতি</div>
-            <div className="mt-1 text-[17px] font-bold">{n(count)}/{n(total)} আমল সম্পন্ন</div>
-            <div className="mt-0.5 text-[13px] text-ink/70">{count === total && total > 0 ? 'মাশাআল্লাহ! সব আমল সম্পন্ন।' : 'প্রতিটি আমল সম্পন্ন হলে টিক দিন।'}</div>
+      <div className="mx-5 mt-6 flex items-center gap-4 rounded-[10px] bg-chip/60 p-5 text-ink">
+        <div className="min-w-0 flex-1">
+          <div className="label !text-ink/60">আজকের অগ্রগতি</div>
+          <div className="mt-1 text-[17px] font-bold">{n(count)}/{n(total)} আমল সম্পন্ন</div>
+          <div className="mt-0.5 text-[13px] text-ink/70">{count === total && total > 0 ? 'মাশাআল্লাহ! সব আমল সম্পন্ন।' : 'প্রতিটি আমল সম্পন্ন হলে টিক দিন।'}</div>
+          <div className="mt-4 flex flex-wrap gap-1.5 text-[12px] font-semibold">
+            <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Flame size={13} className="text-alert" /> {n(prayerStreak)} দিন নামাজ</span>
+            <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><CalendarCheck size={13} /> নামাজ {n(prayersDone)}/{n(5)}</span>
+            <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Users size={13} /> জামাতে {n(jamaat)}</span>
           </div>
-          <ProgressRing value={total ? count / total : 0} size={56} stroke={6} color="rgb(var(--success))" track="rgb(var(--surface))" />
         </div>
-        <div className="mt-3 text-[44px] font-extrabold leading-none">{n(pct)}%</div>
-        <div className="mt-4 flex flex-wrap gap-2 text-[12px] font-semibold">
-          <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Flame size={13} className="text-alert" /> {n(prayerStreak)} দিন নামাজ</span>
-          <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><CalendarCheck size={13} /> নামাজ {n(prayersDone)}/{n(5)}</span>
-          <span className="flex items-center gap-1 rounded-full bg-white/70 px-2.5 py-1"><Users size={13} /> জামাতে {n(jamaat)}</span>
-        </div>
+        <ProgressRing value={total ? count / total : 0} size={100} stroke={8} color="rgb(var(--success))" track="rgb(var(--surface))">
+          <span className="text-[24px] font-extrabold leading-none tabular-nums" aria-label={`${pct}% সম্পন্ন`}>{n(pct)}%</span>
+        </ProgressRing>
       </div>
 
       {groups.map((g, gi) => (
