@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Bell, Check, ChevronDown, ChevronLeft, ChevronRight, Flame, Minus, Pencil, Plus, SlidersHorizontal, Trash2, Trophy, Users, BookmarkPlus, CalendarCheck, CalendarDays } from 'lucide-react';
 import { IconButton, PageHeader, ProgressRing, Segmented, Sheet, Toggle, toast } from '../components/ui';
@@ -46,33 +46,102 @@ export default function AmolTracker() {
 // Thursday is too long to sit inside the day circle
 const shortDay = (i: number) => (i === 4 ? 'বৃহঃ' : WEEKDAYS_BN[i]);
 
+const SLIDE_MS = 200;
+
 function WeekStrip({ selected, onSelect }: { selected: string; onSelect: (k: string) => void }) {
   const sel = keyToDate(selected);
   // Bangladeshi week: Saturday → Friday
   const start = addDays(sel, -((sel.getDay() + 1) % 7));
   const today = dateKey();
   const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
+  const canNext = dateKey(addDays(start, 7)) <= today;
+
+  // Carousel: the row follows the finger, then slides a whole week out and the next one in
+  const track = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ x: number; y: number; moved: boolean } | null>(null);
+  const swallowClick = useRef(false);
+  const busy = useRef(false);
+  const [dx, setDx] = useState(0);
+  const [animate, setAnimate] = useState(false);
+
+  const goPrev = () => onSelect(dateKey(addDays(sel, -7)));
+  const goNext = () => {
+    const next = addDays(sel, 7);
+    onSelect(dateKey(next) > today ? today : dateKey(next));
+  };
+  /** dir -1 = to the next (later) week, content moves left; dir 1 = to the previous week */
+  const slide = (dir: 1 | -1) => {
+    if (busy.current || (dir === -1 && !canNext)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { dir === -1 ? goNext() : goPrev(); setDx(0); return; }
+    busy.current = true;
+    const w = track.current?.offsetWidth ?? 300;
+    setAnimate(true);
+    setDx(dir * w);
+    window.setTimeout(() => {
+      dir === -1 ? goNext() : goPrev();
+      setAnimate(false);
+      setDx(-dir * w);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        setAnimate(true);
+        setDx(0);
+        window.setTimeout(() => { busy.current = false; }, SLIDE_MS);
+      }));
+    }, SLIDE_MS);
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (busy.current || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    drag.current = { x: e.clientX, y: e.clientY, moved: false };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    let move = e.clientX - d.x;
+    if (!d.moved) {
+      if (Math.abs(move) < 8) return;
+      if (Math.abs(e.clientY - d.y) > Math.abs(move)) { drag.current = null; return; } // vertical scroll wins
+      d.moved = true;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    }
+    if (move < 0 && !canNext) move *= 0.25; // nothing ahead of this week: rubber-band
+    setAnimate(false);
+    setDx(move);
+  };
+  const onPointerEnd = (e: React.PointerEvent) => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d?.moved) return;
+    swallowClick.current = true;
+    const move = e.clientX - d.x;
+    const threshold = Math.min(60, (track.current?.offsetWidth ?? 300) * 0.18);
+    if (move < -threshold && canNext) slide(-1);
+    else if (move > threshold) slide(1);
+    else { setAnimate(true); setDx(0); }
+  };
+
   return (
     <div className="mt-10 flex items-center gap-1 px-3">
-      <button aria-label="previous week" className="tap shrink-0 rounded-full p-1 text-muted" onClick={() => onSelect(dateKey(addDays(sel, -7)))}><ChevronLeft size={18} /></button>
-      <div className="grid min-w-0 flex-1 grid-cols-7 gap-0.5">
-        {days.map((d) => {
-          const k = dateKey(d);
-          const future = k > today;
-          const active = k === selected;
-          return (
-            <button key={k} disabled={future} onClick={() => onSelect(k)} aria-pressed={active}
-              className={`mx-auto flex aspect-square w-full max-w-[42px] flex-col items-center justify-center gap-[3px] rounded-full leading-none transition disabled:opacity-35 ${active ? 'bg-brand text-white' : 'bg-chip'}`}>
-              <span className={`text-[9.5px] font-semibold ${active ? 'text-white/75' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{shortDay(d.getDay())}</span>
-              <span className={`text-[13px] font-bold ${active ? '' : k === today ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
-            </button>
-          );
-        })}
+      <button aria-label="previous week" className="tap shrink-0 rounded-full p-1 text-muted" onClick={() => slide(1)}><ChevronLeft size={18} /></button>
+      <div ref={track} className="min-w-0 flex-1 touch-pan-y select-none overflow-hidden"
+        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd}
+        onPointerCancel={() => { drag.current = null; setAnimate(true); setDx(0); }}
+        onClickCapture={(e) => { if (swallowClick.current) { swallowClick.current = false; e.preventDefault(); e.stopPropagation(); } }}>
+        <div className="grid grid-cols-7 gap-0.5" style={{ transform: `translateX(${dx}px)`, transition: animate ? `transform ${SLIDE_MS}ms cubic-bezier(.2,.8,.2,1)` : 'none' }}>
+          {days.map((d) => {
+            const k = dateKey(d);
+            const future = k > today;
+            const active = k === selected;
+            return (
+              <button key={k} disabled={future} onClick={() => onSelect(k)} aria-pressed={active} draggable={false}
+                className={`mx-auto flex aspect-square w-full max-w-[42px] flex-col items-center justify-center gap-[3px] rounded-full leading-none transition-colors disabled:opacity-35 ${active ? 'bg-brand text-white' : 'bg-chip'}`}>
+                <span className={`text-[9.5px] font-semibold ${active ? 'text-white/75' : d.getDay() === 5 ? 'text-brand' : 'text-muted'}`}>{shortDay(d.getDay())}</span>
+                <span className={`text-[13px] font-bold ${active ? '' : k === today ? 'text-brand' : 'text-ink'}`}>{n(d.getDate())}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <button aria-label="next week" disabled={dateKey(addDays(start, 7)) > today} className="tap shrink-0 rounded-full p-1 text-muted disabled:opacity-30" onClick={() => {
-        const next = addDays(sel, 7);
-        onSelect(dateKey(next) > today ? today : dateKey(next));
-      }}><ChevronRight size={18} /></button>
+      <button aria-label="next week" disabled={!canNext} className="tap shrink-0 rounded-full p-1 text-muted disabled:opacity-30" onClick={() => slide(-1)}><ChevronRight size={18} /></button>
     </div>
   );
 }
