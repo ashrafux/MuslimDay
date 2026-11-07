@@ -91,15 +91,20 @@ function CountControl({ def, k }: { def: AmolDef; k: string }) {
   return (
     <>
       <button aria-label={`${def.title} +1`} onClick={() => bump(1)} className="tap shrink-0">
-        <ProgressRing value={count / def.target} size={38} stroke={3.5} color="rgb(var(--brand))" track="rgb(var(--line))">
-          {done ? <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-brand text-white"><Check size={17} strokeWidth={3} /></span>
-            : <span className="text-[12px] text-ink">{n(count)}</span>}
-        </ProgressRing>
+        {done ? (
+          <span className="flex h-[34px] w-[34px] items-center justify-center">
+            <span className="flex h-[22px] w-[22px] items-center justify-center rounded-[6px] bg-success text-white"><Check size={14} strokeWidth={3.5} /></span>
+          </span>
+        ) : (
+          <ProgressRing value={count / def.target} size={34} stroke={3} color="rgb(var(--success))" track="rgb(var(--line))">
+            <span className="text-[11px] text-ink">{n(count)}</span>
+          </ProgressRing>
+        )}
       </button>
       <button className="min-w-0 flex-1 text-left" onClick={() => { setVal(String(count)); setOpen(true); }}>
         <span className={`block text-[17px] ${done ? 'text-muted' : 'text-ink'}`}>{def.title}</span>
         <span className="block text-[13px] text-muted">{n(count)}/{n(def.target)} {def.unit ?? ''}{def.sub ? ` • ${def.sub}` : ''}</span>
-        <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-chip"><span className="block h-full rounded-full bg-brand transition-all" style={{ width: `${Math.min(100, (count / def.target) * 100)}%` }} /></span>
+        <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-chip"><span className="block h-full rounded-full bg-success transition-all" style={{ width: `${Math.min(100, (count / def.target) * 100)}%` }} /></span>
       </button>
       <div className="flex shrink-0 items-center gap-1">
         <button aria-label={`${def.title} -1`} onClick={() => bump(-1)} disabled={count === 0} className="tap flex h-8 w-8 items-center justify-center rounded-full bg-chip text-brand disabled:opacity-40"><Minus size={15} /></button>
@@ -199,12 +204,12 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
             const open = !collapsed.includes(g.title);
             const pad = `pt-[22px] ${open ? 'pb-1.5' : 'pb-[22px]'}`;
             return (
-              <h3 className="flex items-stretch gap-3.5 px-5">
+              <h3 className="flex items-stretch gap-2 px-5">
                 {/* sits in the same column as the item circles below */}
                 <button onClick={() => setGroupDone(g.items, !all)} aria-label={all ? `${g.title}: সব টিক তুলুন` : `${g.title}: সব টিক দিন`} aria-pressed={all}
                   className={`tap flex w-[34px] shrink-0 items-center justify-center ${pad}`}>
-                  <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-full transition ${all ? 'bg-brand text-white' : doneN ? 'border-2 border-brand' : 'border-2 border-line'}`}>
-                    {all ? <Check size={13} strokeWidth={3.5} /> : doneN > 0 && <span className="h-0.5 w-2 rounded-full bg-brand" />}
+                  <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-[6px] transition ${all ? 'bg-success text-white' : doneN ? 'border-2 border-success' : 'border-2 border-line'}`}>
+                    {all ? <Check size={14} strokeWidth={3.5} /> : doneN > 0 && <span className="h-0.5 w-2 rounded-full bg-success" />}
                   </span>
                 </button>
                 <button onClick={() => toggleGroup(g.title)} aria-expanded={open}
@@ -229,11 +234,13 @@ function Daily({ onEdit, onAdd }: { onEdit: (c: CustomAmol) => void; onAdd: () =
                     {it.type === 'count' ? <CountControl def={it} k={key} /> : (
                       <>
                         <button onClick={() => toggle(it.id, key)} aria-label={it.title}
-                          className={`tap flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-[2.5px] ${checked ? 'animate-pop border-brand bg-brand text-white' : 'border-line'}`}>
-                          {checked && <Check size={18} strokeWidth={3} />}
+                          className="tap flex h-[34px] w-[34px] shrink-0 items-center justify-center">
+                          <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-[6px] transition ${checked ? 'animate-pop bg-success text-white' : 'border-2 border-line'}`}>
+                            {checked && <Check size={14} strokeWidth={3.5} />}
+                          </span>
                         </button>
                         <button className="min-w-0 flex-1 text-left" onClick={() => toggle(it.id, key)}>
-                          <span className={`block text-[17px] ${checked ? 'text-muted line-through decoration-brand/50' : 'text-ink'}`}>{it.title}</span>
+                          <span className={`block text-[17px] ${checked ? 'text-muted line-through decoration-success/50' : 'text-ink'}`}>{it.title}</span>
                           {it.sub && <span className="block text-[13px] text-muted">{it.sub}</span>}
                         </button>
                       </>

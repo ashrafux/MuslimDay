@@ -17,6 +17,7 @@ export default {
         night: v('night'),
         gold: v('gold'),
         alert: v('alert'),
+        success: v('success'),
         // pastel set (inspired by the mood / course cards)
         mint: v('mint'),
         lav: v('lav'),
