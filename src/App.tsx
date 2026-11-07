@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
-import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { HashRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Capacitor, SystemBars, SystemBarsStyle, SystemBarType } from '@capacitor/core';
+import { App as NativeApp } from '@capacitor/app';
 import { PremiumGateSheet, SubLayout, TabLayout } from './components/Layout';
 import { ToastHost } from './components/ui';
 import { Scheduler } from './components/Scheduler';
@@ -52,6 +53,32 @@ function NativeBars() {
   return null;
 }
 
+/**
+ * Android back button / back gesture in the native app: close an open sheet first, then go to
+ * the previous screen, then fall back to Home; only from Home does the app go to the background.
+ */
+function NativeBack() {
+  const { pathname } = useLocation();
+  const nav = useNavigate();
+  const path = useRef(pathname);
+  path.current = pathname;
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    const handle = NativeApp.addListener('backButton', ({ canGoBack }) => {
+      // Sheets close on Escape (see Sheet in components/ui)
+      if (document.querySelector('.animate-sheet')) {
+        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        return;
+      }
+      if (path.current === '/') { NativeApp.minimizeApp(); return; }
+      if (canGoBack) window.history.back();
+      else nav('/', { replace: true });
+    });
+    return () => { handle.then((h) => h.remove()); };
+  }, [nav]);
+  return null;
+}
+
 function useThemeAndLang() {
   const theme = useStore((s) => s.settings.theme);
   const lang = useStore((s) => s.settings.lang);
@@ -86,6 +113,7 @@ export default function App() {
     <HashRouter>
       <ScrollTop />
       <NativeBars />
+      <NativeBack />
       <Scheduler />
       <div className="mx-auto min-h-full max-w-app bg-bg shadow-[0_0_40px_rgba(0,0,0,.06)]">
         <Routes>
