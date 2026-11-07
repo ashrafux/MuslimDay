@@ -65,16 +65,15 @@ export default function Tools() {
   return (
     <div>
       <PageHeader title={t('tools')} />
-      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] flex-col rounded-[10px] p-5 text-left text-white"
+      <button onClick={() => nav('/amol')} className="tap mx-5 mt-2 flex w-[calc(100%-2.5rem)] items-center gap-4 rounded-[10px] p-5 text-left text-white"
         style={{ background: 'radial-gradient(90% 80% at 100% 0%, #22a05833 0%, #22a05800 70%), linear-gradient(160deg, #1d1e23 0%, #23242a 55%, #2a2b33 100%)' }}>
-        <span className="block text-[20px] font-bold leading-snug">{t('trackToday')}</span>
-        <span className="mt-4 flex w-full items-end justify-between">
-          <span className="flex items-baseline gap-2">
-            <span className="text-[42px] font-extrabold leading-none">{n(pct)}%</span>
-            <span className="text-[14px] font-semibold text-white/60">{n(done)}/{n(total)} সম্পন্ন</span>
-          </span>
-          <ProgressRing value={pct / 100} size={52} stroke={6} track="rgb(255 255 255 / .15)" color="rgb(var(--success))" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-[20px] font-bold leading-snug">{t('trackToday')}</span>
+          <span className="mt-1.5 block text-[14px] font-semibold text-white/60">{n(done)}/{n(total)} আমল সম্পন্ন</span>
         </span>
+        <ProgressRing value={total ? done / total : 0} size={100} stroke={8} track="rgb(255 255 255 / .15)" color="rgb(var(--success))">
+          <span className="text-[24px] font-extrabold leading-none tabular-nums">{n(pct)}%</span>
+        </ProgressRing>
       </button>
 
       <div className="section-head"><span>{t('essentialIlm')}</span></div>
