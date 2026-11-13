@@ -4,6 +4,7 @@ const dict = {
   home: ['হোম', 'Home'],
   tools: ['টুলস', 'Tools'],
   quran: ['কুরআন', 'Quran'],
+  amol: ['আমল', 'Amal'],
   dua: ['দোয়া', 'Dua'],
   others: ['অন্যান্য', 'More'],
   remaining: ['শেষ হতে বাকি', 'remaining'],

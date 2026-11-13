@@ -28,7 +28,7 @@ export default function AmolTracker() {
   const [editor, setEditor] = useState<{ open: boolean; item?: CustomAmol }>({ open: false });
   return (
     <div>
-      <PageHeader back title="আমল ট্র্যাকার" right={<IconButton label="manage amal" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /></IconButton>} />
+      <PageHeader title="আমল ট্র্যাকার" right={<IconButton label="manage amal" onClick={() => nav('/amol/manage')}><SlidersHorizontal size={18} /></IconButton>} />
       <div className="px-5 pt-8">
         <Segmented value={tab} onChange={(v) => setParams(v === 'today' ? {} : { tab: v }, { replace: true })}
           options={[{ value: 'today', label: 'দৈনিক আমল' }, { value: 'stats', label: 'পরিসংখ্যান' }]} />

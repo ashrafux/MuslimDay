@@ -120,11 +120,12 @@ export default function App() {
           <Route element={<TabLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/tools" element={<Tools />} />
-            <Route path="/quran" element={<Quran />} />
+            <Route path="/amol" element={<AmolTracker />} />
             <Route path="/dua" element={<Dua />} />
             <Route path="/more" element={<More />} />
           </Route>
           <Route element={<SubLayout />}>
+            <Route path="/quran" element={<Quran />} />
             <Route path="/quran/settings" element={<QuranSettingsPage />} />
             <Route path="/quran/search" element={<QuranSearch />} />
             <Route path="/quran/bookmarks" element={<QuranBookmarks />} />
@@ -143,7 +144,6 @@ export default function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/alarm" element={<Alarm />} />
             <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/amol" element={<AmolTracker />} />
             <Route path="/amol/manage" element={<AmolManage />} />
             <Route path="/asmaul-husna" element={<AsmaulHusnaPage />} />
             <Route path="/hadith" element={<HadithPage />} />

@@ -47,7 +47,7 @@ export default function Quran() {
 
   return (
     <div>
-      <PageHeader title={t('quran')} right={<IconButton label="settings" onClick={() => nav('/quran/settings')}><Settings size={19} /></IconButton>} />
+      <PageHeader back title={t('quran')} right={<IconButton label="settings" onClick={() => nav('/quran/settings')}><Settings size={19} /></IconButton>} />
       <section className="page-card mt-2 grid grid-cols-4 px-2 py-4">
         {tiles.map((x) => (
           <button key={x.label} onClick={x.go} className="tap flex flex-col items-center gap-2">
