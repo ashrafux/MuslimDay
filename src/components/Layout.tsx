@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Home, ListChecks, User } from 'lucide-react';
+import { Home, BookOpen, User } from 'lucide-react';
 import { create } from 'zustand';
 import { HandsIcon, ToolsDotsIcon } from './icons';
 import { Sheet } from './ui';
@@ -11,7 +11,7 @@ import { Crown, Check } from 'lucide-react';
 const TABS = [
   { to: '/', key: 'home' as const, icon: (a: boolean) => <Home size={21} strokeWidth={2} fill={a ? 'currentColor' : 'none'} /> },
   { to: '/tools', key: 'tools' as const, icon: (a: boolean) => <ToolsDotsIcon size={21} active={a} /> },
-  { to: '/amol', key: 'amol' as const, icon: (a: boolean) => <ListChecks size={21} strokeWidth={a ? 2.4 : 2} /> },
+  { to: '/quran', key: 'quran' as const, icon: (a: boolean) => <BookOpen size={21} strokeWidth={2} fill={a ? 'currentColor' : 'none'} /> },
   { to: '/dua', key: 'dua' as const, icon: (a: boolean) => <HandsIcon size={23} strokeWidth={1.9} fill={a ? 'currentColor' : 'none'} /> },
   { to: '/more', key: 'others' as const, icon: (a: boolean) => <User size={21} strokeWidth={2} fill={a ? 'currentColor' : 'none'} /> },
 ];

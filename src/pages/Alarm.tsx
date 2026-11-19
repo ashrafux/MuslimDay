@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BellRing } from 'lucide-react';
 import { PageHeader, Toggle, toast } from '../components/ui';
 import { useStore } from '../store/useStore';
@@ -6,6 +6,7 @@ import { useNow, usePrayerData } from '../lib/hooks';
 import { fmtTime, PRAYER_IDS } from '../lib/prayer';
 import { useT } from '../lib/i18n';
 import { n } from '../lib/bn';
+import { exactAlarmsAllowed, isNative, notifyNow, notifyPermission, openExactAlarmSettings, requestNotifyPermission, type NotifyPermission } from '../lib/native';
 
 export default function Alarm() {
   const t = useT();
@@ -14,22 +15,28 @@ export default function Alarm() {
   const { place, time24 } = useStore((s) => s.settings);
   const now = useNow(60000);
   const { waqts, today } = usePrayerData(now);
-  const [perm, setPerm] = useState(typeof Notification !== 'undefined' ? Notification.permission : 'denied');
+  const [perm, setPerm] = useState<NotifyPermission>('default');
+  // Android 12+: alarms on the exact minute need the "Alarms & reminders" permission
+  const [exact, setExact] = useState(true);
+  useEffect(() => {
+    notifyPermission().then(setPerm).catch(() => setPerm('denied'));
+    exactAlarmsAllowed().then(setExact).catch(() => undefined);
+  }, []);
   const isFriday = today.getDay() === 5;
 
   const ask = async () => {
-    if (typeof Notification === 'undefined') return toast('এই ব্রাউজারে নোটিফিকেশন সাপোর্ট নেই');
-    const p = await Notification.requestPermission();
+    const p = await requestNotifyPermission();
     setPerm(p);
-    toast(p === 'granted' ? 'নোটিফিকেশন চালু হয়েছে' : 'অনুমতি দেওয়া হয়নি');
+    if (p !== 'granted') return toast(isNative ? 'অনুমতি দেওয়া হয়নি — ফোনের সেটিংস থেকে নোটিফিকেশন চালু করুন' : 'অনুমতি দেওয়া হয়নি');
+    toast('নোটিফিকেশন চালু হয়েছে');
+    if (isNative) setExact(await exactAlarmsAllowed());
+  };
+  const allowExact = async () => {
+    setExact(await openExactAlarmSettings());
   };
   const test = async () => {
     useStore.getState().pushNotification({ title: 'টেস্ট অ্যালার্ম', body: 'নামাজের অ্যালার্ম ঠিকমতো কাজ করছে।', link: '/alarm' });
-    if (perm === 'granted') {
-      const reg = await navigator.serviceWorker?.getRegistration();
-      if (reg) reg.showNotification('টেস্ট অ্যালার্ম', { body: 'নামাজের অ্যালার্ম ঠিকমতো কাজ করছে।', icon: './icon.svg' });
-      else new Notification('টেস্ট অ্যালার্ম', { body: 'নামাজের অ্যালার্ম ঠিকমতো কাজ করছে।' });
-    }
+    await notifyNow('টেস্ট অ্যালার্ম', 'নামাজের অ্যালার্ম ঠিকমতো কাজ করছে।', '/alarm', alarm.sound);
     toast('টেস্ট নোটিফিকেশন পাঠানো হয়েছে');
   };
 
@@ -40,6 +47,12 @@ export default function Alarm() {
         <div className="m-5 rounded-[10px] bg-butter p-4 text-ink">
           <p>নামাজের সময় নোটিফিকেশন পেতে অনুমতি দিন।</p>
           <button className="btn-primary mt-3" onClick={ask}><BellRing size={18} /> অনুমতি দিন</button>
+        </div>
+      )}
+      {perm === 'granted' && isNative && !exact && (
+        <div className="m-5 rounded-[10px] bg-butter p-4 text-ink">
+          <p>অ্যালার্ম ঠিক মিনিটে বাজাতে "অ্যালার্ম ও রিমাইন্ডার" অনুমতি দিন। না দিলে অ্যালার্ম কয়েক মিনিট দেরিতে আসতে পারে।</p>
+          <button className="btn-primary mt-3" onClick={allowExact}><BellRing size={18} /> অনুমতি দিন</button>
         </div>
       )}
       <div className="page-card mt-4">
@@ -73,7 +86,7 @@ export default function Alarm() {
       </div>
       <div className="p-5">
         <button className="btn-soft w-full" onClick={test}>টেস্ট নোটিফিকেশন</button>
-        <p className="mt-3 text-center text-xs text-muted">অ্যাপটি খোলা থাকা অবস্থায় (বা হোম স্ক্রিনে ইনস্টল করা থাকলে) অ্যালার্ম কাজ করবে। {PRAYER_IDS.filter((p) => alarm.enabled[p]).length.toLocaleString('bn-BD')}টি ওয়াক্তে অ্যালার্ম চালু।</p>
+        <p className="mt-3 text-center text-xs text-muted">{isNative ? 'অ্যাপ বন্ধ থাকলেও অ্যালার্ম বাজবে।' : 'অ্যাপটি খোলা থাকা অবস্থায় (বা হোম স্ক্রিনে ইনস্টল করা থাকলে) অ্যালার্ম কাজ করবে।'} {PRAYER_IDS.filter((p) => alarm.enabled[p]).length.toLocaleString('bn-BD')}টি ওয়াক্তে অ্যালার্ম চালু।</p>
       </div>
     </div>
   );

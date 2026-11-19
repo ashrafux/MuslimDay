@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Crown, X } from 'lucide-react';
 import { create } from 'zustand';
 import { useStore } from '../store/useStore';
+import { isNative, shareContent } from '../lib/native';
 
 /* ---------- toast ---------- */
 const useToastStore = create<{ msg: string | null; show: (m: string) => void }>((set) => ({
@@ -24,17 +25,11 @@ export function ToastHost() {
 }
 
 export async function shareText(title: string, text: string, url?: string) {
-  const shareUrl = url ?? window.location.href;
-  try {
-    if (navigator.share) {
-      await navigator.share({ title, text, url: shareUrl });
-      return;
-    }
-  } catch (e) {
-    if ((e as Error)?.name === 'AbortError') return; // user cancelled
-    // sharing refused (e.g. embedded preview) → copy instead
-  }
-  await copyText(`${text}\n${shareUrl}`);
+  // inside the Android app the page address is a local one, so only a given url is shared
+  const shareUrl = url ?? (isNative ? undefined : window.location.href);
+  if (await shareContent({ title, text, url: shareUrl })) return;
+  // sharing refused (e.g. embedded preview) → copy instead
+  await copyText(shareUrl ? `${text}\n${shareUrl}` : text);
 }
 
 export async function copyText(text: string) {
@@ -167,7 +162,7 @@ export function ListRow({ icon, title, sub, onClick, right, tint }: { icon?: Rea
 export function Segmented<T extends string>({ value, options, onChange }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void }) {
   return (
     <div className="flex justify-center">
-      <div className="inline-flex rounded-[10px] bg-chip p-1">
+      <div className="seg-track inline-flex rounded-[10px] bg-chip p-1">
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)}
           className={`flex min-w-[112px] items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-[14px] font-semibold transition ${value === o.value ? 'bg-surface text-ink shadow-card' : 'text-muted'}`}>

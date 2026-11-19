@@ -88,6 +88,14 @@ interface State {
   hiddenAmol: string[];
   /** amal tracker sections the user collapsed */
   collapsedGroups: string[];
+  /** amal categories the user turned off (none of their deeds count) */
+  hiddenGroups: string[];
+  /** the user's category order; categories missing from it follow in the default order */
+  groupOrder: string[];
+  /** main sunnah id -> sunnahs the user added to its checklist */
+  customDetails: Record<string, { id: string; title: string }[]>;
+  /** built-in sunnah id -> the name the user gave it */
+  amolTitles: Record<string, string>;
   /** dateKey -> daily self-accountability (muhasaba) */
   journal: Record<string, JournalEntry>;
   qaza: Record<PrayerId | 'witr', number>;
@@ -149,6 +157,10 @@ export const useStore = create<State>()(
       prayerMode: {},
       hiddenAmol: [],
       collapsedGroups: [],
+      hiddenGroups: [],
+      groupOrder: [],
+      customDetails: {},
+      amolTitles: {},
       journal: {},
       qaza: { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0, witr: 0 },
       fasting: {},

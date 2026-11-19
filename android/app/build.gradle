@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
 
+// Release signing (for Play Store / a signed APK). Put the publisher's own key in android/keystore.properties
+// (see keystore.properties.example) or in the MUSLIMDAY_* environment variables. Neither is committed.
+def keystoreProps = new Properties()
+def keystorePropsFile = rootProject.file('keystore.properties')
+if (keystorePropsFile.exists()) keystorePropsFile.withInputStream { keystoreProps.load(it) }
+def releaseSetting = { String prop, String env -> keystoreProps.getProperty(prop) ?: System.getenv(env) }
+def releaseStoreFile = releaseSetting('storeFile', 'MUSLIMDAY_KEYSTORE')
+
 android {
     namespace = "com.ashrafux.amoltracker"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +15,9 @@ android {
         applicationId "com.ashrafux.amoltracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // bump both for every Play Store upload (or set MUSLIMDAY_VERSION_CODE / _NAME in CI)
+        versionCode((System.getenv('MUSLIMDAY_VERSION_CODE') ?: '1') as Integer)
+        versionName(System.getenv('MUSLIMDAY_VERSION_NAME') ?: "1.0")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -24,12 +33,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        if (releaseStoreFile) {
+            release {
+                storeFile rootProject.file(releaseStoreFile)
+                storePassword releaseSetting('storePassword', 'MUSLIMDAY_KEYSTORE_PASSWORD')
+                keyAlias releaseSetting('keyAlias', 'MUSLIMDAY_KEY_ALIAS')
+                keyPassword releaseSetting('keyPassword', 'MUSLIMDAY_KEY_PASSWORD')
+            }
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
+            if (releaseStoreFile) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

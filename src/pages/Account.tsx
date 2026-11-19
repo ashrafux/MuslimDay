@@ -8,6 +8,7 @@ import { useStore } from '../store/useStore';
 import { METHODS } from '../lib/prayer';
 import { formatHijri, toHijri } from '../lib/dates';
 import { n } from '../lib/bn';
+import { saveTextFile, shareContent } from '../lib/native';
 
 export const SUPPORT_EMAIL = 'support@amoltracker.app';
 
@@ -80,13 +81,9 @@ export function SettingsPage() {
   const [method, setMethod] = useState(false);
   const [reset, setReset] = useState(false);
 
-  const exportData = () => {
-    const blob = new Blob([localStorage.getItem('amol-tracker') ?? '{}'], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `amol-tracker-backup-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-  };
+  // Android shares the file (save to Drive, Files, WhatsApp…); a browser downloads it
+  const exportData = () => saveTextFile(`amol-tracker-backup-${new Date().toISOString().slice(0, 10)}.json`, localStorage.getItem('amol-tracker') ?? '{}')
+    .catch(() => toast('ব্যাকআপ ফাইল তৈরি করা যায়নি'));
   const importData = (f?: File) => {
     if (!f) return;
     f.text().then((t) => {
@@ -203,9 +200,8 @@ export function ReportPage() {
     const full = `[${category}] ${text.trim()}`;
     set('reports', [{ id: String(Date.now()), text: full, time: Date.now(), hasImage: !!image }, ...reports]);
     const deviceInfo = `\n\n---\nডিভাইস: ${navigator.userAgent}\nস্ক্রিন: ${window.innerWidth}x${window.innerHeight}`;
-    if (image && navigator.canShare?.({ files: [image] })) {
-      try { await navigator.share({ title: 'সমস্যা রিপোর্ট', text: full + deviceInfo, files: [image] }); } catch { /* cancelled */ }
-    } else {
+    // with a screenshot, the share sheet carries both (e.g. into an email); otherwise open an email
+    if (!(image && await shareContent({ title: 'সমস্যা রিপোর্ট', text: full + deviceInfo, files: [image] }))) {
       window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('[আমল ট্র্যাকার] সমস্যা রিপোর্ট')}&body=${encodeURIComponent(full + deviceInfo + (image ? '\n\n(স্ক্রিনশটটি এই ইমেইলে সংযুক্ত করুন)' : ''))}`;
     }
     toast('রিপোর্ট জমা হয়েছে — জাযাকাল্লাহু খাইরান');

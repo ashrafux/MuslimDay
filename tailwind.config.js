@@ -7,6 +7,7 @@ export default {
       colors: {
         bg: v('bg'),
         surface: v('surface'),
+        paper: v('paper'),
         ink: v('ink'),
         muted: v('muted'),
         line: v('line'),

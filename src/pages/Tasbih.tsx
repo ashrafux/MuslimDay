@@ -3,6 +3,7 @@ import { Plus, RotateCcw, Vibrate, Volume2, VolumeX, History, Trash2 } from 'luc
 import { PageHeader, ProgressRing, Sheet, toast } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { dateKey, n } from '../lib/bn';
+import { syncMainsOf } from '../lib/amol';
 
 const AMOL_LINK: Record<string, { id: string; target: number }> = {
   astaghfirullah: { id: 'istighfar', target: 100 },
@@ -50,6 +51,7 @@ export default function Tasbih() {
       const st = useStore.getState();
       const k = dateKey();
       st.setAmolCount(linked.id, k, (st.amolCounts[k]?.[linked.id] ?? 0) + 1, linked.target);
+      syncMainsOf(k, linked.id); // its main item (ইস্তিগফার / দরুদ শরিফ) ticks once its list is done
     }
     if (sound) click();
     if (c % preset.target === 0) { navigator.vibrate?.([80, 60, 80]); toast(`${n(c / preset.target)} রাউন্ড সম্পন্ন — মাশাআল্লাহ`); }

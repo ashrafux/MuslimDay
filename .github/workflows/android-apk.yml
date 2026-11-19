@@ -2,7 +2,7 @@ name: Android APK
 
 on:
   push:
-    branches: [ccr-14329060-d9rc7i, main]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,6 +15,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Optional release signing. Add these repository secrets to also get a signed APK and a
+      # Play Store bundle (.aab); without them only the installable test APK is built.
+      # ANDROID_KEYSTORE_BASE64 = base64 of your .jks file (base64 -w0 muslimday-release.jks)
+      HAS_RELEASE_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+      # every run gets a higher version code, so each build can be uploaded / installed over the last
+      MUSLIMDAY_VERSION_CODE: ${{ github.run_number }}
+      MUSLIMDAY_VERSION_NAME: 1.0.${{ github.run_number }}
     steps:
       - uses: actions/checkout@v4
 
@@ -34,23 +42,38 @@ jobs:
           npm run build
           npx cap sync android
 
-      - name: Build APK
+      - name: Build test APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
-      - run: cp android/app/build/outputs/apk/debug/app-debug.apk amol-tracker.apk
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk muslimday-test.apk
+
+      - name: Build signed release APK and Play Store bundle
+        if: env.HAS_RELEASE_KEY == 'true'
+        working-directory: android
+        env:
+          MUSLIMDAY_KEYSTORE: release.jks
+          MUSLIMDAY_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          MUSLIMDAY_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          MUSLIMDAY_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > release.jks
+          ./gradlew assembleRelease bundleRelease --no-daemon
+          rm release.jks
+          cp app/build/outputs/apk/release/app-release.apk ../muslimday-release.apk
+          cp app/build/outputs/bundle/release/app-release.aab ../muslimday-release.aab
 
       - uses: actions/upload-artifact@v4
         with:
-          name: amol-tracker-apk
-          path: amol-tracker.apk
+          name: muslimday-android
+          path: muslimday-*.a*
 
       - name: Publish to the android-latest release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete android-latest --yes --cleanup-tag || true
-          gh release create android-latest amol-tracker.apk \
+          gh release create android-latest muslimday-*.a* \
             --target "${{ github.sha }}" --prerelease \
-            --title "Android APK (latest)" \
-            --notes "Built from ${{ github.ref_name }} at ${{ github.sha }}. Download amol-tracker.apk on your phone and open it to install."
+            --title "Android (latest build)" \
+            --notes "Built from ${{ github.ref_name }} at ${{ github.sha }} (version 1.0.${{ github.run_number }}). Install muslimday-test.apk on a phone to try it. If release signing is set up, muslimday-release.aab is the file for the Play Store."

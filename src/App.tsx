@@ -21,7 +21,7 @@ import Subscribe from './pages/Subscribe';
 import Notifications from './pages/Notifications';
 import Alarm from './pages/Alarm';
 import CalendarPage from './pages/Calendar';
-import AmolTracker, { AmolManage } from './pages/AmolTracker';
+import AmolTracker, { AmolCategorySettings, AmolManage, SunnahDetail } from './pages/AmolTracker';
 import { AsmaulHusnaPage, HadithPage, RuqyahPage } from './pages/Ilm';
 import Qibla from './pages/Qibla';
 import Tasbih from './pages/Tasbih';
@@ -120,12 +120,11 @@ export default function App() {
           <Route element={<TabLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/tools" element={<Tools />} />
-            <Route path="/amol" element={<AmolTracker />} />
+            <Route path="/quran" element={<Quran />} />
             <Route path="/dua" element={<Dua />} />
             <Route path="/more" element={<More />} />
           </Route>
           <Route element={<SubLayout />}>
-            <Route path="/quran" element={<Quran />} />
             <Route path="/quran/settings" element={<QuranSettingsPage />} />
             <Route path="/quran/search" element={<QuranSearch />} />
             <Route path="/quran/bookmarks" element={<QuranBookmarks />} />
@@ -144,7 +143,10 @@ export default function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/alarm" element={<Alarm />} />
             <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/amol" element={<AmolTracker />} />
             <Route path="/amol/manage" element={<AmolManage />} />
+            <Route path="/amol/manage/:group" element={<AmolCategorySettings />} />
+            <Route path="/sunnah/:id" element={<SunnahDetail />} />
             <Route path="/asmaul-husna" element={<AsmaulHusnaPage />} />
             <Route path="/hadith" element={<HadithPage />} />
             <Route path="/ruqyah" element={<RuqyahPage />} />

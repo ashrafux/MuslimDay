@@ -10,6 +10,12 @@
 :root {
   --bg: 255 255 255;
   --surface: 255 255 255;
+  /* off-white tiles (statistics) */
+  --paper: 251 250 246;
+  /* the statistics page background */
+  --canvas: 241 241 244;
+  /* a deeper grey for controls sitting on the canvas */
+  --canvas-deep: 224 224 231;
   --ink: 23 24 28;
   --muted: 128 128 138;
   --line: 230 230 236;
@@ -46,6 +52,9 @@
 .dark {
   --bg: 15 16 19;
   --surface: 27 28 33;
+  --paper: 47 48 57;
+  --canvas: 30 31 36;
+  --canvas-deep: 50 51 60;
   --ink: 240 240 243;
   --muted: 150 150 162;
   --line: 44 45 52;
@@ -125,3 +134,10 @@ label:has(> input:focus-visible) { box-shadow: 0 0 0 3px rgb(var(--brand) / .18)
   .animate-sheet, .animate-fade, .animate-pop { animation: none; }
   .tap { transition: none; }
 }
+
+/* while the statistics tab is open, the whole page takes the soft grey canvas (set by Stats) */
+html.canvas-page { --bg: var(--canvas); }
+/* the tab switch would blend into the grey page, so its track goes a shade deeper */
+html.canvas-page .seg-track { background-color: rgb(var(--canvas-deep)); }
+/* no drop shadows on the grey page: cards keep only their thin border */
+html.canvas-page .page-card { box-shadow: 0 0 0 1px rgb(var(--line)); }
